@@ -1,15 +1,25 @@
-# Ignore Everything
-/*
-/*/
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
 
-# Except These
-!/.gitignore
-!/src/
-!/gradle/
-!/gradlew
-!/gradlew.bat
-!/README
-!/LICENSE
-!/build.properties
-!/build.gradle
-!/version.json
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# gradle
+build
+.gradle
+
+# other
+eclipse
+run
+logs
+
+src/main/mcp
