@@ -1,4 +1,4 @@
-package me.dmillerw.quadrum.data;
+package me.dmillerw.quadrum.data.block;
 
 import com.google.gson.annotations.SerializedName;
 import me.dmillerw.quadrum.data.property.BaseProperty;
@@ -15,7 +15,8 @@ public class BlockData {
 
     public static class Properties {
 
-        public BaseProperty main;
-        public BaseProperty[] others;
+        public BaseProperty serialized;
+        @SerializedName("use_subtypes")
+        public boolean useSubtypes;
     }
 }

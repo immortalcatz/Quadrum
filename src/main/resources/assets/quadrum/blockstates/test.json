@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "brick=false": {
+      "model": "quadrum:not_brick"
+    },
+    "brick=true": {
+      "model": "quadrum:brick"
+    }
+  }
+}

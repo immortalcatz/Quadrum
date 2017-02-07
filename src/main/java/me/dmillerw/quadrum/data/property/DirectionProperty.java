@@ -5,7 +5,11 @@ import me.dmillerw.quadrum.lib.GsonLib;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 
 /**
  * @author dmillerw
@@ -34,5 +38,12 @@ public class DirectionProperty extends BaseProperty<EnumFacing> {
     @Override
     public int getMetaFromState(BlockQuadrum block, IBlockState state) {
         return state.getValue(getProperty()).getIndex();
+    }
+
+    @Override
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
+        for (EnumFacing facing : EnumFacing.values()) {
+            list.add(new ItemStack(itemIn, 1, facing.getIndex()));
+        }
     }
 }

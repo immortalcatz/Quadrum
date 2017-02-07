@@ -5,6 +5,12 @@ import com.google.gson.annotations.SerializedName;
 import me.dmillerw.quadrum.block.BlockQuadrum;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author dmillerw
@@ -30,14 +36,14 @@ public abstract class BaseProperty<T extends Comparable<T>> {
     }
 
     protected abstract T buildDefaultValue();
-
     protected abstract IProperty<T> buildProperty();
 
     public abstract int damageDropped(BlockQuadrum block, IBlockState state);
-
     public abstract IBlockState getStateFromMeta(BlockQuadrum block, int meta);
-
     public abstract int getMetaFromState(BlockQuadrum block, IBlockState state);
+
+    @SideOnly(Side.CLIENT)
+    public abstract void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list);
 
     public static enum Type {
 

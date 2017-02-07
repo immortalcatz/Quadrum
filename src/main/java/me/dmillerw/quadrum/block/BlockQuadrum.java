@@ -1,7 +1,7 @@
 package me.dmillerw.quadrum.block;
 
 import com.google.common.collect.Lists;
-import me.dmillerw.quadrum.data.BlockData;
+import me.dmillerw.quadrum.data.block.BlockData;
 import me.dmillerw.quadrum.lib.IQuadrumObject;
 import me.dmillerw.quadrum.lib.ModCreativeTab;
 import net.minecraft.block.Block;
@@ -10,6 +10,11 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -35,33 +40,43 @@ public class BlockQuadrum extends Block implements IQuadrumObject<BlockData> {
         }
         if (getCreativeTabToDisplayOn() == null) setCreativeTab(ModCreativeTab.TAB);
 
-        if (blockData.properties.main != null) {
-            IProperty mainProperty = blockData.properties.main.getProperty();
-            Comparable defaultValue = blockData.properties.main.getDefaultValue();
+        if (blockData.properties.serialized != null) {
+            IProperty mainProperty = blockData.properties.serialized.getProperty();
+            Comparable defaultValue = blockData.properties.serialized.getDefaultValue();
 
             this.setDefaultState(this.blockState.getBaseState().withProperty(mainProperty, defaultValue));
         }
     }
 
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
+        if (blockData.properties != null && blockData.properties.useSubtypes) {
+            blockData.properties.serialized.getSubBlocks(itemIn, tab, list);
+        } else {
+            super.getSubBlocks(itemIn, tab, list);
+        }
+    }
+
     @Override
     public int damageDropped(IBlockState state) {
-        return blockData.properties.main != null ? blockData.properties.main.damageDropped(this, state) : super.damageDropped(state);
+        return blockData.properties.serialized != null ? blockData.properties.serialized.damageDropped(this, state) : super.damageDropped(state);
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return blockData.properties.main != null ? blockData.properties.main.getStateFromMeta(this, meta) : super.getStateFromMeta(meta);
+        return blockData.properties.serialized != null ? blockData.properties.serialized.getStateFromMeta(this, meta) : super.getStateFromMeta(meta);
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return blockData.properties.main != null ? blockData.properties.main.getMetaFromState(this, state) : super.getMetaFromState(state);
+        return blockData.properties.serialized != null ? blockData.properties.serialized.getMetaFromState(this, state) : super.getMetaFromState(state);
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
         List<IProperty> properties = Lists.newArrayList();
-        if (HACK.properties.main != null) properties.add(HACK.properties.main.getProperty());
+        if (HACK.properties.serialized != null) properties.add(HACK.properties.serialized.getProperty());
         return new BlockStateContainer(this, properties.toArray(new IProperty[0]));
     }
 

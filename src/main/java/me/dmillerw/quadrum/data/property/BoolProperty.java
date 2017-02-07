@@ -4,6 +4,10 @@ import me.dmillerw.quadrum.block.BlockQuadrum;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 /**
  * @author dmillerw
@@ -33,5 +37,11 @@ public class BoolProperty extends BaseProperty<Boolean> {
     @Override
     public int getMetaFromState(BlockQuadrum block, IBlockState state) {
         return state.getValue(getProperty()) ? 1 : 0;
+    }
+
+    @Override
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
+        list.add(new ItemStack(itemIn, 1, 0));
+        list.add(new ItemStack(itemIn, 1, 1));
     }
 }

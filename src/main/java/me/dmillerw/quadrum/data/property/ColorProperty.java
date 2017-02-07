@@ -5,7 +5,11 @@ import me.dmillerw.quadrum.lib.GsonLib;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 /**
  * @author dmillerw
@@ -34,5 +38,12 @@ public class ColorProperty extends BaseProperty<EnumDyeColor> {
     @Override
     public int getMetaFromState(BlockQuadrum block, IBlockState state) {
         return state.getValue(getProperty()).getMetadata();
+    }
+
+    @Override
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
+        for (EnumDyeColor enumdyecolor : EnumDyeColor.values()) {
+            list.add(new ItemStack(itemIn, 1, enumdyecolor.getMetadata()));
+        }
     }
 }

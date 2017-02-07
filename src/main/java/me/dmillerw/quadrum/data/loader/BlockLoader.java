@@ -3,7 +3,8 @@ package me.dmillerw.quadrum.data.loader;
 import com.google.common.collect.Maps;
 import me.dmillerw.quadrum.Quadrum;
 import me.dmillerw.quadrum.block.BlockQuadrum;
-import me.dmillerw.quadrum.data.BlockData;
+import me.dmillerw.quadrum.block.item.ItemHasSubtypes;
+import me.dmillerw.quadrum.data.block.BlockData;
 import me.dmillerw.quadrum.lib.ExtensionFilter;
 import me.dmillerw.quadrum.lib.GsonLib;
 import me.dmillerw.quadrum.lib.ModInfo;
@@ -74,8 +75,13 @@ public class BlockLoader {
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         for (Block block : blockMap.values()) {
-            ItemBlock item = new ItemBlock(block);
-            item.setRegistryName(block.getRegistryName());
+            BlockData data = ((BlockQuadrum) block).getObject();
+
+            ItemBlock item;
+            if (data.properties.useSubtypes) item = new ItemHasSubtypes(block, true);
+            else item = new ItemBlock(block);
+
+            item.setRegistryName(ModInfo.MOD_ID, data.name);
 
             event.getRegistry().register(item);
         }

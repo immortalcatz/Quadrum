@@ -5,6 +5,10 @@ import me.dmillerw.quadrum.block.BlockQuadrum;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 /**
  * @author dmillerw
@@ -43,5 +47,12 @@ public class IntProperty extends BaseProperty<Integer> {
     @Override
     public int getMetaFromState(BlockQuadrum block, IBlockState state) {
         return state.getValue(getProperty());
+    }
+
+    @Override
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
+        for (int i = min; i <= max; i++) {
+            list.add(new ItemStack(itemIn, 1, i));
+        }
     }
 }
