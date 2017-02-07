@@ -11,12 +11,5 @@ public class BlockData {
     public String name;
     @SerializedName("creative_tab")
     public String creativeTab;
-    public Properties properties = new Properties();
-
-    public static class Properties {
-
-        public BaseProperty serialized;
-        @SerializedName("use_subtypes")
-        public boolean useSubtypes;
-    }
+    public BaseProperty property;
 }

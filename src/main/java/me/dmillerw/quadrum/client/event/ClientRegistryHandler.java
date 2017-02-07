@@ -22,8 +22,8 @@ public class ClientRegistryHandler {
     public static void registerModels(ModelRegistryEvent evt) {
         for (ItemBlock block : BlockLoader.getItemBlocks()) {
             BlockData data = ((BlockQuadrum) block.block).getObject();
-            if (data.properties.serialized != null) {
-                BaseProperty property = data.properties.serialized;
+            if (data.property != null) {
+                BaseProperty property = data.property;
 
                 for (int i = 0; i < property.getAllPossibleStates().length; i++) {
                     String state = property.getAllPossibleStates()[i];

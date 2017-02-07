@@ -21,9 +21,11 @@ public abstract class BaseProperty<T extends Comparable<T>> {
     public Type type;
 
     @SerializedName("default")
-    public JsonElement defaultValue;
+    public JsonElement defaultValue = JsonNull.INSTANCE;
 
-    public JsonObject names;
+    public JsonObject names = new JsonObject();
+
+    public boolean useSubtypes = false;
 
     private transient IProperty<T> property;
     private transient T _default;
