@@ -26,6 +26,17 @@ public class ColorProperty extends BaseProperty<EnumDyeColor> {
         return PropertyEnum.create(this.name, EnumDyeColor.class);
     }
 
+    @Override
+    protected String[] buildPossibleStates() {
+        String[] array = new String[EnumDyeColor.values().length];
+
+        for (EnumDyeColor color : EnumDyeColor.values()) {
+            array[color.getMetadata()] = color.name();
+        }
+
+        return array;
+    }
+
     public int damageDropped(BlockQuadrum block, IBlockState state) {
         return state.getValue(getProperty()).getMetadata();
     }

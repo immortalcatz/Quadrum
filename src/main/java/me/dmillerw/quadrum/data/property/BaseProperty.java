@@ -19,17 +19,36 @@ public abstract class BaseProperty<T extends Comparable<T>> {
 
     public String name;
     public Type type;
+
     @SerializedName("default")
     public JsonElement defaultValue;
-    private IProperty<T> property;
-    private T _default;
+
+    public JsonObject names;
+
+    private transient IProperty<T> property;
+    private transient T _default;
+    private transient String[] subtypeNames = null;
+    private transient String[] possibleStates = new String[0];
 
     public final IProperty<T> getProperty() {
         return property;
     }
-
     public final T getDefaultValue() {
         return _default;
+    }
+
+    public final String[] getAllPossibleStates() {
+        return possibleStates;
+    }
+
+    public final String[] getSubtypeNames() {
+        if (subtypeNames == null) {
+            subtypeNames = new String[getAllPossibleStates().length];
+            for (int i = 0; i < getAllPossibleStates().length; i++) {
+                subtypeNames[i] = names.get(getAllPossibleStates()[i]).getAsString();
+            }
+        }
+        return subtypeNames;
     }
 
     public void loadAdditionalData(JsonObject object) {
@@ -37,6 +56,8 @@ public abstract class BaseProperty<T extends Comparable<T>> {
 
     protected abstract T buildDefaultValue();
     protected abstract IProperty<T> buildProperty();
+
+    protected abstract String[] buildPossibleStates();
 
     public abstract int damageDropped(BlockQuadrum block, IBlockState state);
     public abstract IBlockState getStateFromMeta(BlockQuadrum block, int meta);
@@ -87,6 +108,7 @@ public abstract class BaseProperty<T extends Comparable<T>> {
 
             property.property = property.buildProperty();
             property._default = property.buildDefaultValue();
+            property.possibleStates = property.buildPossibleStates();
 
             return property;
         }

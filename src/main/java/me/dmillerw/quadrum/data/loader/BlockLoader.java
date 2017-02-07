@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -28,8 +29,13 @@ public class BlockLoader {
 
     private static Map<String, BlockData> dataMap = Maps.newHashMap();
     private static Map<String, Block> blockMap = Maps.newHashMap();
+    private static Map<String, ItemBlock> itemBlockMap = Maps.newHashMap();
 
     private static boolean initialized = false;
+
+    public static Collection<ItemBlock> getItemBlocks() {
+        return itemBlockMap.values();
+    }
 
     public static void intialize(File dir) {
         if (initialized) return;
@@ -78,8 +84,13 @@ public class BlockLoader {
             BlockData data = ((BlockQuadrum) block).getObject();
 
             ItemBlock item;
-            if (data.properties.useSubtypes) item = new ItemHasSubtypes(block, true);
-            else item = new ItemBlock(block);
+            if (data.properties.useSubtypes) {
+                item = new ItemHasSubtypes(block, true).setSubtypeNames(data.properties.serialized.getSubtypeNames());
+            } else {
+                item = new ItemBlock(block);
+            }
+
+            itemBlockMap.put(data.name, item);
 
             item.setRegistryName(ModInfo.MOD_ID, data.name);
 

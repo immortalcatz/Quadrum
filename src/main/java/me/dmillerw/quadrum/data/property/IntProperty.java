@@ -35,6 +35,17 @@ public class IntProperty extends BaseProperty<Integer> {
     }
 
     @Override
+    protected String[] buildPossibleStates() {
+        String[] array = new String[max - min];
+
+        for (int i = min; i <= max; i++) {
+            array[i] = Integer.toString(i);
+        }
+
+        return array;
+    }
+
+    @Override
     public int damageDropped(BlockQuadrum block, IBlockState state) {
         return state.getValue(getProperty());
     }

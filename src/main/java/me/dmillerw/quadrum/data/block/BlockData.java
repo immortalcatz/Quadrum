@@ -11,7 +11,7 @@ public class BlockData {
     public String name;
     @SerializedName("creative_tab")
     public String creativeTab;
-    public Properties properties;
+    public Properties properties = new Properties();
 
     public static class Properties {
 

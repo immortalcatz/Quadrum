@@ -25,6 +25,11 @@ public class BoolProperty extends BaseProperty<Boolean> {
     }
 
     @Override
+    protected String[] buildPossibleStates() {
+        return new String[]{"false", "true"};
+    }
+
+    @Override
     public int damageDropped(BlockQuadrum block, IBlockState state) {
         return state.getValue(getProperty()) ? 1 : 0;
     }

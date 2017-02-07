@@ -26,6 +26,17 @@ public class DirectionProperty extends BaseProperty<EnumFacing> {
         return PropertyDirection.create(this.name);
     }
 
+    @Override
+    protected String[] buildPossibleStates() {
+        String[] array = new String[EnumFacing.values().length];
+
+        for (EnumFacing facing : EnumFacing.values()) {
+            array[facing.getIndex()] = facing.name();
+        }
+
+        return array;
+    }
+
     public int damageDropped(BlockQuadrum block, IBlockState state) {
         return state.getValue(getProperty()).getIndex();
     }
