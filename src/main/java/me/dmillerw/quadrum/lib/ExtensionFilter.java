@@ -8,7 +8,7 @@ import java.io.FilenameFilter;
  */
 public class ExtensionFilter implements FilenameFilter {
 
-    public static final ExtensionFilter JSON = new ExtensionFilter("json");
+    public static final ExtensionFilter JSON = new ExtensionFilter(".json");
 
     private String extension;
 
@@ -18,6 +18,6 @@ public class ExtensionFilter implements FilenameFilter {
 
     @Override
     public boolean accept(File dir, String name) {
-        return name.endsWith(this.extension);
+        return name.toLowerCase().endsWith(this.extension);
     }
 }

@@ -1,4 +1,4 @@
-package me.dmillerw.quadrum.data.property;
+package me.dmillerw.quadrum.block.data.property;
 
 import com.google.gson.*;
 import com.google.gson.annotations.SerializedName;
@@ -25,6 +25,7 @@ public abstract class BaseProperty<T extends Comparable<T>> {
 
     public JsonObject names = new JsonObject();
 
+    @SerializedName("use_subtypes")
     public boolean useSubtypes = false;
 
     private transient IProperty<T> property;

@@ -2,7 +2,7 @@ package me.dmillerw.quadrum.lib;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import me.dmillerw.quadrum.data.property.BaseProperty;
+import me.dmillerw.quadrum.block.data.property.BaseProperty;
 
 /**
  * @author dmillerw

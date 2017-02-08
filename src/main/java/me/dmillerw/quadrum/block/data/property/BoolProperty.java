@@ -1,4 +1,4 @@
-package me.dmillerw.quadrum.data.property;
+package me.dmillerw.quadrum.block.data.property;
 
 import me.dmillerw.quadrum.block.BlockQuadrum;
 import net.minecraft.block.properties.IProperty;

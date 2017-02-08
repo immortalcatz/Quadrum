@@ -1,7 +1,7 @@
 package me.dmillerw.quadrum.block;
 
 import com.google.common.collect.Lists;
-import me.dmillerw.quadrum.data.block.BlockData;
+import me.dmillerw.quadrum.block.data.BlockData;
 import me.dmillerw.quadrum.lib.IQuadrumObject;
 import me.dmillerw.quadrum.lib.ModCreativeTab;
 import net.minecraft.block.Block;
@@ -32,6 +32,7 @@ public class BlockQuadrum extends Block implements IQuadrumObject<BlockData> {
 
         this.blockData = blockData;
 
+        // Creative Tabs
         for (CreativeTabs tab : CreativeTabs.CREATIVE_TAB_ARRAY) {
             if (tab.getTabLabel().equalsIgnoreCase(blockData.creativeTab)) {
                 setCreativeTab(tab);
@@ -40,6 +41,7 @@ public class BlockQuadrum extends Block implements IQuadrumObject<BlockData> {
         }
         if (getCreativeTabToDisplayOn() == null) setCreativeTab(ModCreativeTab.TAB);
 
+        // Block States
         if (blockData.property != null) {
             IProperty mainProperty = blockData.property.getProperty();
             Comparable defaultValue = blockData.property.getDefaultValue();

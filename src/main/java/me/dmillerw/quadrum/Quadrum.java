@@ -23,15 +23,18 @@ public class Quadrum {
 
     public static File configurationDirectory;
     public static File blockDirectory;
+    public static File itemDirectory;
 
     static {
         configurationDirectory = new File(Loader.instance().getConfigDir(), ModInfo.MOD_ID);
         blockDirectory = new File(configurationDirectory, "blocks");
         if (!blockDirectory.exists()) blockDirectory.mkdirs();
+        itemDirectory = new File(configurationDirectory, "items");
+        if (!itemDirectory.exists()) itemDirectory.mkdirs();
     }
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-
+        PROXY.preInit(event);
     }
 }

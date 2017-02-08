@@ -1,7 +1,7 @@
-package me.dmillerw.quadrum.data.block;
+package me.dmillerw.quadrum.block.data;
 
 import com.google.gson.annotations.SerializedName;
-import me.dmillerw.quadrum.data.property.BaseProperty;
+import me.dmillerw.quadrum.block.data.property.BaseProperty;
 
 /**
  * @author dmillerw

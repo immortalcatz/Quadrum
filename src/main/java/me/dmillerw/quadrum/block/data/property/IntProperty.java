@@ -1,4 +1,4 @@
-package me.dmillerw.quadrum.data.property;
+package me.dmillerw.quadrum.block.data.property;
 
 import com.google.gson.JsonObject;
 import me.dmillerw.quadrum.block.BlockQuadrum;

@@ -1,10 +1,9 @@
-package me.dmillerw.quadrum.data.loader;
+package me.dmillerw.quadrum.block.data;
 
 import com.google.common.collect.Maps;
 import me.dmillerw.quadrum.Quadrum;
 import me.dmillerw.quadrum.block.BlockQuadrum;
 import me.dmillerw.quadrum.block.item.ItemHasSubtypes;
-import me.dmillerw.quadrum.data.block.BlockData;
 import me.dmillerw.quadrum.lib.ExtensionFilter;
 import me.dmillerw.quadrum.lib.GsonLib;
 import me.dmillerw.quadrum.lib.ModInfo;
@@ -37,7 +36,7 @@ public class BlockLoader {
         return itemBlockMap.values();
     }
 
-    public static void intialize(File dir) {
+    public static void initialize(File dir) {
         if (initialized) return;
 
         for (File file : dir.listFiles(ExtensionFilter.JSON)) {
@@ -59,7 +58,7 @@ public class BlockLoader {
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
-        BlockLoader.intialize(new File(Quadrum.configurationDirectory, "blocks"));
+        BlockLoader.initialize(Quadrum.blockDirectory);
 
         for (BlockData data : dataMap.values()) {
             // Dammit Java:
