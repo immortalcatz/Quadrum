@@ -11,14 +11,13 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 /**
  * @author dmillerw
@@ -74,9 +73,10 @@ public class BlockQuadrum extends Block implements IQuadrumObject<BlockData> {
     }
 
     // Variants
-    @SideOnly(Side.CLIENT)
+
+
     @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
         if (blockData.variants.length > 0) {
             for (int i = 0; i < blockData.variants.length; i++) list.add(new ItemStack(this, 1, i));
         } else {

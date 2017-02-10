@@ -2,7 +2,7 @@ package me.dmillerw.quadrum.lib;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.Item;
 
 /**
  * @author dmillerw
@@ -16,7 +16,7 @@ public class ModCreativeTab extends CreativeTabs {
     }
 
     @Override
-    public ItemStack getTabIconItem() {
-        return new ItemStack(Items.ENDER_EYE);
+    public Item getTabIconItem() {
+        return Items.ENDER_EYE;
     }
 }
