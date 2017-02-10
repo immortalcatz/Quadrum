@@ -5,8 +5,8 @@ import me.dmillerw.quadrum.Quadrum;
 import me.dmillerw.quadrum.block.BlockQuadrum;
 import me.dmillerw.quadrum.block.item.ItemHasSubtypes;
 import me.dmillerw.quadrum.lib.ExtensionFilter;
-import me.dmillerw.quadrum.lib.GsonLib;
 import me.dmillerw.quadrum.lib.ModInfo;
+import me.dmillerw.quadrum.lib.gson.GsonLib;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -49,6 +49,9 @@ public class BlockLoader {
             }
 
             if (data == null) continue;
+
+            // Trait merging
+            data.traits.merge();
 
             dataMap.put(data.name, data);
         }

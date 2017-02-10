@@ -8,9 +8,15 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -41,6 +47,33 @@ public class BlockQuadrum extends Block implements IQuadrumObject<BlockData> {
             this.setDefaultState(this.blockState.getBaseState().withProperty(blockData.getVariantProperty(), blockData.variants[0]));
     }
 
+    // Traits
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return blockData.traits.aabb.getValue(state);
+    }
+
+    @Override
+    public Material getMaterial(IBlockState state) {
+        return blockData.traits.physical.getValue(state).material;
+    }
+
+    @Override
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
+        return blockData.traits.physical.getValue(blockState).hardness;
+    }
+
+    @Override
+    public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
+        return blockData.traits.physical.getValue(world.getBlockState(pos)).resistance;
+    }
+
+    @Override
+    public int getLightValue(IBlockState state) {
+        return blockData.traits.physical.getValue(state).light;
+    }
+
+    // Variants
     @SideOnly(Side.CLIENT)
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
