@@ -15,7 +15,6 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -46,7 +45,7 @@ public class ItemQuadrum extends Item implements IQuadrumObject<ItemData> {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-        tooltip.addAll(Arrays.asList(itemData.lore));
+        tooltip.addAll(itemData.lore.getValue(stack));
     }
 
     @Override

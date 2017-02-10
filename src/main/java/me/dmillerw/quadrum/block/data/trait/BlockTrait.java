@@ -2,18 +2,13 @@ package me.dmillerw.quadrum.block.data.trait;
 
 import me.dmillerw.quadrum.block.BlockQuadrum;
 import me.dmillerw.quadrum.block.data.BlockData;
+import me.dmillerw.quadrum.lib.trait.Trait;
 import net.minecraft.block.state.IBlockState;
-
-import java.util.Map;
 
 /**
  * @author dmillerw
  */
-public abstract class Trait<T> {
-
-    protected abstract T getDefaultValue();
-
-    protected abstract Map<String, T> getVariants();
+public abstract class BlockTrait<T> extends Trait<IBlockState, T> {
 
     public final T getValue(IBlockState state) {
         BlockData data = ((BlockQuadrum) state.getBlock()).getObject();
@@ -28,15 +23,6 @@ public abstract class Trait<T> {
             }
         } else {
             return getDefaultValue();
-        }
-    }
-
-    public final void merge() {
-        if (getDefaultValue() instanceof Mergeable) {
-            for (String key : getVariants().keySet()) {
-                T merged = (T) ((Mergeable) getDefaultValue()).merge(getVariants().get(key));
-                getVariants().put(key, merged);
-            }
         }
     }
 }

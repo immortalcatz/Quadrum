@@ -43,6 +43,9 @@ public class ItemLoader {
 
             if (data == null) continue;
 
+            // Trait merging
+            data.lore.merge();
+
             dataMap.put(data.name, data);
         }
 

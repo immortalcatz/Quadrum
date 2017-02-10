@@ -1,6 +1,7 @@
 package me.dmillerw.quadrum.item.data;
 
 import com.google.gson.annotations.SerializedName;
+import me.dmillerw.quadrum.item.data.trait.impl.LoreTrait;
 
 /**
  * @author dmillerw
@@ -11,7 +12,7 @@ public class ItemData {
     @SerializedName("creative_tab")
     public String creativeTab;
 
-    public String[] lore = new String[0];
+    public LoreTrait lore = new LoreTrait();
 
     public String[] variants = new String[0];
 }

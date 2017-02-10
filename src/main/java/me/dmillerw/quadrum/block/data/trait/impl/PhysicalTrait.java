@@ -2,8 +2,8 @@ package me.dmillerw.quadrum.block.data.trait.impl;
 
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
-import me.dmillerw.quadrum.block.data.trait.Mergeable;
-import me.dmillerw.quadrum.block.data.trait.Trait;
+import me.dmillerw.quadrum.block.data.trait.BlockTrait;
+import me.dmillerw.quadrum.lib.trait.Mergeable;
 import net.minecraft.block.material.Material;
 
 import java.util.Map;
@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * @author dmillerw
  */
-public class PhysicalTrait extends Trait<PhysicalTrait.Data> {
+public class PhysicalTrait extends BlockTrait<PhysicalTrait.Data> {
 
     @SerializedName("default")
     private Data _default = new Data();
