@@ -1,9 +1,9 @@
 {
   "variants": {
-    "brick=false": {
+    "variant=stone": {
       "model": "quadrum:not_brick"
     },
-    "brick=true": {
+    "variant=brick": {
       "model": "quadrum:brick"
     }
   }

@@ -70,9 +70,11 @@ public class ItemQuadrum extends Item implements IQuadrumObject<ItemData> {
 
             for (int i = 0; i < itemData.variants.length; i++) {
                 modelResources.add(new ModelResourceLocation(ModInfo.MOD_ID + ":" + itemData.variants[i]));
+                ModelLoader.setCustomModelResourceLocation(this, i, new ModelResourceLocation(ModInfo.MOD_ID + ":" + itemData.variants[i]));
             }
 
             ModelBakery.registerItemVariants(this, modelResources.toArray(new ModelResourceLocation[0]));
+        } else {
             ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(getRegistryName().toString()));
         }
     }

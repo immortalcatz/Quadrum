@@ -83,8 +83,8 @@ public class BlockLoader {
             BlockData data = ((BlockQuadrum) block).getObject();
 
             ItemBlock item;
-            if (data.property.useSubtypes) {
-                item = new ItemHasSubtypes(block, true).setSubtypeNames(data.property.getSubtypeNames());
+            if (data.variants.length > 0) {
+                item = new ItemHasSubtypes(block).setSubtypeNames(data.variants);
             } else {
                 item = new ItemBlock(block);
             }

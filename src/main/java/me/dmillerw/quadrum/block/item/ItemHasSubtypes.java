@@ -11,13 +11,11 @@ public class ItemHasSubtypes extends ItemBlock {
 
     private String[] subtypeNames;
 
-    public ItemHasSubtypes(Block block, boolean hasSubtypes) {
+    public ItemHasSubtypes(Block block) {
         super(block);
 
-        if (hasSubtypes) {
-            this.setMaxDamage(0);
-            this.setHasSubtypes(true);
-        }
+        this.setMaxDamage(0);
+        this.setHasSubtypes(true);
     }
 
     public int getMetadata(int damage) {

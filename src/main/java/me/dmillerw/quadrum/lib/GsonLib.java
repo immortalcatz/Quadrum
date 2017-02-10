@@ -2,7 +2,6 @@ package me.dmillerw.quadrum.lib;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import me.dmillerw.quadrum.block.data.property.BaseProperty;
 
 /**
  * @author dmillerw
@@ -14,8 +13,6 @@ public class GsonLib {
     public static Gson gson() {
         if (gson == null) {
             GsonBuilder builder = new GsonBuilder();
-
-            builder.registerTypeAdapter(BaseProperty.class, new BaseProperty.Deserializer());
 
             gson = builder.create();
         }

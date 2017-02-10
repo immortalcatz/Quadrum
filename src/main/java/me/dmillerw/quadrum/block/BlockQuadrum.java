@@ -1,12 +1,10 @@
 package me.dmillerw.quadrum.block;
 
-import com.google.common.collect.Lists;
 import me.dmillerw.quadrum.block.data.BlockData;
 import me.dmillerw.quadrum.lib.IQuadrumObject;
 import me.dmillerw.quadrum.lib.ModCreativeTab;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -15,8 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 /**
  * @author dmillerw
@@ -41,20 +37,15 @@ public class BlockQuadrum extends Block implements IQuadrumObject<BlockData> {
         }
         if (getCreativeTabToDisplayOn() == null) setCreativeTab(ModCreativeTab.TAB);
 
-        // Block States
-        if (blockData.property != null) {
-            IProperty mainProperty = blockData.property.getProperty();
-            Comparable defaultValue = blockData.property.getDefaultValue();
-
-            this.setDefaultState(this.blockState.getBaseState().withProperty(mainProperty, defaultValue));
-        }
+        if (blockData.variants.length > 0)
+            this.setDefaultState(this.blockState.getBaseState().withProperty(blockData.getVariantProperty(), blockData.variants[0]));
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
-        if (blockData.property != null && blockData.property.useSubtypes) {
-            blockData.property.getSubBlocks(itemIn, tab, list);
+        if (blockData.variants.length > 0) {
+            for (int i = 0; i < blockData.variants.length; i++) list.add(new ItemStack(this, 1, i));
         } else {
             super.getSubBlocks(itemIn, tab, list);
         }
@@ -62,24 +53,36 @@ public class BlockQuadrum extends Block implements IQuadrumObject<BlockData> {
 
     @Override
     public int damageDropped(IBlockState state) {
-        return blockData.property != null ? blockData.property.damageDropped(this, state) : super.damageDropped(state);
+        return getMetaFromState(state);
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return blockData.property != null ? blockData.property.getStateFromMeta(this, meta) : super.getStateFromMeta(meta);
+        if (blockData.variants.length > 0)
+            return getDefaultState().withProperty(blockData.getVariantProperty(), blockData.variants[meta]);
+        else
+            return super.getStateFromMeta(meta);
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return blockData.property != null ? blockData.property.getMetaFromState(this, state) : super.getMetaFromState(state);
+        if (blockData.variants.length > 0) {
+            String variant = state.getValue(blockData.getVariantProperty());
+            for (int i = 0; i < blockData.variants.length; i++) {
+                if (variant.equals(blockData.variants[i]))
+                    return i;
+            }
+        }
+
+        return 0;
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        List<IProperty> properties = Lists.newArrayList();
-        if (HACK.property != null) properties.add(HACK.property.getProperty());
-        return new BlockStateContainer(this, properties.toArray(new IProperty[0]));
+        if (HACK.variants.length > 0)
+            return new BlockStateContainer(this, HACK.getVariantProperty());
+        else
+            return new BlockStateContainer(this);
     }
 
     @Override
