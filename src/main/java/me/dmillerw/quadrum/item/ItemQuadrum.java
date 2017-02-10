@@ -8,6 +8,7 @@ import me.dmillerw.quadrum.lib.ModInfo;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -15,6 +16,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -41,6 +43,11 @@ public class ItemQuadrum extends Item implements IQuadrumObject<ItemData> {
             }
         }
         if (getCreativeTab() == null) setCreativeTab(ModCreativeTab.TAB);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+        tooltip.addAll(Arrays.asList(itemData.lore));
     }
 
     @Override
