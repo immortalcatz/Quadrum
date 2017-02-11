@@ -2,9 +2,6 @@ package me.dmillerw.quadrum.lib.trait;
 
 import com.google.common.collect.Maps;
 import com.google.gson.*;
-import me.dmillerw.quadrum.block.data.trait.AABBTrait;
-import me.dmillerw.quadrum.block.data.trait.PhysicalTrait;
-import me.dmillerw.quadrum.lib.trait.impl.StringListTrait;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -14,27 +11,14 @@ import java.util.Map;
  */
 public class TraitContainer {
 
-    private static final Map<String, Class<?>> TRAIT_TYPES = Maps.newHashMap();
-    static {
-        // Common
-        TRAIT_TYPES.put(Trait.LORE, StringListTrait.class);
-        TRAIT_TYPES.put(Trait.ORE_DICTIONARY, StringListTrait.class);
-
-        // Item
-
-        // Block
-        TRAIT_TYPES.put(Trait.BLOCK_AABB, AABBTrait.class);
-        TRAIT_TYPES.put(Trait.BLOCK_PHYSICAL, PhysicalTrait.class);
-    }
-
-    protected Map<String, Trait<?>> backingMap = Maps.newHashMap();
+    protected Map<String, Trait> backingMap = Maps.newHashMap();
 
     protected final void merge() {
         backingMap.values().forEach(Trait::merge);
     }
 
-    public <T extends Trait> T get(String key) {
-        return (T) backingMap.get(key);
+    public Trait get(String key) {
+        return backingMap.get(key);
     }
 
     public static class Deserializer implements JsonDeserializer<TraitContainer> {
@@ -44,10 +28,32 @@ public class TraitContainer {
             JsonObject object = json.getAsJsonObject();
             TraitContainer container = new TraitContainer();
 
-            for (Map.Entry<String, JsonElement> entry : object.entrySet()) {
-                Class type = TRAIT_TYPES.get(entry.getKey());
-                if (type != null) {
-                    container.backingMap.put(entry.getKey(), context.deserialize(entry.getValue(), type));
+            for (String trait : Trait.TRAIT_TYPES.keySet()) {
+                if (object.has(trait)) {
+                    JsonObject jtrait = object.getAsJsonObject(trait);
+                    Trait t = new Trait();
+
+                    if (jtrait.has("default")) {
+                        t.defaultValue = context.deserialize(jtrait.get("default"), Trait.TRAIT_TYPES.get(trait).getType());
+                    } else {
+                        t.defaultValue = Trait.DEFAULT_VALUES.get(trait).get();
+                    }
+
+                    if (jtrait.has("variants")) {
+                        Map<String, Object> variants = Maps.newHashMap();
+
+                        for (Map.Entry<String, JsonElement> entry : jtrait.get("variants").getAsJsonObject().entrySet()) {
+                            variants.put(entry.getKey(), context.deserialize(entry.getValue(), Trait.TRAIT_TYPES.get(trait).getType()));
+                        }
+
+                        t.variants = variants;
+                    }
+
+                    container.backingMap.put(trait, t);
+                } else {
+                    Trait t = new Trait();
+                    t.defaultValue = Trait.DEFAULT_VALUES.get(trait).get();
+                    container.backingMap.put(trait, t);
                 }
             }
 

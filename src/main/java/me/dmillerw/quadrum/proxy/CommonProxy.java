@@ -7,7 +7,6 @@ import me.dmillerw.quadrum.item.ItemQuadrum;
 import me.dmillerw.quadrum.item.data.ItemData;
 import me.dmillerw.quadrum.item.data.ItemLoader;
 import me.dmillerw.quadrum.lib.trait.Trait;
-import me.dmillerw.quadrum.lib.trait.impl.StringListTrait;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -55,7 +54,10 @@ public class CommonProxy implements IProxy {
         }
     }
 
-    private static void registerOreDictionaryTags(StringListTrait trait, ItemStack stack) {
+    private static void registerOreDictionaryTags(Trait trait, ItemStack stack) {
+        if (trait == null)
+            return;
+
         List<String> tags = trait.getValueFromItemStack(stack);
         if (!tags.isEmpty()) {
             for (String tag : tags) {

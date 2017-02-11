@@ -1,7 +1,7 @@
 package me.dmillerw.quadrum.block;
 
 import me.dmillerw.quadrum.block.data.BlockData;
-import me.dmillerw.quadrum.block.data.trait.PhysicalTrait;
+import me.dmillerw.quadrum.block.data.trait.Physical;
 import me.dmillerw.quadrum.lib.IQuadrumObject;
 import me.dmillerw.quadrum.lib.ModCreativeTab;
 import me.dmillerw.quadrum.lib.trait.Trait;
@@ -51,27 +51,31 @@ public class BlockQuadrum extends Block implements IQuadrumObject<BlockData> {
     // Traits
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return ((AxisAlignedBB) blockData.traits.get(Trait.BLOCK_AABB).getValueFromBlockState(state));
+        return blockData.traits.get(Trait.BLOCK_AABB).getValueFromBlockState(state);
     }
 
     @Override
     public Material getMaterial(IBlockState state) {
-        return ((PhysicalTrait) blockData.traits.get(Trait.BLOCK_PHYSICAL)).getValueFromBlockState(state).material;
+        Physical physical = blockData.traits.get(Trait.BLOCK_PHYSICAL).getValueFromBlockState(state);
+        return physical.material;
     }
 
     @Override
     public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-        return ((PhysicalTrait) blockData.traits.get(Trait.BLOCK_PHYSICAL)).getValueFromBlockState(blockState).hardness;
+        Physical physical = blockData.traits.get(Trait.BLOCK_PHYSICAL).getValueFromBlockState(blockState);
+        return physical.hardness;
     }
 
     @Override
     public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
-        return ((PhysicalTrait) blockData.traits.get(Trait.BLOCK_PHYSICAL)).getValueFromBlockState(world.getBlockState(pos)).resistance;
+        Physical physical = blockData.traits.get(Trait.BLOCK_PHYSICAL).getValueFromBlockState(world.getBlockState(pos));
+        return physical.resistance;
     }
 
     @Override
     public int getLightValue(IBlockState state) {
-        return ((PhysicalTrait) blockData.traits.get(Trait.BLOCK_PHYSICAL)).getValueFromBlockState(state).light;
+        Physical physical = blockData.traits.get(Trait.BLOCK_PHYSICAL).getValueFromBlockState(state);
+        return physical.light;
     }
 
     // Variants
