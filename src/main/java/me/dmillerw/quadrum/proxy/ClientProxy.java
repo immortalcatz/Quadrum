@@ -1,7 +1,7 @@
 package me.dmillerw.quadrum.proxy;
 
-import me.dmillerw.quadrum.block.data.ItemLoader;
 import me.dmillerw.quadrum.item.ItemQuadrum;
+import me.dmillerw.quadrum.item.data.ItemLoader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -15,7 +15,7 @@ public class ClientProxy extends CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
 
-        ItemLoader.getItems().forEach((i) -> ((ItemQuadrum) i).initializeModels());
+        ItemLoader.getItems().forEach((t) -> ((ItemQuadrum)t).initializeModels());
     }
 
     @Override

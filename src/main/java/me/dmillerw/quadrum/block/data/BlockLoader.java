@@ -3,7 +3,7 @@ package me.dmillerw.quadrum.block.data;
 import com.google.common.collect.Maps;
 import me.dmillerw.quadrum.Quadrum;
 import me.dmillerw.quadrum.block.BlockQuadrum;
-import me.dmillerw.quadrum.block.item.ItemHasSubtypes;
+import me.dmillerw.quadrum.block.item.ItemBlockQuadrum;
 import me.dmillerw.quadrum.lib.ExtensionFilter;
 import me.dmillerw.quadrum.lib.ModInfo;
 import me.dmillerw.quadrum.lib.gson.GsonLib;
@@ -32,6 +32,10 @@ public class BlockLoader {
 
     private static boolean initialized = false;
 
+    public static Collection<Block> getBlocks() {
+        return blockMap.values();
+    }
+
     public static Collection<ItemBlock> getItemBlocks() {
         return itemBlockMap.values();
     }
@@ -49,9 +53,6 @@ public class BlockLoader {
             }
 
             if (data == null) continue;
-
-            // Trait merging
-            data.traits.merge();
 
             dataMap.put(data.name, data);
         }
@@ -87,9 +88,9 @@ public class BlockLoader {
 
             ItemBlock item;
             if (data.variants.length > 0) {
-                item = new ItemHasSubtypes(block).setSubtypeNames(data.variants);
+                item = new ItemBlockQuadrum(block, true).setSubtypeNames(data.variants);
             } else {
-                item = new ItemBlock(block);
+                item = new ItemBlockQuadrum(block, false);
             }
 
             itemBlockMap.put(data.name, item);

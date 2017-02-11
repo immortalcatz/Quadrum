@@ -1,10 +1,13 @@
 package me.dmillerw.quadrum.item;
 
+import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Lists;
 import me.dmillerw.quadrum.item.data.ItemData;
 import me.dmillerw.quadrum.lib.IQuadrumObject;
 import me.dmillerw.quadrum.lib.ModCreativeTab;
 import me.dmillerw.quadrum.lib.ModInfo;
+import me.dmillerw.quadrum.lib.trait.Trait;
+import me.dmillerw.quadrum.lib.trait.impl.StringListTrait;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -40,12 +43,15 @@ public class ItemQuadrum extends Item implements IQuadrumObject<ItemData> {
                 break;
             }
         }
+
+        HashBiMap.create();
+
         if (getCreativeTab() == null) setCreativeTab(ModCreativeTab.TAB);
     }
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-        tooltip.addAll(itemData.lore.getValue(stack));
+        tooltip.addAll(((StringListTrait)itemData.traits.get(Trait.LORE)).getValueFromItemStack(stack));
     }
 
     @Override
