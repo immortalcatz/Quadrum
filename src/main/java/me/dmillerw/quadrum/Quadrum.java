@@ -13,7 +13,7 @@ import java.io.File;
 /**
  * @author dmillerw
  */
-@Mod(modid = ModInfo.MOD_ID, name = ModInfo.MOD_NAME, dependencies = "", acceptedMinecraftVersions = "[1.11,1.11.2]", version = ModInfo.MOD_VERSION)
+@Mod(modid = ModInfo.MOD_ID, name = ModInfo.MOD_NAME, dependencies = "required-after:resourceloader", acceptedMinecraftVersions = "[1.11,1.11.2]", version = ModInfo.MOD_VERSION)
 public class Quadrum {
 
     @Mod.Instance(ModInfo.MOD_ID)
