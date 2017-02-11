@@ -1,9 +1,8 @@
-package me.dmillerw.quadrum.block.data;
+package me.dmillerw.quadrum.item.data;
 
 import com.google.common.collect.Maps;
 import me.dmillerw.quadrum.Quadrum;
 import me.dmillerw.quadrum.item.ItemQuadrum;
-import me.dmillerw.quadrum.item.data.ItemData;
 import me.dmillerw.quadrum.lib.ExtensionFilter;
 import me.dmillerw.quadrum.lib.ModInfo;
 import me.dmillerw.quadrum.lib.gson.GsonLib;
@@ -42,9 +41,6 @@ public class ItemLoader {
             }
 
             if (data == null) continue;
-
-            // Trait merging
-            data.lore.merge();
 
             dataMap.put(data.name, data);
         }

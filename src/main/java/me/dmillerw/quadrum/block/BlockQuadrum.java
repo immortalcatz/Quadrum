@@ -1,8 +1,10 @@
 package me.dmillerw.quadrum.block;
 
 import me.dmillerw.quadrum.block.data.BlockData;
+import me.dmillerw.quadrum.block.data.trait.PhysicalTrait;
 import me.dmillerw.quadrum.lib.IQuadrumObject;
 import me.dmillerw.quadrum.lib.ModCreativeTab;
+import me.dmillerw.quadrum.lib.trait.Trait;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -48,32 +50,30 @@ public class BlockQuadrum extends Block implements IQuadrumObject<BlockData> {
     // Traits
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return blockData.traits.aabb.getValue(state);
+        return ((AxisAlignedBB) blockData.traits.get(Trait.BLOCK_AABB).getValueFromBlockState(state));
     }
 
     @Override
     public Material getMaterial(IBlockState state) {
-        return blockData.traits.physical.getValue(state).material;
+        return ((PhysicalTrait) blockData.traits.get(Trait.BLOCK_PHYSICAL)).getValueFromBlockState(state).material;
     }
 
     @Override
     public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-        return blockData.traits.physical.getValue(blockState).hardness;
+        return ((PhysicalTrait) blockData.traits.get(Trait.BLOCK_PHYSICAL)).getValueFromBlockState(blockState).hardness;
     }
 
     @Override
     public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
-        return blockData.traits.physical.getValue(world.getBlockState(pos)).resistance;
+        return ((PhysicalTrait) blockData.traits.get(Trait.BLOCK_PHYSICAL)).getValueFromBlockState(world.getBlockState(pos)).resistance;
     }
 
     @Override
     public int getLightValue(IBlockState state) {
-        return blockData.traits.physical.getValue(state).light;
+        return ((PhysicalTrait) blockData.traits.get(Trait.BLOCK_PHYSICAL)).getValueFromBlockState(state).light;
     }
 
     // Variants
-
-
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
         if (blockData.variants.length > 0) {

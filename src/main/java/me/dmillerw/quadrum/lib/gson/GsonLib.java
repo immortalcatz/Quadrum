@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.dmillerw.quadrum.lib.gson.adapter.PostProcessableFactory;
 import me.dmillerw.quadrum.lib.gson.deserializer.AABBDeserializer;
+import me.dmillerw.quadrum.lib.trait.TraitContainer;
 import net.minecraft.util.math.AxisAlignedBB;
 
 /**
@@ -19,6 +20,7 @@ public class GsonLib {
 
             builder.registerTypeAdapterFactory(new PostProcessableFactory());
 
+            builder.registerTypeAdapter(TraitContainer.class, new TraitContainer.Deserializer());
             builder.registerTypeAdapter(AxisAlignedBB.class, new AABBDeserializer());
 
             gson = builder.create();

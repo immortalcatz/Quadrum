@@ -1,9 +1,9 @@
-package me.dmillerw.quadrum.item.data.trait.impl;
+package me.dmillerw.quadrum.lib.trait.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
-import me.dmillerw.quadrum.item.data.trait.ItemTrait;
+import me.dmillerw.quadrum.lib.trait.Trait;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * @author dmillerw
  */
-public class LoreTrait extends ItemTrait<List<String>> {
+public class StringListTrait extends Trait<List<String>> {
 
     @SerializedName("default")
     private List<String> _default = Lists.newArrayList();

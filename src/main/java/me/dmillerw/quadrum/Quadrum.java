@@ -5,6 +5,7 @@ import me.dmillerw.quadrum.proxy.IProxy;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.io.File;
@@ -12,7 +13,7 @@ import java.io.File;
 /**
  * @author dmillerw
  */
-@Mod(modid = ModInfo.MOD_ID, name = ModInfo.MOD_NAME, dependencies = "required-after:resourceloader", acceptedMinecraftVersions = "[1.11,1.11.2]", version = ModInfo.MOD_VERSION)
+@Mod(modid = ModInfo.MOD_ID, name = ModInfo.MOD_NAME, dependencies = "", acceptedMinecraftVersions = "[1.11,1.11.2]", version = ModInfo.MOD_VERSION)
 public class Quadrum {
 
     @Mod.Instance(ModInfo.MOD_ID)
@@ -36,5 +37,10 @@ public class Quadrum {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         PROXY.preInit(event);
+    }
+
+    @Mod.EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+        PROXY.postInit(event);
     }
 }
