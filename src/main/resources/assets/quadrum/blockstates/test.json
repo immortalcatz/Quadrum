@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "variant=variant1": { "model": "variant1" },
+    "variant=variant2": { "model": "variant2" },
+    "variant=variant3": { "model": "variant3" }
+  }
+}
