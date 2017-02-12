@@ -1,4 +1,4 @@
-package me.dmillerw.quadrum.lib.trait;
+package me.dmillerw.quadrum.trait;
 
 import com.google.common.collect.Sets;
 import com.google.gson.JsonElement;
