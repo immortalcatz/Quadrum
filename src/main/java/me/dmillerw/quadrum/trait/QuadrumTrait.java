@@ -39,6 +39,9 @@ public class QuadrumTrait<T> {
     }
 
     public final T getValueFromItemStack(ItemStack state) {
+        if (state.isEmpty())
+            return defaultValue;
+
         String[] variants = new String[0];
         if (state.getItem() instanceof ItemBlock) {
             BlockData data = ((BlockQuadrum)((ItemBlock) state.getItem()).block).getObject();
