@@ -64,8 +64,8 @@ public class ItemLoader {
                 item = new ItemQuadrum(data);
             }
 
-            ((ItemQuadrum)item).setUnlocalizedName(ModInfo.MOD_ID + ":" + data.name);
-            ((ItemQuadrum)item).setRegistryName(ModInfo.MOD_ID, data.name);
+            ((Item)item).setUnlocalizedName(ModInfo.MOD_ID + ":" + data.name);
+            ((Item)item).setRegistryName(ModInfo.MOD_ID, data.name);
 
             itemMap.put(data.name, item);
 

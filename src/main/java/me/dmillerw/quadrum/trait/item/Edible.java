@@ -9,7 +9,7 @@ public class Edible {
 
     public int health;
     public float saturation;
-    public int duration;
+    public int duration = 32;
     @SerializedName("can_always_eat")
     public boolean canAlwaysEat;
 }

@@ -4,7 +4,6 @@ import me.dmillerw.quadrum.block.BlockQuadrum;
 import me.dmillerw.quadrum.block.data.BlockData;
 import me.dmillerw.quadrum.block.data.BlockLoader;
 import me.dmillerw.quadrum.item.IQuadrumItem;
-import me.dmillerw.quadrum.item.ItemQuadrum;
 import me.dmillerw.quadrum.item.data.ItemData;
 import me.dmillerw.quadrum.item.data.ItemLoader;
 import me.dmillerw.quadrum.trait.QuadrumTrait;
@@ -49,7 +48,7 @@ public class CommonProxy implements IProxy {
     }
 
     private static void registerOreDictionaryTags(IQuadrumItem item) {
-        ItemData data = ((ItemQuadrum)item).getObject();
+        ItemData data = item.getObject();
         for (int i=0; i<data.variants.length; i++) {
             ItemStack stack = new ItemStack((Item)item, 1, i);
             registerOreDictionaryTags(data.traits.get(Traits.ORE_DICTIONARY), stack);
