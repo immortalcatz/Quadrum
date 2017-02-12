@@ -3,10 +3,12 @@ package me.dmillerw.quadrum.proxy;
 import me.dmillerw.quadrum.block.BlockQuadrum;
 import me.dmillerw.quadrum.block.data.BlockData;
 import me.dmillerw.quadrum.block.data.BlockLoader;
+import me.dmillerw.quadrum.item.IQuadrumItem;
 import me.dmillerw.quadrum.item.ItemQuadrum;
 import me.dmillerw.quadrum.item.data.ItemData;
 import me.dmillerw.quadrum.item.data.ItemLoader;
-import me.dmillerw.quadrum.lib.trait.Trait;
+import me.dmillerw.quadrum.trait.QuadrumTrait;
+import me.dmillerw.quadrum.trait.Traits;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -42,19 +44,19 @@ public class CommonProxy implements IProxy {
         BlockData data =((BlockQuadrum)block).getObject();
         for (int i=0; i<data.variants.length; i++) {
             ItemStack stack = new ItemStack(block, 1, i);
-            registerOreDictionaryTags(data.traits.get(Trait.ORE_DICTIONARY), stack);
+            registerOreDictionaryTags(data.traits.get(Traits.ORE_DICTIONARY), stack);
         }
     }
 
-    private static void registerOreDictionaryTags(Item item) {
+    private static void registerOreDictionaryTags(IQuadrumItem item) {
         ItemData data = ((ItemQuadrum)item).getObject();
         for (int i=0; i<data.variants.length; i++) {
-            ItemStack stack = new ItemStack(item, 1, i);
-            registerOreDictionaryTags(data.traits.get(Trait.ORE_DICTIONARY), stack);
+            ItemStack stack = new ItemStack((Item)item, 1, i);
+            registerOreDictionaryTags(data.traits.get(Traits.ORE_DICTIONARY), stack);
         }
     }
 
-    private static void registerOreDictionaryTags(Trait trait, ItemStack stack) {
+    private static void registerOreDictionaryTags(QuadrumTrait<List<String>> trait, ItemStack stack) {
         if (trait == null)
             return;
 

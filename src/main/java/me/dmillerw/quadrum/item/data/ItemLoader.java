@@ -2,10 +2,13 @@ package me.dmillerw.quadrum.item.data;
 
 import com.google.common.collect.Maps;
 import me.dmillerw.quadrum.Quadrum;
+import me.dmillerw.quadrum.item.IQuadrumItem;
 import me.dmillerw.quadrum.item.ItemQuadrum;
+import me.dmillerw.quadrum.item.sub.ItemQuadrumFood;
 import me.dmillerw.quadrum.lib.ExtensionFilter;
 import me.dmillerw.quadrum.lib.ModInfo;
 import me.dmillerw.quadrum.lib.gson.GsonLib;
+import me.dmillerw.quadrum.trait.Traits;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,7 +27,7 @@ import java.util.Map;
 public class ItemLoader {
 
     private static Map<String, ItemData> dataMap = Maps.newHashMap();
-    private static Map<String, Item> itemMap = Maps.newHashMap();
+    private static Map<String, IQuadrumItem> itemMap = Maps.newHashMap();
 
     private static boolean initialized = false;
 
@@ -53,18 +56,24 @@ public class ItemLoader {
         ItemLoader.initialize(Quadrum.itemDirectory);
 
         for (ItemData data : dataMap.values()) {
+            IQuadrumItem item;
 
-            ItemQuadrum item = new ItemQuadrum(data);
-            item.setUnlocalizedName(ModInfo.MOD_ID + ":" + data.name);
-            item.setRegistryName(ModInfo.MOD_ID, data.name);
+            if (data.traits.get(Traits.ITEM_EDIBLE) != null) {
+                item = new ItemQuadrumFood(data);
+            } else {
+                item = new ItemQuadrum(data);
+            }
+
+            ((ItemQuadrum)item).setUnlocalizedName(ModInfo.MOD_ID + ":" + data.name);
+            ((ItemQuadrum)item).setRegistryName(ModInfo.MOD_ID, data.name);
 
             itemMap.put(data.name, item);
 
-            event.getRegistry().register(item);
+            event.getRegistry().register((Item)item);
         }
     }
 
-    public static Collection<Item> getItems() {
+    public static Collection<IQuadrumItem> getItems() {
         return itemMap.values();
     }
 }

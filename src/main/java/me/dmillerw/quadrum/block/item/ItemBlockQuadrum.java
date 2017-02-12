@@ -1,8 +1,8 @@
 package me.dmillerw.quadrum.block.item;
 
 import me.dmillerw.quadrum.block.BlockQuadrum;
-import me.dmillerw.quadrum.block.data.BlockData;
-import me.dmillerw.quadrum.lib.trait.Trait;
+import me.dmillerw.quadrum.trait.QuadrumTrait;
+import me.dmillerw.quadrum.trait.Traits;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -28,8 +28,10 @@ public class ItemBlockQuadrum extends ItemBlock {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-        BlockData data = ((BlockQuadrum)block).getObject();
-        tooltip.addAll(data.traits.get(Trait.LORE).getValueFromItemStack(stack));
+        QuadrumTrait<List<String>> trait = ((BlockQuadrum)block).getObject().traits.get(Traits.LORE);
+        if (trait != null) {
+            tooltip.addAll(trait.getValueFromItemStack(stack));
+        }
     }
 
     public int getMetadata(int damage) {

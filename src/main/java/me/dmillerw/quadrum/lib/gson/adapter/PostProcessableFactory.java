@@ -16,6 +16,7 @@ import java.io.IOException;
 public class PostProcessableFactory implements TypeAdapterFactory {
 
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+
         final TypeAdapter<T> delegate = gson.getDelegateAdapter(this, type);
         final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
 

@@ -1,10 +1,12 @@
 package me.dmillerw.quadrum.block;
 
 import me.dmillerw.quadrum.block.data.BlockData;
-import me.dmillerw.quadrum.block.data.trait.Physical;
 import me.dmillerw.quadrum.lib.IQuadrumObject;
 import me.dmillerw.quadrum.lib.ModCreativeTab;
-import me.dmillerw.quadrum.lib.trait.Trait;
+import me.dmillerw.quadrum.trait.QuadrumTrait;
+import me.dmillerw.quadrum.trait.Traits;
+import me.dmillerw.quadrum.trait.data.block.BoundingBox;
+import me.dmillerw.quadrum.trait.data.block.Physical;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -19,6 +21,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 /**
  * @author dmillerw
@@ -48,33 +52,67 @@ public class BlockQuadrum extends Block implements IQuadrumObject<BlockData> {
     }
 
     // Traits
+
+
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return blockData.traits.get(Trait.BLOCK_AABB).getValueFromBlockState(state);
+        QuadrumTrait<BoundingBox> trait = blockData.traits.get(Traits.BLOCK_BOUNDING_BOX);
+        if (trait != null) {
+            return trait.getValueFromBlockState(state).getSelectionBoundingBox();
+        } else {
+            return getBoundingBox(state, source, pos);
+        }
+    }
+
+    @Nullable
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+        QuadrumTrait<BoundingBox> trait = blockData.traits.get(Traits.BLOCK_BOUNDING_BOX);
+        if (trait != null) {
+            return trait.getValueFromBlockState(blockState).getCollisionBoundingBox();
+        } else {
+            return getCollisionBoundingBox(blockState, worldIn, pos);
+        }
     }
 
     @Override
     public Material getMaterial(IBlockState state) {
-        Physical physical = blockData.traits.get(Trait.BLOCK_PHYSICAL).getValueFromBlockState(state);
-        return physical.material;
+        QuadrumTrait<Physical> trait = blockData.traits.get(Traits.BLOCK_PHYSICAL);
+        if (trait != null) {
+            return trait.getValueFromBlockState(state).material;
+        } else {
+            return super.getMaterial(state);
+        }
     }
 
     @Override
     public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-        Physical physical = blockData.traits.get(Trait.BLOCK_PHYSICAL).getValueFromBlockState(blockState);
-        return physical.hardness;
+        QuadrumTrait<Physical> trait = blockData.traits.get(Traits.BLOCK_PHYSICAL);
+        if (trait != null) {
+            return trait.getValueFromBlockState(blockState).hardness;
+        } else {
+            return getBlockHardness(blockState, worldIn, pos);
+        }
     }
 
     @Override
     public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
-        Physical physical = blockData.traits.get(Trait.BLOCK_PHYSICAL).getValueFromBlockState(world.getBlockState(pos));
-        return physical.resistance;
+        QuadrumTrait<Physical> trait = blockData.traits.get(Traits.BLOCK_PHYSICAL);
+        if (trait != null) {
+            return trait.getValueFromBlockState(world.getBlockState(pos)).resistance;
+        } else {
+            return super.getExplosionResistance(world, pos, exploder, explosion);
+        }
     }
 
     @Override
     public int getLightValue(IBlockState state) {
-        Physical physical = blockData.traits.get(Trait.BLOCK_PHYSICAL).getValueFromBlockState(state);
-        return physical.light;
+        QuadrumTrait<Physical> trait = blockData.traits.get(Traits.BLOCK_PHYSICAL);
+        if (trait != null) {
+            return trait.getValueFromBlockState(state).light;
+        } else {
+            return getLightValue(state);
+        }
     }
 
     // Variants

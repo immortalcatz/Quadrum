@@ -1,7 +1,7 @@
 package me.dmillerw.quadrum.lib.data;
 
 import com.google.gson.annotations.SerializedName;
-import me.dmillerw.quadrum.lib.trait.TraitContainer;
+import me.dmillerw.quadrum.trait.Traits;
 
 /**
  * @author dmillerw
@@ -15,5 +15,5 @@ public class QuadrumData {
 
     public String[] variants = new String[0];
 
-    public TraitContainer traits = new TraitContainer();
+    public Traits traits = new Traits();
 }
