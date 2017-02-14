@@ -24,5 +24,13 @@ public abstract class Mergeable<S> implements PostProcessableFactory.PostProcess
             set.add(entry.getKey());
     }
 
+    public final <T> T merge(Mergeable other, String data, T ourValue, T otherValue) {
+        if (other.isSet(data))
+            return otherValue;
+        else
+            return ourValue;
+    }
+
+    //TODO: Make this use reflection or something to automagically merge shiz
     public abstract S merge(S other);
 }

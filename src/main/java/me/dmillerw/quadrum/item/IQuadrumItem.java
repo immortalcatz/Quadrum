@@ -7,6 +7,7 @@ import me.dmillerw.quadrum.lib.ModCreativeTab;
 import me.dmillerw.quadrum.lib.ModInfo;
 import me.dmillerw.quadrum.trait.QuadrumTrait;
 import me.dmillerw.quadrum.trait.Traits;
+import me.dmillerw.quadrum.trait.data.item.Visual;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -65,6 +66,18 @@ public interface IQuadrumItem extends IQuadrumObject<ItemData> {
         } else {
             list.add(new ItemStack((Item)this));
         }
+    }
+
+    public default boolean isEnchanted(ItemStack stack) {
+        QuadrumTrait<Visual> trait = getObject().traits.get(Traits.ITEM_VISUAL);
+        if (trait != null) {
+            Visual visual = trait.getValueFromItemStack(stack);
+            if (visual != null) {
+                return visual.enchanted;
+            }
+        }
+
+        return stack.isItemEnchanted();
     }
 
     @SideOnly(Side.CLIENT)

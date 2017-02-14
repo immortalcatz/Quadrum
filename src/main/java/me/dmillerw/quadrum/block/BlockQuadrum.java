@@ -1,18 +1,17 @@
 package me.dmillerw.quadrum.block;
 
 import me.dmillerw.quadrum.block.data.BlockData;
-import me.dmillerw.quadrum.lib.IQuadrumObject;
-import me.dmillerw.quadrum.lib.ModCreativeTab;
 import me.dmillerw.quadrum.trait.QuadrumTrait;
 import me.dmillerw.quadrum.trait.Traits;
-import me.dmillerw.quadrum.trait.data.block.BoundingBox;
 import me.dmillerw.quadrum.trait.data.block.Physical;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -23,106 +22,122 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author dmillerw
  */
-public class BlockQuadrum extends Block implements IQuadrumObject<BlockData> {
+public class BlockQuadrum extends Block implements IQuadrumBlock {
 
     public static BlockData HACK = null;
 
     private final BlockData blockData;
+    private final QuadrumTrait<Physical> traitPhysical;
 
     public BlockQuadrum(BlockData blockData) {
         super(Material.ROCK); // Handled via state-sensitive getter
 
         this.blockData = blockData;
+        this.traitPhysical = blockData.traits.get(Traits.BLOCK_PHYSICAL);
 
-        // Creative Tabs
-        for (CreativeTabs tab : CreativeTabs.CREATIVE_TAB_ARRAY) {
-            if (tab.getTabLabel().equalsIgnoreCase(blockData.creativeTab)) {
-                setCreativeTab(tab);
-                break;
-            }
-        }
-        if (getCreativeTabToDisplayOn() == null) setCreativeTab(ModCreativeTab.TAB);
-
-        if (blockData.variants.length > 0)
-            this.setDefaultState(this.blockState.getBaseState().withProperty(blockData.getVariantProperty(), blockData.variants[0]));
+        this.construct();
+        this.setDefaultState(this.i_getDefaultState(this, blockState.getBaseState()));
     }
 
-    // Traits
-
+    /* TRAIT - PHYSICAL */
+    @Override
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+        if (traitPhysical != null) {
+            Physical physical = traitPhysical.getValueFromBlockState(worldIn.getBlockState(pos));
+            if (physical.gravity) {
+                worldIn.scheduleUpdate(pos, this, 2);
+            }
+        }
+    }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        QuadrumTrait<BoundingBox> trait = blockData.traits.get(Traits.BLOCK_BOUNDING_BOX);
-        if (trait != null) {
-            return trait.getValueFromBlockState(state).getSelectionBoundingBox();
-        } else {
-            return getBoundingBox(state, source, pos);
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+        if (traitPhysical != null) {
+            Physical physical = traitPhysical.getValueFromBlockState(worldIn.getBlockState(pos));
+            if (physical.gravity) {
+                worldIn.scheduleUpdate(pos, this, 2);
+            }
         }
+    }
+
+    @Override
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+        if (traitPhysical != null) {
+            Physical physical = traitPhysical.getValueFromBlockState(worldIn.getBlockState(pos));
+            if (physical.gravity) {
+                if (!worldIn.isRemote) {
+                    this.checkForFallingConditions(worldIn, pos);
+                }
+            }
+        }
+    }
+
+    private void checkForFallingConditions(World worldIn, BlockPos pos) {
+        if ((worldIn.isAirBlock(pos.down()) || BlockFalling.canFallThrough(worldIn.getBlockState(pos.down()))) && pos.getY() >= 0) {
+            int i = 32;
+
+            if (!BlockFalling.fallInstantly && worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32))) {
+                if (!worldIn.isRemote) {
+                    EntityFallingBlock entityfallingblock = new EntityFallingBlock(worldIn, (double) pos.getX() + 0.5D, (double) pos.getY(), (double) pos.getZ() + 0.5D, worldIn.getBlockState(pos));
+                    worldIn.spawnEntityInWorld(entityfallingblock);
+                }
+            } else {
+                IBlockState state = worldIn.getBlockState(pos);
+                worldIn.setBlockToAir(pos);
+                BlockPos blockpos;
+
+                for (blockpos = pos.down(); (worldIn.isAirBlock(blockpos) || BlockFalling.canFallThrough(worldIn.getBlockState(blockpos))) && blockpos.getY() > 0; blockpos = blockpos.down()) {
+                    ;
+                }
+
+                if (blockpos.getY() > 0) {
+                    worldIn.setBlockState(blockpos.up(), state); //Forge: Fix loss of state information during world gen.
+                }
+            }
+        }
+    }
+
+    /* I_QUADRUM_BLOCK */
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return this.i_getSelectionBoundingBox(state);
     }
 
     @Nullable
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
-        QuadrumTrait<BoundingBox> trait = blockData.traits.get(Traits.BLOCK_BOUNDING_BOX);
-        if (trait != null) {
-            return trait.getValueFromBlockState(blockState).getCollisionBoundingBox();
-        } else {
-            return getCollisionBoundingBox(blockState, worldIn, pos);
-        }
+    public AxisAlignedBB i_getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+        return this.i_getCollisionBoundingBox(blockState, worldIn, pos);
     }
 
     @Override
-    public Material getMaterial(IBlockState state) {
-        QuadrumTrait<Physical> trait = blockData.traits.get(Traits.BLOCK_PHYSICAL);
-        if (trait != null) {
-            return trait.getValueFromBlockState(state).material;
-        } else {
-            return super.getMaterial(state);
-        }
+    public Material i_getMaterial(IBlockState state) {
+        return this.i_getMaterial(state);
     }
 
     @Override
     public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-        QuadrumTrait<Physical> trait = blockData.traits.get(Traits.BLOCK_PHYSICAL);
-        if (trait != null) {
-            return trait.getValueFromBlockState(blockState).hardness;
-        } else {
-            return getBlockHardness(blockState, worldIn, pos);
-        }
+        return this.i_getHardness(blockState);
     }
 
     @Override
     public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
-        QuadrumTrait<Physical> trait = blockData.traits.get(Traits.BLOCK_PHYSICAL);
-        if (trait != null) {
-            return trait.getValueFromBlockState(world.getBlockState(pos)).resistance;
-        } else {
-            return super.getExplosionResistance(world, pos, exploder, explosion);
-        }
+        return this.i_getExplosionResistance(world.getBlockState(pos));
     }
 
     @Override
-    public int getLightValue(IBlockState state) {
-        QuadrumTrait<Physical> trait = blockData.traits.get(Traits.BLOCK_PHYSICAL);
-        if (trait != null) {
-            return trait.getValueFromBlockState(state).light;
-        } else {
-            return getLightValue(state);
-        }
+    public int i_getLightValue(IBlockState state) {
+        return this.i_getLightValue(state);
     }
 
     // Variants
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        if (blockData.variants.length > 0) {
-            for (int i = 0; i < blockData.variants.length; i++) list.add(new ItemStack(this, 1, i));
-        } else {
-            super.getSubBlocks(itemIn, tab, list);
-        }
+        this.i_getSubBlocks(itemIn, list);
     }
 
     @Override
@@ -132,31 +147,17 @@ public class BlockQuadrum extends Block implements IQuadrumObject<BlockData> {
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        if (blockData.variants.length > 0)
-            return getDefaultState().withProperty(blockData.getVariantProperty(), blockData.variants[meta]);
-        else
-            return super.getStateFromMeta(meta);
+        return this.i_getStateFromMetadata(meta);
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        if (blockData.variants.length > 0) {
-            String variant = state.getValue(blockData.getVariantProperty());
-            for (int i = 0; i < blockData.variants.length; i++) {
-                if (variant.equals(blockData.variants[i]))
-                    return i;
-            }
-        }
-
-        return 0;
+        return this.i_getMetadataFromState(state);
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        if (HACK.variants.length > 0)
-            return new BlockStateContainer(this, HACK.getVariantProperty());
-        else
-            return new BlockStateContainer(this);
+        return this.i_getBlockStateContainer();
     }
 
     @Override

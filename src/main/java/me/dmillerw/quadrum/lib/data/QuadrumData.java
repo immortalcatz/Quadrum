@@ -13,6 +13,9 @@ public class QuadrumData {
     @SerializedName("creative_tab")
     public String creativeTab;
 
+    @SerializedName("max_stack_size")
+    public int maxStackSize = 64;
+
     public String[] variants = new String[0];
 
     public Traits traits = new Traits();
