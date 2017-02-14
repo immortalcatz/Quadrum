@@ -39,14 +39,10 @@ public class Physical extends Mergeable<Physical> {
     public Physical merge(Physical other) {
         Physical physical = new Physical();
 
-        if (other.isSet("material")) physical.material = other.material;
-        else physical.material = this.material;
-        if (other.isSet("hardness")) physical.hardness = other.hardness;
-        else physical.hardness = this.hardness;
-        if (other.isSet("resistance")) physical.resistance = other.resistance;
-        else physical.resistance = this.resistance;
-        if (other.isSet("light")) physical.light = other.light;
-        else physical.light = this.light;
+        physical.material = merge(other, "material", this.material, other.material);
+        physical.hardness = merge(other, "hardness", this.hardness, other.hardness);
+        physical.resistance = merge(other, "resistance", this.resistance, other.resistance);
+        physical.light = merge(other, "light", this.light, other.light);
 
         return physical;
     }

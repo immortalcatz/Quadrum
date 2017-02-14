@@ -28,10 +28,8 @@ public class BoundingBox extends Mergeable<BoundingBox> {
     public BoundingBox merge(BoundingBox other) {
         BoundingBox boundingBox = new BoundingBox();
 
-        if (other.isSet("selection")) boundingBox.selection = other.selection;
-        else boundingBox.selection = this.selection;
-        if (other.isSet("collision")) boundingBox.collision = other.collision;
-        else boundingBox.collision = this.collision;
+        boundingBox.selection = merge(other, "selection", this.selection, other.selection);
+        boundingBox.collision = merge(other, "collision", this.collision, other.collision);
 
         return boundingBox;
     }

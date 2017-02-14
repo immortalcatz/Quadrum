@@ -4,7 +4,7 @@ import com.google.common.collect.Maps;
 import me.dmillerw.quadrum.Quadrum;
 import me.dmillerw.quadrum.item.IQuadrumItem;
 import me.dmillerw.quadrum.item.ItemQuadrum;
-import me.dmillerw.quadrum.item.sub.ItemQuadrumFood;
+import me.dmillerw.quadrum.item.sub.ItemQuadrumConsumable;
 import me.dmillerw.quadrum.lib.ExtensionFilter;
 import me.dmillerw.quadrum.lib.ModInfo;
 import me.dmillerw.quadrum.lib.gson.GsonLib;
@@ -58,8 +58,8 @@ public class ItemLoader {
         for (ItemData data : dataMap.values()) {
             IQuadrumItem item;
 
-            if (data.traits.get(Traits.ITEM_EDIBLE) != null) {
-                item = new ItemQuadrumFood(data);
+            if (data.traits.get(Traits.ITEM_CONSUMABLE) != null) {
+                item = new ItemQuadrumConsumable(data);
             } else {
                 item = new ItemQuadrum(data);
             }

@@ -20,6 +20,8 @@ public class ItemBlockQuadrum extends ItemBlock {
     public ItemBlockQuadrum(Block block, boolean hasSubtypes) {
         super(block);
 
+        setMaxStackSize(((BlockQuadrum)block).getObject().maxStackSize);
+
         if (hasSubtypes) {
             this.setMaxDamage(0);
             this.setHasSubtypes(true);
