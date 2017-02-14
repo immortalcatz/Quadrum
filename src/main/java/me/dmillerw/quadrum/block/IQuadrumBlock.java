@@ -1,0 +1,149 @@
+package me.dmillerw.quadrum.block;
+
+import me.dmillerw.quadrum.block.data.BlockData;
+import me.dmillerw.quadrum.lib.IQuadrumObject;
+import me.dmillerw.quadrum.lib.ModCreativeTab;
+import me.dmillerw.quadrum.trait.QuadrumTrait;
+import me.dmillerw.quadrum.trait.Traits;
+import me.dmillerw.quadrum.trait.data.block.BoundingBox;
+import me.dmillerw.quadrum.trait.data.block.Physical;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+
+/**
+ * @author dmillerw
+ */
+public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
+
+    public default void construct() {
+        final Block block = (Block) this;
+        final BlockData blockData = getObject();
+
+        // Creative Tabs
+        for (CreativeTabs tab : CreativeTabs.CREATIVE_TAB_ARRAY) {
+            if (tab.getTabLabel().equalsIgnoreCase(blockData.creativeTab)) {
+                block.setCreativeTab(tab);
+                break;
+            }
+        }
+        if (block.getCreativeTabToDisplayOn() == null) block.setCreativeTab(ModCreativeTab.TAB);
+    }
+
+    /* VARIANTS */
+    public default IBlockState i_getDefaultState(Block block, IBlockState baseState) {
+        BlockData blockData = ((BlockQuadrum)block).getObject();
+        if (blockData.variants.length > 0) {
+            return baseState.withProperty(blockData.getVariantProperty(), blockData.variants[0]);
+        } else {
+            return baseState;
+        }
+    }
+
+    public default void i_getSubBlocks(Item item, NonNullList<ItemStack> list) {
+        BlockData blockData = getObject();
+        if (blockData.variants.length > 0) {
+            for (int i = 0; i < blockData.variants.length; i++)
+                list.add(new ItemStack(item, 1, i));
+        } else {
+            list.add(new ItemStack(item, 1, 0));
+        }
+    }
+
+    public default IBlockState i_getStateFromMetadata(int metadata) {
+        BlockData blockData = getObject();
+        IBlockState defaultState = ((Block)this).getDefaultState();
+
+        if (blockData.variants.length > 0) {
+            return defaultState.withProperty(blockData.getVariantProperty(), blockData.variants[metadata]);
+        } else {
+            return defaultState;
+        }
+    }
+
+    public default int i_getMetadataFromState(IBlockState state) {
+        BlockData blockData = getObject();
+
+        if (blockData.variants.length > 0) {
+            String variant = state.getValue(blockData.getVariantProperty());
+            for (int i = 0; i < blockData.variants.length; i++) {
+                if (variant.equals(blockData.variants[i]))
+                    return i;
+            }
+        }
+
+        return 0;
+    }
+
+    public default BlockStateContainer i_getBlockStateContainer() {
+        if (BlockQuadrum.HACK.variants.length > 0)
+            return new BlockStateContainer((Block)this, BlockQuadrum.HACK.getVariantProperty());
+        else
+            return new BlockStateContainer((Block)this);
+    }
+
+    /* TRAIT - BOUNDING BOX */
+    public default AxisAlignedBB i_getSelectionBoundingBox(IBlockState state) {
+        QuadrumTrait<BoundingBox> trait = getObject().traits.get(Traits.BLOCK_BOUNDING_BOX);
+        if (trait != null) {
+            return trait.getValueFromBlockState(state).getSelectionBoundingBox();
+        } else {
+            return Block.FULL_BLOCK_AABB;
+        }
+    }
+
+    public default AxisAlignedBB i_getCollisionBoundingBox(IBlockState state, IBlockAccess access, BlockPos pos) {
+        QuadrumTrait<BoundingBox> trait = getObject().traits.get(Traits.BLOCK_BOUNDING_BOX);
+        if (trait != null) {
+            return trait.getValueFromBlockState(state).getCollisionBoundingBox();
+        } else {
+            return state.getBoundingBox(access, pos);
+        }
+    }
+
+    /* TRAIT - PHYSICAL */
+    public default Material i_getMaterial(IBlockState state) {
+        QuadrumTrait<Physical> trait = getObject().traits.get(Traits.BLOCK_PHYSICAL);
+        if (trait != null) {
+            return trait.getValueFromBlockState(state).material;
+        } else {
+            return Material.ROCK;
+        }
+    }
+
+    public default float i_getHardness(IBlockState blockState) {
+        QuadrumTrait<Physical> trait = getObject().traits.get(Traits.BLOCK_PHYSICAL);
+        if (trait != null) {
+            return trait.getValueFromBlockState(blockState).hardness;
+        } else {
+            return 1F;
+        }
+    }
+
+    public default float i_getExplosionResistance(IBlockState blockState) {
+        QuadrumTrait<Physical> trait = getObject().traits.get(Traits.BLOCK_PHYSICAL);
+        if (trait != null) {
+            return trait.getValueFromBlockState(blockState).resistance;
+        } else {
+            return 1F;
+        }
+    }
+
+    public default int i_getLightValue(IBlockState state) {
+        QuadrumTrait<Physical> trait = getObject().traits.get(Traits.BLOCK_PHYSICAL);
+        if (trait != null) {
+            return trait.getValueFromBlockState(state).light;
+        } else {
+            return 0;
+        }
+    }
+
+}
