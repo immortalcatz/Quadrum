@@ -93,6 +93,12 @@ public class ItemQuadrumConsumable extends ItemFood implements IQuadrumItem {
     }
 
     /* I_QUADRUM_ITEM */
+
+    @Override
+    public boolean hasEffect(ItemStack stack) {
+        return this.isEnchanted(stack);
+    }
+
     @Override
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
         this.addLoreToTooltip(stack, tooltip);

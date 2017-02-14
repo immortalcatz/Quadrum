@@ -6,6 +6,7 @@ import com.google.gson.*;
 import me.dmillerw.quadrum.trait.data.block.BoundingBox;
 import me.dmillerw.quadrum.trait.data.block.Physical;
 import me.dmillerw.quadrum.trait.data.item.Consumable;
+import me.dmillerw.quadrum.trait.data.item.Visual;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -22,6 +23,7 @@ public class Traits {
     public static final String ORE_DICTIONARY = "ore_dictionary";
 
     public static final String ITEM_CONSUMABLE = "consumable";
+    public static final String ITEM_VISUAL = "visual";
 
     public static final String BLOCK_BOUNDING_BOX = "bounding_box";
     public static final String BLOCK_PHYSICAL = "physical";
@@ -32,6 +34,7 @@ public class Traits {
         TYPES.put(Traits.ORE_DICTIONARY, new TypeToken<List<String>>() {});
 
         TYPES.put(Traits.ITEM_CONSUMABLE, new TypeToken<Consumable>() {});
+        TYPES.put(Traits.ITEM_VISUAL, new TypeToken<Visual>() {});
 
         TYPES.put(Traits.BLOCK_BOUNDING_BOX, new TypeToken<BoundingBox>() {});
         TYPES.put(Traits.BLOCK_PHYSICAL, new TypeToken<Physical>() {});
