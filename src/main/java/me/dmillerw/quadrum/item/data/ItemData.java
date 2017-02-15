@@ -1,6 +1,6 @@
 package me.dmillerw.quadrum.item.data;
 
-import me.dmillerw.quadrum.lib.data.QuadrumData;
+import me.dmillerw.quadrum.trait.QuadrumData;
 
 /**
  * @author dmillerw

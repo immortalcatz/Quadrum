@@ -1,7 +1,7 @@
 package me.dmillerw.quadrum.block.data;
 
 import me.dmillerw.quadrum.block.data.property.PropertyVariant;
-import me.dmillerw.quadrum.lib.data.QuadrumData;
+import me.dmillerw.quadrum.trait.QuadrumData;
 
 /**
  * @author dmillerw

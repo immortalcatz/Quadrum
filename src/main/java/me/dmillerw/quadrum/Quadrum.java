@@ -1,5 +1,6 @@
 package me.dmillerw.quadrum;
 
+import me.dmillerw.quadrum.command.CommandQuadrumDump;
 import me.dmillerw.quadrum.lib.ModInfo;
 import me.dmillerw.quadrum.proxy.IProxy;
 import net.minecraftforge.fml.common.Loader;
@@ -7,6 +8,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 import java.io.File;
 
@@ -42,5 +44,10 @@ public class Quadrum {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         PROXY.postInit(event);
+    }
+
+    @Mod.EventHandler
+    public void serverStarting(FMLServerStartingEvent event) {
+        event.registerServerCommand(new CommandQuadrumDump());
     }
 }

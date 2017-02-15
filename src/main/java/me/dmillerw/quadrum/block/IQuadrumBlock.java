@@ -154,12 +154,12 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
             Particle[] particles = trait.getValueFromBlockState(state);
 
             for (Particle p : particles) {
-                double x = pos.getX() + p.position[0].doubleValue();
-                double y = pos.getY() + p.position[1].doubleValue();
-                double z = pos.getZ() + p.position[2].doubleValue();
-                double sx = p.speed[0].doubleValue();
-                double sy = p.speed[1].doubleValue();
-                double sz = p.speed[2].doubleValue();
+                double x = pos.getX() + p.position.x.doubleValue();
+                double y = pos.getY() + p.position.y.doubleValue();
+                double z = pos.getZ() + p.position.z.doubleValue();
+                double sx = p.speed.x.doubleValue();
+                double sy = p.speed.y.doubleValue();
+                double sz = p.speed.z.doubleValue();
 
                 world.spawnParticle(p.type, x, y, z, sx, sy, sz);
             }
