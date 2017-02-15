@@ -14,6 +14,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
@@ -110,12 +112,12 @@ public class BlockQuadrum extends Block implements IQuadrumBlock {
 
     @Nullable
     @Override
-    public AxisAlignedBB i_getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
         return this.i_getCollisionBoundingBox(blockState, worldIn, pos);
     }
 
     @Override
-    public Material i_getMaterial(IBlockState state) {
+    public Material getMaterial(IBlockState state) {
         return this.i_getMaterial(state);
     }
 
@@ -130,8 +132,43 @@ public class BlockQuadrum extends Block implements IQuadrumBlock {
     }
 
     @Override
-    public int i_getLightValue(IBlockState state) {
+    public int getLightValue(IBlockState state) {
         return this.i_getLightValue(state);
+    }
+
+    @Override
+    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
+        this.i_onRandomDisplayTick(state, world, pos);
+    }
+
+    @Override
+    public boolean canProvidePower(IBlockState state) {
+        return this.i_canProvidePower(state);
+    }
+
+    @Override
+    public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+        return this.i_getWeakPower(blockState, side);
+    }
+
+    @Override
+    public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+        return this.i_getStrongPower(blockState, side);
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return super.isFullCube(state);
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return super.isOpaqueCube(state);
+    }
+
+    @Override
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+        return this.i_canRenderInLayer(state, layer);
     }
 
     // Variants

@@ -5,13 +5,13 @@ import me.dmillerw.quadrum.trait.Mergeable;
 /**
  * @author dmillerw
  */
-public class Visual extends Mergeable<Visual> {
+public class ItemVisual extends Mergeable<ItemVisual> {
 
     public boolean enchanted = false;
 
     @Override
-    public Visual merge(Visual other) {
-        Visual visual = new Visual();
+    public ItemVisual merge(ItemVisual other) {
+        ItemVisual visual = new ItemVisual();
 
         visual.enchanted = merge(other, "enchanted", this.enchanted, other.enchanted);
 

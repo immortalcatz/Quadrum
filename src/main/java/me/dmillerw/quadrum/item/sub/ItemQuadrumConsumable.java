@@ -64,9 +64,8 @@ public class ItemQuadrumConsumable extends ItemFood implements IQuadrumItem {
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
         Consumable consumable = this.consumable.getValueFromItemStack(stack);
 
-        if (entityLiving instanceof EntityPlayer && !((EntityPlayer) entityLiving).capabilities.isCreativeMode) {
+        if (entityLiving instanceof EntityPlayer && !((EntityPlayer) entityLiving).capabilities.isCreativeMode)
             --stack.stackSize;
-        }
 
         if (entityLiving instanceof EntityPlayer && consumable.stats != null) {
             EntityPlayer entityplayer = (EntityPlayer) entityLiving;

@@ -6,7 +6,9 @@ import me.dmillerw.quadrum.lib.gson.adapter.PostProcessableFactory;
 import me.dmillerw.quadrum.lib.gson.deserializer.AABBDeserializer;
 import me.dmillerw.quadrum.lib.gson.deserializer.ItemStackDeserializer;
 import me.dmillerw.quadrum.lib.gson.deserializer.MaterialDeserializer;
+import me.dmillerw.quadrum.lib.gson.deserializer.RandomNumberDeserializer;
 import me.dmillerw.quadrum.trait.Traits;
+import me.dmillerw.quadrum.trait.data.util.RandomNumber;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -28,6 +30,7 @@ public class GsonLib {
             builder.registerTypeAdapter(AxisAlignedBB.class, new AABBDeserializer());
             builder.registerTypeAdapter(Material.class, new MaterialDeserializer());
             builder.registerTypeAdapter(ItemStack.class, new ItemStackDeserializer());
+            builder.registerTypeAdapter(RandomNumber.class, new RandomNumberDeserializer());
 
             gson = builder.create();
         }

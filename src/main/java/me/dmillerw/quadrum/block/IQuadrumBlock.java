@@ -5,8 +5,7 @@ import me.dmillerw.quadrum.lib.IQuadrumObject;
 import me.dmillerw.quadrum.lib.ModCreativeTab;
 import me.dmillerw.quadrum.trait.QuadrumTrait;
 import me.dmillerw.quadrum.trait.Traits;
-import me.dmillerw.quadrum.trait.data.block.BoundingBox;
-import me.dmillerw.quadrum.trait.data.block.Physical;
+import me.dmillerw.quadrum.trait.data.block.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -14,9 +13,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 import java.util.List;
 
@@ -147,4 +149,80 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
         }
     }
 
+    public default void i_onRandomDisplayTick(IBlockState state, World world, BlockPos pos) {
+        QuadrumTrait<Particle[]> trait = getObject().traits.get(Traits.BLOCK_PARTICLE);
+        if (trait != null) {
+            Particle[] particles = trait.getValueFromBlockState(state);
+
+            for (Particle p : particles) {
+                double x = pos.getX() + p.position.x.doubleValue();
+                double y = pos.getY() + p.position.y.doubleValue();
+                double z = pos.getZ() + p.position.z.doubleValue();
+                double sx = p.speed.x.doubleValue();
+                double sy = p.speed.y.doubleValue();
+                double sz = p.speed.z.doubleValue();
+
+                world.spawnParticle(p.type, x, y, z, sx, sy, sz);
+            }
+        }
+    }
+
+    public default boolean i_canProvidePower(IBlockState state) {
+        QuadrumTrait<Redstone> trait = getObject().traits.get(Traits.BLOCK_REDSTONE);
+        if (trait != null) {
+            return trait.getValueFromBlockState(state) != null;
+        } else {
+            return false;
+        }
+    }
+
+    public default int i_getWeakPower(IBlockState state, EnumFacing facing) {
+        QuadrumTrait<Redstone> trait = getObject().traits.get(Traits.BLOCK_REDSTONE);
+        if (trait != null) {
+            Redstone redstone = trait.getValueFromBlockState(state);
+            if (redstone.sides.contains(facing.getOpposite()))
+                return redstone.weakPower;
+        }
+
+        return 0;
+    }
+
+    public default int i_getStrongPower(IBlockState state, EnumFacing facing) {
+        QuadrumTrait<Redstone> trait = getObject().traits.get(Traits.BLOCK_REDSTONE);
+        if (trait != null) {
+            Redstone redstone = trait.getValueFromBlockState(state);
+            if (redstone.sides.contains(facing.getOpposite()))
+                return redstone.strongPower;
+        }
+
+        return 0;
+    }
+
+    public default boolean i_isFullCube(IBlockState state) {
+        QuadrumTrait<BlockVisual> trait = getObject().traits.get(Traits.BLOCK_VISUAL);
+        if (trait != null) {
+            return !trait.getValueFromBlockState(state).fullCube;
+        } else {
+            return state.getMaterial().isOpaque() && state.isFullCube();
+        }
+    }
+
+    public default boolean i_isOpaqueCube(IBlockState state) {
+        QuadrumTrait<BlockVisual> trait = getObject().traits.get(Traits.BLOCK_VISUAL);
+        if (trait != null) {
+            return !trait.getValueFromBlockState(state).transparent;
+        } else {
+            return true;
+        }
+    }
+
+    public default boolean i_canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+        QuadrumTrait<BlockVisual> trait = getObject().traits.get(Traits.BLOCK_VISUAL);
+        if (trait != null) {
+            BlockVisual visual = trait.getValueFromBlockState(state);
+            return visual.transparent ? layer == BlockRenderLayer.TRANSLUCENT : layer == BlockRenderLayer.SOLID;
+        } else {
+            return layer == BlockRenderLayer.SOLID;
+        }
+    }
 }
