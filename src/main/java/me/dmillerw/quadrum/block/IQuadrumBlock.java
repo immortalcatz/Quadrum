@@ -218,7 +218,8 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
     public default boolean i_canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
         QuadrumTrait<BlockVisual> trait = getObject().traits.get(Traits.BLOCK_VISUAL);
         if (trait != null) {
-            return layer == trait.getValueFromBlockState(state).renderType;
+            BlockVisual visual = trait.getValueFromBlockState(state);
+            return visual.transparent ? layer == BlockRenderLayer.TRANSLUCENT : layer == BlockRenderLayer.SOLID;
         } else {
             return layer == BlockRenderLayer.SOLID;
         }
