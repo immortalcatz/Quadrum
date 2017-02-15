@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
 import me.dmillerw.quadrum.trait.data.block.BoundingBox;
+import me.dmillerw.quadrum.trait.data.block.Particle;
 import me.dmillerw.quadrum.trait.data.block.Physical;
 import me.dmillerw.quadrum.trait.data.item.Consumable;
 import me.dmillerw.quadrum.trait.data.item.Visual;
@@ -27,6 +28,7 @@ public class Traits {
 
     public static final String BLOCK_BOUNDING_BOX = "bounding_box";
     public static final String BLOCK_PHYSICAL = "physical";
+    public static final String BLOCK_PARTICLE = "particle";
 
     private static final Map<String, TypeToken<?>> TYPES = Maps.newHashMap();
     static {
@@ -38,6 +40,7 @@ public class Traits {
 
         TYPES.put(Traits.BLOCK_BOUNDING_BOX, new TypeToken<BoundingBox>() {});
         TYPES.put(Traits.BLOCK_PHYSICAL, new TypeToken<Physical>() {});
+        TYPES.put(Traits.BLOCK_PARTICLE, new TypeToken<Particle[]>() {});
     }
 
     protected Map<String, QuadrumTrait<?>> backingMap = Maps.newHashMap();

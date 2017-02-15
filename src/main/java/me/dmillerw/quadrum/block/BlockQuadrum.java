@@ -110,12 +110,12 @@ public class BlockQuadrum extends Block implements IQuadrumBlock {
 
     @Nullable
     @Override
-    public AxisAlignedBB i_getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
         return this.i_getCollisionBoundingBox(blockState, worldIn, pos);
     }
 
     @Override
-    public Material i_getMaterial(IBlockState state) {
+    public Material getMaterial(IBlockState state) {
         return this.i_getMaterial(state);
     }
 
@@ -130,8 +130,13 @@ public class BlockQuadrum extends Block implements IQuadrumBlock {
     }
 
     @Override
-    public int i_getLightValue(IBlockState state) {
+    public int getLightValue(IBlockState state) {
         return this.i_getLightValue(state);
+    }
+
+    @Override
+    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
+        this.i_onRandomDisplayTick(state, world, pos);
     }
 
     // Variants

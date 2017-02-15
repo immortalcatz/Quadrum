@@ -6,6 +6,7 @@ import me.dmillerw.quadrum.lib.ModCreativeTab;
 import me.dmillerw.quadrum.trait.QuadrumTrait;
 import me.dmillerw.quadrum.trait.Traits;
 import me.dmillerw.quadrum.trait.data.block.BoundingBox;
+import me.dmillerw.quadrum.trait.data.block.Particle;
 import me.dmillerw.quadrum.trait.data.block.Physical;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -18,6 +19,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 /**
  * @author dmillerw
@@ -146,4 +148,21 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
         }
     }
 
+    public default void i_onRandomDisplayTick(IBlockState state, World world, BlockPos pos) {
+        QuadrumTrait<Particle[]> trait = getObject().traits.get(Traits.BLOCK_PARTICLE);
+        if (trait != null) {
+            Particle[] particles = trait.getValueFromBlockState(state);
+
+            for (Particle p : particles) {
+                double x = pos.getX() + p.position[0].doubleValue();
+                double y = pos.getY() + p.position[1].doubleValue();
+                double z = pos.getZ() + p.position[2].doubleValue();
+                double sx = p.speed[0].doubleValue();
+                double sy = p.speed[1].doubleValue();
+                double sz = p.speed[2].doubleValue();
+
+                world.spawnParticle(p.type, x, y, z, sx, sy, sz);
+            }
+        }
+    }
 }
