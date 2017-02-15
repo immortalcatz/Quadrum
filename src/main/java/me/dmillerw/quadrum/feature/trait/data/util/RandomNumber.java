@@ -1,4 +1,4 @@
-package me.dmillerw.quadrum.trait.data.util;
+package me.dmillerw.quadrum.feature.trait.data.util;
 
 import java.util.concurrent.ThreadLocalRandom;
 

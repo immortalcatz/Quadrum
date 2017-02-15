@@ -1,14 +1,15 @@
-package me.dmillerw.quadrum.item.data;
+package me.dmillerw.quadrum.feature.data.loader;
 
 import com.google.common.collect.Maps;
 import me.dmillerw.quadrum.Quadrum;
 import me.dmillerw.quadrum.item.IQuadrumItem;
 import me.dmillerw.quadrum.item.ItemQuadrum;
+import me.dmillerw.quadrum.item.data.ItemData;
 import me.dmillerw.quadrum.item.sub.ItemQuadrumConsumable;
 import me.dmillerw.quadrum.lib.ExtensionFilter;
 import me.dmillerw.quadrum.lib.ModInfo;
 import me.dmillerw.quadrum.lib.gson.GsonLib;
-import me.dmillerw.quadrum.trait.Traits;
+import me.dmillerw.quadrum.feature.trait.Traits;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;

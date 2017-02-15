@@ -1,8 +1,9 @@
-package me.dmillerw.quadrum.block.data;
+package me.dmillerw.quadrum.feature.data.loader;
 
 import com.google.common.collect.Maps;
 import me.dmillerw.quadrum.Quadrum;
 import me.dmillerw.quadrum.block.BlockQuadrum;
+import me.dmillerw.quadrum.feature.data.BlockData;
 import me.dmillerw.quadrum.block.item.ItemBlockQuadrum;
 import me.dmillerw.quadrum.lib.ExtensionFilter;
 import me.dmillerw.quadrum.lib.ModInfo;

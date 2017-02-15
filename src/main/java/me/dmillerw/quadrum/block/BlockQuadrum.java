@@ -1,9 +1,9 @@
 package me.dmillerw.quadrum.block;
 
-import me.dmillerw.quadrum.block.data.BlockData;
-import me.dmillerw.quadrum.trait.QuadrumTrait;
-import me.dmillerw.quadrum.trait.Traits;
-import me.dmillerw.quadrum.trait.data.block.Physical;
+import me.dmillerw.quadrum.feature.data.BlockData;
+import me.dmillerw.quadrum.feature.trait.QuadrumTrait;
+import me.dmillerw.quadrum.feature.trait.Traits;
+import me.dmillerw.quadrum.feature.trait.data.block.Physical;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;

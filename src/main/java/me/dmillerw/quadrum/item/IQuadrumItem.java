@@ -2,12 +2,12 @@ package me.dmillerw.quadrum.item;
 
 import com.google.common.collect.Lists;
 import me.dmillerw.quadrum.item.data.ItemData;
-import me.dmillerw.quadrum.lib.IQuadrumObject;
+import me.dmillerw.quadrum.feature.data.IQuadrumObject;
 import me.dmillerw.quadrum.lib.ModCreativeTab;
 import me.dmillerw.quadrum.lib.ModInfo;
-import me.dmillerw.quadrum.trait.QuadrumTrait;
-import me.dmillerw.quadrum.trait.Traits;
-import me.dmillerw.quadrum.trait.data.item.ItemVisual;
+import me.dmillerw.quadrum.feature.trait.QuadrumTrait;
+import me.dmillerw.quadrum.feature.trait.Traits;
+import me.dmillerw.quadrum.feature.trait.data.item.ItemVisual;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;

@@ -1,4 +1,4 @@
-package me.dmillerw.quadrum.lib;
+package me.dmillerw.quadrum.feature.data;
 
 /**
  * @author dmillerw

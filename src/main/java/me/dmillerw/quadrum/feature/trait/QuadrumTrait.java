@@ -1,11 +1,12 @@
-package me.dmillerw.quadrum.trait;
+package me.dmillerw.quadrum.feature.trait;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import me.dmillerw.quadrum.block.BlockQuadrum;
-import me.dmillerw.quadrum.block.data.BlockData;
+import me.dmillerw.quadrum.feature.data.BlockData;
 import me.dmillerw.quadrum.item.IQuadrumItem;
 import me.dmillerw.quadrum.item.data.ItemData;
+import me.dmillerw.quadrum.feature.trait.util.Mergeable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;

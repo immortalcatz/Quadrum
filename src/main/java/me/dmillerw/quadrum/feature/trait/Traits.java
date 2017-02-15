@@ -1,11 +1,11 @@
-package me.dmillerw.quadrum.trait;
+package me.dmillerw.quadrum.feature.trait;
 
 import com.google.common.collect.Maps;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
-import me.dmillerw.quadrum.trait.data.block.*;
-import me.dmillerw.quadrum.trait.data.item.Consumable;
-import me.dmillerw.quadrum.trait.data.item.ItemVisual;
+import me.dmillerw.quadrum.feature.trait.data.block.*;
+import me.dmillerw.quadrum.feature.trait.data.item.Consumable;
+import me.dmillerw.quadrum.feature.trait.data.item.ItemVisual;
 
 import java.lang.reflect.Type;
 import java.util.List;

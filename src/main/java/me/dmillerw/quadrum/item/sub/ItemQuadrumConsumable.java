@@ -2,9 +2,9 @@ package me.dmillerw.quadrum.item.sub;
 
 import me.dmillerw.quadrum.item.IQuadrumItem;
 import me.dmillerw.quadrum.item.data.ItemData;
-import me.dmillerw.quadrum.trait.QuadrumTrait;
-import me.dmillerw.quadrum.trait.Traits;
-import me.dmillerw.quadrum.trait.data.item.Consumable;
+import me.dmillerw.quadrum.feature.trait.QuadrumTrait;
+import me.dmillerw.quadrum.feature.trait.Traits;
+import me.dmillerw.quadrum.feature.trait.data.item.Consumable;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

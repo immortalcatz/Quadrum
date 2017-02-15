@@ -1,7 +1,7 @@
 package me.dmillerw.quadrum.lib.gson.deserializer;
 
 import com.google.gson.*;
-import me.dmillerw.quadrum.trait.data.util.RandomNumber;
+import me.dmillerw.quadrum.feature.trait.data.util.RandomNumber;
 
 import java.lang.reflect.Type;
 
