@@ -14,6 +14,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -137,6 +139,36 @@ public class BlockQuadrum extends Block implements IQuadrumBlock {
     @Override
     public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
         this.i_onRandomDisplayTick(state, world, pos);
+    }
+
+    @Override
+    public boolean canProvidePower(IBlockState state) {
+        return this.i_canProvidePower(state);
+    }
+
+    @Override
+    public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+        return this.i_getWeakPower(blockState, side);
+    }
+
+    @Override
+    public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+        return this.i_getStrongPower(blockState, side);
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return super.isFullCube(state);
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return super.isOpaqueCube(state);
+    }
+
+    @Override
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+        return this.i_canRenderInLayer(state, layer);
     }
 
     // Variants

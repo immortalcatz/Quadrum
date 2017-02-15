@@ -3,11 +3,9 @@ package me.dmillerw.quadrum.trait;
 import com.google.common.collect.Maps;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
-import me.dmillerw.quadrum.trait.data.block.BoundingBox;
-import me.dmillerw.quadrum.trait.data.block.Particle;
-import me.dmillerw.quadrum.trait.data.block.Physical;
+import me.dmillerw.quadrum.trait.data.block.*;
 import me.dmillerw.quadrum.trait.data.item.Consumable;
-import me.dmillerw.quadrum.trait.data.item.Visual;
+import me.dmillerw.quadrum.trait.data.item.ItemVisual;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -29,6 +27,8 @@ public class Traits {
     public static final String BLOCK_BOUNDING_BOX = "bounding_box";
     public static final String BLOCK_PHYSICAL = "physical";
     public static final String BLOCK_PARTICLE = "particle";
+    public static final String BLOCK_REDSTONE = "redstone";
+    public static final String BLOCK_VISUAL = "visual";
 
     private static final Map<String, TypeToken<?>> TYPES = Maps.newHashMap();
     static {
@@ -36,11 +36,13 @@ public class Traits {
         TYPES.put(Traits.ORE_DICTIONARY, new TypeToken<List<String>>() {});
 
         TYPES.put(Traits.ITEM_CONSUMABLE, new TypeToken<Consumable>() {});
-        TYPES.put(Traits.ITEM_VISUAL, new TypeToken<Visual>() {});
+        TYPES.put(Traits.ITEM_VISUAL, new TypeToken<ItemVisual>() {});
 
         TYPES.put(Traits.BLOCK_BOUNDING_BOX, new TypeToken<BoundingBox>() {});
         TYPES.put(Traits.BLOCK_PHYSICAL, new TypeToken<Physical>() {});
         TYPES.put(Traits.BLOCK_PARTICLE, new TypeToken<Particle[]>() {});
+        TYPES.put(Traits.BLOCK_REDSTONE, new TypeToken<Redstone>() {});
+        TYPES.put(Traits.BLOCK_VISUAL, new TypeToken<BlockVisual>() {});
     }
 
     protected Map<String, QuadrumTrait<?>> backingMap = Maps.newHashMap();
