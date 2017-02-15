@@ -1,6 +1,6 @@
 package me.dmillerw.quadrum.item;
 
-import me.dmillerw.quadrum.item.data.ItemData;
+import me.dmillerw.quadrum.feature.data.ItemData;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;

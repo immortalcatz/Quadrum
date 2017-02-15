@@ -1,4 +1,4 @@
-package me.dmillerw.quadrum.trait;
+package me.dmillerw.quadrum.feature.trait.util;
 
 /**
  * @author dmillerw

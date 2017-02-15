@@ -1,7 +1,7 @@
-package me.dmillerw.quadrum.trait.data.block;
+package me.dmillerw.quadrum.feature.trait.data.block;
 
 import com.google.common.collect.Maps;
-import me.dmillerw.quadrum.trait.Mergeable;
+import me.dmillerw.quadrum.feature.trait.util.Mergeable;
 import net.minecraft.block.material.Material;
 
 import java.util.Map;

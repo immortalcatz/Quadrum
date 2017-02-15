@@ -1,6 +1,7 @@
-package me.dmillerw.quadrum.trait;
+package me.dmillerw.quadrum.feature.data;
 
 import com.google.gson.annotations.SerializedName;
+import me.dmillerw.quadrum.feature.trait.Traits;
 
 /**
  * @author dmillerw

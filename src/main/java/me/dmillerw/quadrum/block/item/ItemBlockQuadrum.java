@@ -1,8 +1,8 @@
 package me.dmillerw.quadrum.block.item;
 
 import me.dmillerw.quadrum.block.BlockQuadrum;
-import me.dmillerw.quadrum.trait.QuadrumTrait;
-import me.dmillerw.quadrum.trait.Traits;
+import me.dmillerw.quadrum.feature.trait.QuadrumTrait;
+import me.dmillerw.quadrum.feature.trait.Traits;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
