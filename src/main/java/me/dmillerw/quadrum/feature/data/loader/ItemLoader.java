@@ -37,12 +37,17 @@ public class ItemLoader {
 
         for (File file : dir.listFiles(ExtensionFilter.JSON)) {
             ItemData data;
+
+            TraitLoader.setCurrentlyLoading(new TraitLoader.State(file.getName(), TraitLoader.Type.ITEM));
+
             try {
                 data = GsonLib.gson().fromJson(new FileReader(file), ItemData.class);
             } catch (IOException ex) {
                 ex.printStackTrace();
                 data = null;
             }
+
+            TraitLoader.setCurrentlyLoading(null);
 
             if (data == null) continue;
 
