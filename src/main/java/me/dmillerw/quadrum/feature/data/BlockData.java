@@ -1,6 +1,6 @@
 package me.dmillerw.quadrum.feature.data;
 
-import me.dmillerw.quadrum.block.data.property.PropertyVariant;
+import me.dmillerw.quadrum.block.property.PropertyVariant;
 
 /**
  * @author dmillerw
