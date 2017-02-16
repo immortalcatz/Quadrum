@@ -33,8 +33,6 @@ minecraft {
     mappings = "snapshot_20161111"
     useDepAts = true
 
-    println(version)
-
     replaceIn config.mod_info_path
     replace "%MOD_VERSION%", config.mod_version
     replace "%FORGE_VERSION%", config.forge_version
