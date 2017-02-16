@@ -38,7 +38,7 @@ minecraft {
     replace "%FORGE_VERSION%", config.forge_version
 }
 
-version = "${config.mod_version}.B${System.getenv("BUILD_NUMBER") ?: ""} - MC${config.minecraft_version}"
+version = "${config.mod_version}-MC${config.minecraft_version}"
 
 dependencies {
 
