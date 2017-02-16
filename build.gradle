@@ -22,8 +22,6 @@ version = config.mod_version
 group= config.mod_base_package // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = config.mod_name
 
-println(version)
-
 sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
 compileJava {
     sourceCompatibility = targetCompatibility = "1.8"
@@ -34,6 +32,8 @@ minecraft {
     version = config.minecraft_version + "-" + config.forge_version
     mappings = "snapshot_20161111"
     useDepAts = true
+
+    println(version)
 
     replaceIn config.mod_info_path
     replace "%MOD_VERSION%", config.mod_version
