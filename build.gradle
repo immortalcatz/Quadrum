@@ -8,15 +8,19 @@ buildscript {
     }
 }
 
-plugins {
-    id "de.undercouch.download" version "3.1.2"
-}
-
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "0.6.0"
-group= "me.dmillerw.quadrum" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "Quadrum"
+ext.configFile = file "build.properties"
+
+configFile.withReader {
+    def prop = new Properties()
+    prop.load(it)
+    project.ext.config = new ConfigSlurper().parse prop
+}
+
+version = config.mod_version
+group= config.mod_base_package // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = config.mod_name
 
 sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
 compileJava {
@@ -24,11 +28,17 @@ compileJava {
 }
 
 minecraft {
-    version = "1.10.2-12.18.3.2221"
     runDir = "run"
+    version = config.minecraft_version + "-" + config.forge_version
     mappings = "snapshot_20161111"
     useDepAts = true
+
+    replaceIn config.mod_info_path
+    replace "%MOD_VERSION%", config.mod_version
+    replace "%FORGE_VERSION%", config.forge_version
 }
+
+version = "${config.mod_version}.B${System.getenv("BUILD_NUMBER") ?: ""} - MC${config.minecraft_version}"
 
 dependencies {
 
