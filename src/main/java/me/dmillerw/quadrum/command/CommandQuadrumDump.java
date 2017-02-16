@@ -27,6 +27,7 @@ public class CommandQuadrumDump implements ICommand {
     }
 
     private static final Map<String, DataDumper> DATA_DUMPERS = Maps.newHashMap();
+
     static {
         DATA_DUMPERS.put("particle", () -> {
             List<String> list = Lists.newArrayList();
@@ -40,7 +41,7 @@ public class CommandQuadrumDump implements ICommand {
 
     @Override
     public String getCommandName() {
-        return "quadrum-dump";
+        return "quadrum_dump";
     }
 
     @Override
@@ -71,7 +72,7 @@ public class CommandQuadrumDump implements ICommand {
 
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-        return false;
+        return true;
     }
 
     @Override
@@ -88,4 +89,6 @@ public class CommandQuadrumDump implements ICommand {
     public int compareTo(ICommand o) {
         return 0;
     }
+
+
 }

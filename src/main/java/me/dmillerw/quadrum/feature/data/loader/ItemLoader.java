@@ -2,14 +2,14 @@ package me.dmillerw.quadrum.feature.data.loader;
 
 import com.google.common.collect.Maps;
 import me.dmillerw.quadrum.Quadrum;
-import me.dmillerw.quadrum.feature.data.ItemData;
-import me.dmillerw.quadrum.feature.trait.Traits;
 import me.dmillerw.quadrum.item.IQuadrumItem;
 import me.dmillerw.quadrum.item.ItemQuadrum;
+import me.dmillerw.quadrum.feature.data.ItemData;
 import me.dmillerw.quadrum.item.sub.ItemQuadrumConsumable;
 import me.dmillerw.quadrum.lib.ExtensionFilter;
 import me.dmillerw.quadrum.lib.ModInfo;
 import me.dmillerw.quadrum.lib.gson.GsonLib;
+import me.dmillerw.quadrum.feature.trait.Traits;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -37,12 +37,17 @@ public class ItemLoader {
 
         for (File file : dir.listFiles(ExtensionFilter.JSON)) {
             ItemData data;
+
+            TraitLoader.setCurrentlyLoading(new TraitLoader.State(file.getName(), TraitLoader.Type.ITEM));
+
             try {
                 data = GsonLib.gson().fromJson(new FileReader(file), ItemData.class);
             } catch (IOException ex) {
                 ex.printStackTrace();
                 data = null;
             }
+
+            TraitLoader.setCurrentlyLoading(null);
 
             if (data == null) continue;
 

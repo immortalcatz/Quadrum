@@ -46,12 +46,17 @@ public class BlockLoader {
 
         for (File file : dir.listFiles(ExtensionFilter.JSON)) {
             BlockData data;
+
+            TraitLoader.setCurrentlyLoading(new TraitLoader.State(file.getName(), TraitLoader.Type.BLOCK));
+
             try {
                 data = GsonLib.gson().fromJson(new FileReader(file), BlockData.class);
             } catch (IOException ex) {
                 ex.printStackTrace();
                 data = null;
             }
+
+            TraitLoader.setCurrentlyLoading(null);
 
             if (data == null) continue;
 

@@ -2,12 +2,12 @@ package me.dmillerw.quadrum.proxy;
 
 import me.dmillerw.quadrum.block.BlockQuadrum;
 import me.dmillerw.quadrum.feature.data.BlockData;
-import me.dmillerw.quadrum.feature.data.ItemData;
 import me.dmillerw.quadrum.feature.data.loader.BlockLoader;
+import me.dmillerw.quadrum.item.IQuadrumItem;
+import me.dmillerw.quadrum.feature.data.ItemData;
 import me.dmillerw.quadrum.feature.data.loader.ItemLoader;
 import me.dmillerw.quadrum.feature.trait.QuadrumTrait;
 import me.dmillerw.quadrum.feature.trait.Traits;
-import me.dmillerw.quadrum.item.IQuadrumItem;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
