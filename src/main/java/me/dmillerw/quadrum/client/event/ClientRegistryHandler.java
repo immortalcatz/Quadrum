@@ -2,7 +2,7 @@ package me.dmillerw.quadrum.client.event;
 
 import me.dmillerw.quadrum.block.BlockQuadrum;
 import me.dmillerw.quadrum.feature.data.BlockData;
-import me.dmillerw.quadrum.feature.data.loader.BlockLoader;
+import me.dmillerw.quadrum.feature.loader.BlockLoader;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.client.event.ModelRegistryEvent;

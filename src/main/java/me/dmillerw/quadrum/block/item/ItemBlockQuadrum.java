@@ -30,7 +30,7 @@ public class ItemBlockQuadrum extends ItemBlock {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-        QuadrumTrait<List<String>> trait = ((BlockQuadrum)block).getObject().traits.get(Traits.LORE);
+        QuadrumTrait<List<String>> trait = ((BlockQuadrum)block).getObject().traits.get(Traits.COMMON_LORE);
         if (trait != null) {
             tooltip.addAll(trait.getValueFromItemStack(stack));
         }

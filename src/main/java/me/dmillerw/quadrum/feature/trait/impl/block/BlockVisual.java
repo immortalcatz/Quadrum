@@ -1,4 +1,4 @@
-package me.dmillerw.quadrum.feature.trait.data.block;
+package me.dmillerw.quadrum.feature.trait.impl.block;
 
 import com.google.gson.annotations.SerializedName;
 import me.dmillerw.quadrum.feature.trait.util.Mergeable;

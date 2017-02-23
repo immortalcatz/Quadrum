@@ -4,7 +4,7 @@ import me.dmillerw.quadrum.item.IQuadrumItem;
 import me.dmillerw.quadrum.feature.data.ItemData;
 import me.dmillerw.quadrum.feature.trait.QuadrumTrait;
 import me.dmillerw.quadrum.feature.trait.Traits;
-import me.dmillerw.quadrum.feature.trait.data.item.Consumable;
+import me.dmillerw.quadrum.feature.trait.impl.item.Consumable;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +28,7 @@ public class ItemQuadrumConsumable extends ItemFood implements IQuadrumItem {
     private final QuadrumTrait<Consumable> consumable;
 
     public ItemQuadrumConsumable(ItemData itemData) {
-        // Send dummy data to the constructor, everything is handled via stack-sensitive getters
+        // Send dummy impl to the constructor, everything is handled via stack-sensitive getters
         super(0, 0, false);
 
         this.itemData = itemData;

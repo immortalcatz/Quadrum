@@ -1,7 +1,7 @@
-package me.dmillerw.quadrum.feature.trait.data.block;
+package me.dmillerw.quadrum.feature.trait.impl.block;
 
 import me.dmillerw.quadrum.feature.trait.util.Mergeable;
-import me.dmillerw.quadrum.feature.trait.data.util.RandomXYZ;
+import me.dmillerw.quadrum.feature.trait.impl.util.RandomXYZ;
 import net.minecraft.util.EnumParticleTypes;
 
 /**

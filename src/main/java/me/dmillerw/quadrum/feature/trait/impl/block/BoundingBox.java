@@ -1,4 +1,4 @@
-package me.dmillerw.quadrum.feature.trait.data.block;
+package me.dmillerw.quadrum.feature.trait.impl.block;
 
 import me.dmillerw.quadrum.feature.trait.util.Mergeable;
 import net.minecraft.block.Block;

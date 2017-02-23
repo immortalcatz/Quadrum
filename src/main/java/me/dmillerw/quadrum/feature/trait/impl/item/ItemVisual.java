@@ -1,4 +1,4 @@
-package me.dmillerw.quadrum.feature.trait.data.item;
+package me.dmillerw.quadrum.feature.trait.impl.item;
 
 import me.dmillerw.quadrum.feature.trait.util.Mergeable;
 

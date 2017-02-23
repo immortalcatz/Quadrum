@@ -1,18 +1,18 @@
-package me.dmillerw.quadrum.feature.data.loader;
+package me.dmillerw.quadrum.feature.loader;
 
 /**
  * @author dmillerw
  */
-public class TraitLoader {
+public class TraitState {
 
     private static State currentlyLoading;
 
     public static void setCurrentlyLoading(State state) {
-        TraitLoader.currentlyLoading = state;
+        TraitState.currentlyLoading = state;
     }
 
     public static State getCurrentlyLoading() {
-        return TraitLoader.currentlyLoading;
+        return TraitState.currentlyLoading;
     }
 
     public static class State {

@@ -1,4 +1,4 @@
-package me.dmillerw.quadrum.feature.data.loader;
+package me.dmillerw.quadrum.feature.loader;
 
 import com.google.common.collect.Maps;
 import me.dmillerw.quadrum.Quadrum;
@@ -47,7 +47,7 @@ public class BlockLoader {
         for (File file : dir.listFiles(ExtensionFilter.JSON)) {
             BlockData data;
 
-            TraitLoader.setCurrentlyLoading(new TraitLoader.State(file.getName(), TraitLoader.Type.BLOCK));
+            TraitState.setCurrentlyLoading(new TraitState.State(file.getName(), TraitState.Type.BLOCK));
 
             try {
                 data = GsonLib.gson().fromJson(new FileReader(file), BlockData.class);
@@ -56,7 +56,7 @@ public class BlockLoader {
                 data = null;
             }
 
-            TraitLoader.setCurrentlyLoading(null);
+            TraitState.setCurrentlyLoading(null);
 
             if (data == null) continue;
 
@@ -72,7 +72,7 @@ public class BlockLoader {
 
         for (BlockData data : dataMap.values()) {
             // Dammit Java:
-            // Here to allow for Blocks to still call upon their block data even if they don't know their block data yet
+            // Here to allow for Blocks to still call upon their block impl even if they don't know their block impl yet
             // Like during super constructor calls (block state initialization, etc)
             BlockQuadrum.HACK = data;
             BlockQuadrum block = new BlockQuadrum(data);
