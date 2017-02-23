@@ -19,15 +19,9 @@ public class Redstone extends Mergeable<Redstone> {
     public EnumSet<EnumFacing> sides = EnumSet.noneOf(EnumFacing.class);
 
     @Override
-    public Redstone merge(Redstone other) {
-        Redstone redstone = new Redstone();
-
-        redstone.weakPower = merge(other, "weak_power", this.weakPower, other.weakPower);
-        redstone.strongPower = merge(other, "strong_power", this.strongPower, other.strongPower);
-
-        redstone.sides.addAll(this.sides);
-        redstone.sides.addAll(other.sides);
-
-        return redstone;
+    public void mergeSpecials(Redstone newInstance, Redstone defaultValues, Redstone changedValues) {
+        newInstance.sides = EnumSet.noneOf(EnumFacing.class);
+        newInstance.sides.addAll(defaultValues.sides);
+        newInstance.sides.addAll(changedValues.sides);
     }
 }

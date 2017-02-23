@@ -8,13 +8,4 @@ import me.dmillerw.quadrum.feature.trait.util.Mergeable;
 public class ItemVisual extends Mergeable<ItemVisual> {
 
     public boolean enchanted = false;
-
-    @Override
-    public ItemVisual merge(ItemVisual other) {
-        ItemVisual visual = new ItemVisual();
-
-        visual.enchanted = merge(other, "enchanted", this.enchanted, other.enchanted);
-
-        return visual;
-    }
 }

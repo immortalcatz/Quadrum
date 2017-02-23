@@ -72,7 +72,7 @@ public class QuadrumTrait<T> {
 
         for (String key : variants.keySet()) {
             if (defaultValue instanceof Mergeable) {
-                T merged = ((Mergeable<T>) defaultValue).merge(variants.get(key));
+                T merged = (T) Mergeable.merge(this.getClass(), (Mergeable)defaultValue, (Mergeable)variants.get(key));
                 variants.put(key, merged);
             } else if (defaultValue instanceof Collection) {
                 List merged = Lists.newArrayList();

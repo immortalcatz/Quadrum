@@ -23,14 +23,4 @@ public class BoundingBox extends Mergeable<BoundingBox> {
     private boolean nullBox(AxisAlignedBB aabb) {
         return aabb.minX == 0 && aabb.maxX == 0 && aabb.minY == 0 && aabb.maxY == 0 && aabb.minZ == 0 && aabb.maxZ == 0;
     }
-
-    @Override
-    public BoundingBox merge(BoundingBox other) {
-        BoundingBox boundingBox = new BoundingBox();
-
-        boundingBox.selection = merge(other, "selection", this.selection, other.selection);
-        boundingBox.collision = merge(other, "collision", this.collision, other.collision);
-
-        return boundingBox;
-    }
 }

@@ -36,17 +36,4 @@ public class Physical extends Mergeable<Physical> {
     public int light;
 
     public boolean gravity;
-
-    @Override
-    public Physical merge(Physical other) {
-        Physical physical = new Physical();
-
-        physical.material = merge(other, "material", this.material, other.material);
-        physical.hardness = merge(other, "hardness", this.hardness, other.hardness);
-        physical.resistance = merge(other, "resistance", this.resistance, other.resistance);
-        physical.light = merge(other, "light", this.light, other.light);
-        physical.gravity = merge(other, "gravity", this.gravity, other.gravity);
-
-        return physical;
-    }
 }
