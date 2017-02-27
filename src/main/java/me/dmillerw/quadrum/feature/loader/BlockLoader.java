@@ -1,6 +1,8 @@
 package me.dmillerw.quadrum.feature.loader;
 
 import com.google.common.collect.Maps;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 import me.dmillerw.quadrum.Quadrum;
 import me.dmillerw.quadrum.block.BlockQuadrum;
 import me.dmillerw.quadrum.feature.data.BlockData;
@@ -52,26 +54,27 @@ public class BlockLoader {
 
             TraitState.setCurrentlyLoading(new TraitState.State(file.getName(), TraitState.Type.BLOCK));
 
-            LogHelper.debug("Loading Block from " + file.getName());
+            LogHelper.info("Starting to load a Block from " + file.getName());
 
             try {
                 data = GsonLib.gson().fromJson(new FileReader(file), BlockData.class);
-            } catch (IOException ex) {
+            } catch (IOException | JsonIOException ex) {
                 data = null;
-
-                LogHelper.warn("Failed to load Block from " + file.getName() + " - Reason: " + ex.getMessage());
+                LogHelper.warn("Ran into an issue reading data from the file. It will be ignored: [" + ex.getMessage() + "]");
+            } catch (JsonSyntaxException ex) {
+                data = null;
+                LogHelper.warn("Failed to load Block due to an issue with the JSON syntax");
+                LogHelper.warn(" - " + ex.getMessage());
             }
 
             TraitState.setCurrentlyLoading(null);
 
             if (data == null) continue;
 
-            LogHelper.debug("Successfully loaded Block from " + file.getName());
-
             dataMap.put(data.name, data);
         }
 
-        LogHelper.info("Loaded " + dataMap.size() + " blocks into the game!");
+        LogHelper.info("Loaded " + dataMap.size() + " blocks into the game");
 
         initialized = true;
     }
