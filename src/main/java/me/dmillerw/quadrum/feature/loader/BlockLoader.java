@@ -2,6 +2,7 @@ package me.dmillerw.quadrum.feature.loader;
 
 import com.google.common.collect.Maps;
 import com.google.gson.JsonIOException;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import me.dmillerw.quadrum.Quadrum;
 import me.dmillerw.quadrum.block.BlockQuadrum;
@@ -64,6 +65,10 @@ public class BlockLoader {
             } catch (JsonSyntaxException ex) {
                 data = null;
                 LogHelper.warn("Failed to load Block due to an issue with the JSON syntax");
+                LogHelper.warn(" - " + ex.getMessage());
+            } catch (JsonParseException ex) {
+                data = null;
+                LogHelper.warn("Failed to load Block due to an issue parsing the file");
                 LogHelper.warn(" - " + ex.getMessage());
             }
 
