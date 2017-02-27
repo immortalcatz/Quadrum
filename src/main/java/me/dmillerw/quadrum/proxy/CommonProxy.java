@@ -5,7 +5,7 @@ import me.dmillerw.quadrum.feature.data.BlockData;
 import me.dmillerw.quadrum.feature.data.ItemData;
 import me.dmillerw.quadrum.feature.loader.BlockLoader;
 import me.dmillerw.quadrum.feature.loader.ItemLoader;
-import me.dmillerw.quadrum.feature.trait.QuadrumTrait;
+import me.dmillerw.quadrum.feature.trait.TraitHolder;
 import me.dmillerw.quadrum.feature.trait.Traits;
 import me.dmillerw.quadrum.item.IQuadrumItem;
 import net.minecraft.block.Block;
@@ -55,7 +55,7 @@ public class CommonProxy implements IProxy {
         }
     }
 
-    private static void registerOreDictionaryTags(QuadrumTrait<List<String>> trait, ItemStack stack) {
+    private static void registerOreDictionaryTags(TraitHolder<List<String>> trait, ItemStack stack) {
         if (trait == null)
             return;
 

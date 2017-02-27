@@ -1,8 +1,8 @@
 package me.dmillerw.quadrum.item.sub;
 
+import me.dmillerw.quadrum.feature.trait.TraitHolder;
 import me.dmillerw.quadrum.item.IQuadrumItem;
 import me.dmillerw.quadrum.feature.data.ItemData;
-import me.dmillerw.quadrum.feature.trait.QuadrumTrait;
 import me.dmillerw.quadrum.feature.trait.Traits;
 import me.dmillerw.quadrum.feature.trait.impl.item.Consumable;
 import net.minecraft.creativetab.CreativeTabs;
@@ -25,7 +25,7 @@ import java.util.List;
 public class ItemQuadrumConsumable extends ItemFood implements IQuadrumItem {
 
     private final ItemData itemData;
-    private final QuadrumTrait<Consumable> consumable;
+    private final TraitHolder<Consumable> consumable;
 
     public ItemQuadrumConsumable(ItemData itemData) {
         // Send dummy impl to the constructor, everything is handled via stack-sensitive getters

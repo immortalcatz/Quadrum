@@ -1,7 +1,7 @@
 package me.dmillerw.quadrum.block.item;
 
 import me.dmillerw.quadrum.block.BlockQuadrum;
-import me.dmillerw.quadrum.feature.trait.QuadrumTrait;
+import me.dmillerw.quadrum.feature.trait.TraitHolder;
 import me.dmillerw.quadrum.feature.trait.Traits;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,7 +30,7 @@ public class ItemBlockQuadrum extends ItemBlock {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-        QuadrumTrait<List<String>> trait = ((BlockQuadrum)block).getObject().traits.get(Traits.COMMON_LORE);
+        TraitHolder<List<String>> trait = ((BlockQuadrum)block).getObject().traits.get(Traits.COMMON_LORE);
         if (trait != null) {
             tooltip.addAll(trait.getValueFromItemStack(stack));
         }

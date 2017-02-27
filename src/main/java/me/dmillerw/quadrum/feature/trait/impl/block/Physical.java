@@ -1,12 +1,12 @@
 package me.dmillerw.quadrum.feature.trait.impl.block;
 
 import com.google.common.collect.Maps;
-import me.dmillerw.quadrum.feature.trait.util.Mergeable;
+import me.dmillerw.quadrum.feature.trait.util.Trait;
 import net.minecraft.block.material.Material;
 
 import java.util.Map;
 
-public class Physical extends Mergeable<Physical> {
+public class Physical extends Trait<Physical> {
 
     private static final Map<String, Material> materialMap = Maps.newHashMap();
     static {

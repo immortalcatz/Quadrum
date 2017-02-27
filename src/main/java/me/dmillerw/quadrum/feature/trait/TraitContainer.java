@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
 import me.dmillerw.quadrum.feature.loader.TraitState;
+import me.dmillerw.quadrum.feature.trait.util.Trait;
 
 import java.lang.reflect.Type;
 import java.util.EnumMap;
@@ -32,20 +33,20 @@ public class TraitContainer {
         return trait;
     }
 
-    protected EnumMap<Traits, QuadrumTrait<?>> backingMap = Maps.newEnumMap(Traits.class);
+    protected EnumMap<Traits, TraitHolder<?>> backingMap = Maps.newEnumMap(Traits.class);
 
     protected final void merge() {
-        backingMap.values().forEach(QuadrumTrait::merge);
+        backingMap.values().forEach(TraitHolder::merge);
     }
 
-    public <T> QuadrumTrait<T> get(Traits trait) {
-        return (QuadrumTrait<T>) backingMap.get(trait);
+    public <T> TraitHolder<T> get(Traits trait) {
+        return (TraitHolder<T>) backingMap.get(trait);
     }
-    public <T> QuadrumTrait<T> get(Traits trait, Class<T> clazz) {
-        return (QuadrumTrait<T>) backingMap.get(trait);
+    public <T> TraitHolder<T> get(Traits trait, Class<T> clazz) {
+        return (TraitHolder<T>) backingMap.get(trait);
     }
-    public <T> QuadrumTrait<T> get(Traits trait, TypeToken<T> clazz) {
-        return (QuadrumTrait<T>) backingMap.get(trait);
+    public <T> TraitHolder<T> get(Traits trait, TypeToken<T> clazz) {
+        return (TraitHolder<T>) backingMap.get(trait);
     }
 
     public static class Deserializer implements JsonDeserializer<TraitContainer> {
@@ -69,7 +70,7 @@ public class TraitContainer {
 
                 TypeToken type = traitEnum.typeToken;
 
-                QuadrumTrait trait = new QuadrumTrait();
+                TraitHolder trait = new TraitHolder();
 
                 JsonElement element = entry.getValue();
                 if (element.isJsonObject()) {
@@ -95,8 +96,18 @@ public class TraitContainer {
                     trait.defaultValue = context.deserialize(element, type.getType());
                 }
 
-                if (trait.defaultValue != null || (trait.variants != null && !trait.variants.isEmpty()))
+                if (trait.defaultValue != null || (trait.variants != null && !trait.variants.isEmpty())) {
+                    if (trait.defaultValue instanceof Trait && !((Trait) trait.defaultValue).isValid())
+                        throw new JsonParseException("Failed to properly parse a trait!");
+
+                    for (Object obj : trait.variants.values()) {
+                        if (obj instanceof Trait && !((Trait) obj).isValid()) {
+                            throw new JsonParseException("Failed to properly parse a trait!");
+                        }
+                    }
+
                     container.backingMap.put(traitEnum, trait);
+                }
             }
 
             container.merge();

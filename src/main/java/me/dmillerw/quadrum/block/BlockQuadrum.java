@@ -1,7 +1,7 @@
 package me.dmillerw.quadrum.block;
 
 import me.dmillerw.quadrum.feature.data.BlockData;
-import me.dmillerw.quadrum.feature.trait.QuadrumTrait;
+import me.dmillerw.quadrum.feature.trait.TraitHolder;
 import me.dmillerw.quadrum.feature.trait.Traits;
 import me.dmillerw.quadrum.feature.trait.impl.block.Physical;
 import net.minecraft.block.Block;
@@ -34,7 +34,7 @@ public class BlockQuadrum extends Block implements IQuadrumBlock {
     public static BlockData HACK = null;
 
     private final BlockData blockData;
-    private final QuadrumTrait<Physical> traitPhysical;
+    private final TraitHolder<Physical> traitPhysical;
 
     public BlockQuadrum(BlockData blockData) {
         super(Material.ROCK); // Handled via state-sensitive getter

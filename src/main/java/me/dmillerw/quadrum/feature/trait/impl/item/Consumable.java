@@ -1,14 +1,14 @@
 package me.dmillerw.quadrum.feature.trait.impl.item;
 
 import com.google.gson.annotations.SerializedName;
-import me.dmillerw.quadrum.feature.trait.util.Mergeable;
+import me.dmillerw.quadrum.feature.trait.util.Trait;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 
 /**
  * @author dmillerw
  */
-public class Consumable extends Mergeable<Consumable> {
+public class Consumable extends Trait<Consumable> {
 
     public EnumAction type = EnumAction.EAT;
 
@@ -19,7 +19,7 @@ public class Consumable extends Mergeable<Consumable> {
     @SerializedName("resulting_item")
     public ItemStack resultingItem = ItemStack.EMPTY;
 
-    public static class FoodStats extends Mergeable<FoodStats> {
+    public static class FoodStats extends Trait<FoodStats> {
 
         public int health;
         public float saturation;

@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import me.dmillerw.quadrum.block.BlockQuadrum;
 import me.dmillerw.quadrum.feature.data.BlockData;
-import me.dmillerw.quadrum.feature.trait.util.Mergeable;
+import me.dmillerw.quadrum.feature.trait.util.Trait;
 import me.dmillerw.quadrum.item.IQuadrumItem;
 import me.dmillerw.quadrum.feature.data.ItemData;
 import net.minecraft.block.state.IBlockState;
@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * @author dmillerw
  */
-public class QuadrumTrait<T> {
+public class TraitHolder<T> {
 
     public T defaultValue;
     public Map<String, T> variants = Maps.newHashMap();
@@ -71,8 +71,8 @@ public class QuadrumTrait<T> {
             return;
 
         for (String key : variants.keySet()) {
-            if (defaultValue instanceof Mergeable) {
-                T merged = (T) Mergeable.merge(this.getClass(), (Mergeable)defaultValue, (Mergeable)variants.get(key));
+            if (defaultValue instanceof Trait) {
+                T merged = (T) Trait.merge(this.getClass(), (Trait)defaultValue, (Trait)variants.get(key));
                 variants.put(key, merged);
             } else if (defaultValue instanceof Collection) {
                 List merged = Lists.newArrayList();

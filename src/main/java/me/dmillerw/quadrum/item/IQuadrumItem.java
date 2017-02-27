@@ -4,10 +4,10 @@ import com.google.common.collect.Lists;
 import me.dmillerw.quadrum.feature.data.ItemData;
 import me.dmillerw.quadrum.feature.data.IQuadrumObject;
 import me.dmillerw.quadrum.feature.trait.TraitContainer;
+import me.dmillerw.quadrum.feature.trait.TraitHolder;
 import me.dmillerw.quadrum.feature.trait.Traits;
 import me.dmillerw.quadrum.lib.ModCreativeTab;
 import me.dmillerw.quadrum.lib.ModInfo;
-import me.dmillerw.quadrum.feature.trait.QuadrumTrait;
 import me.dmillerw.quadrum.feature.trait.impl.item.ItemVisual;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -45,7 +45,7 @@ public interface IQuadrumItem extends IQuadrumObject<ItemData> {
     }
 
     public default void addLoreToTooltip(ItemStack stack, List<String> tooltip) {
-        QuadrumTrait<List<String>> trait = getObject().traits.get(Traits.COMMON_LORE, TraitContainer.TYPE_LIST);
+        TraitHolder<List<String>> trait = getObject().traits.get(Traits.COMMON_LORE, TraitContainer.TYPE_LIST);
         if (trait != null) {
             tooltip.addAll(trait.getValueFromItemStack(stack));
         }
@@ -71,7 +71,7 @@ public interface IQuadrumItem extends IQuadrumObject<ItemData> {
     }
 
     public default boolean isEnchanted(ItemStack stack) {
-        QuadrumTrait<ItemVisual> trait = getObject().traits.get(Traits.ITEM_VISUAL);
+        TraitHolder<ItemVisual> trait = getObject().traits.get(Traits.ITEM_VISUAL);
         if (trait != null) {
             ItemVisual visual = trait.getValueFromItemStack(stack);
             if (visual != null) {

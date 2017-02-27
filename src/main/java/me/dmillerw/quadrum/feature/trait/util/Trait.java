@@ -13,15 +13,15 @@ import java.util.Set;
 /**
  * @author dmillerw
  */
-public abstract class Mergeable<S> implements PostProcessableFactory.PostProcessable {
+public abstract class Trait<S> implements PostProcessableFactory.PostProcessable {
 
     private static Map<Class, Map<String, Field>> CLASS_FIELD_MAP = Maps.newHashMap();
 
     //TODO Better logging and exception handling
-    public static Mergeable merge(Class clazz, Mergeable defaultValues, Mergeable changedValues) {
-        Mergeable mergedValues = null;
+    public static Trait merge(Class clazz, Trait defaultValues, Trait changedValues) {
+        Trait mergedValues = null;
         try {
-            mergedValues = (Mergeable) clazz.newInstance();
+            mergedValues = (Trait) clazz.newInstance();
         } catch (Exception ignore) {
         }
 
@@ -53,8 +53,8 @@ public abstract class Mergeable<S> implements PostProcessableFactory.PostProcess
                 if (changedValues.isSet(entry.getKey())) {
                     Object changedValue = entry.getValue().get(changedValues);
 
-                    if (Mergeable.class.isAssignableFrom(entry.getValue().getType())) {
-                        changedValue = Mergeable.merge(entry.getValue().getType(), (Mergeable) defaultValue, (Mergeable) changedValue);
+                    if (Trait.class.isAssignableFrom(entry.getValue().getType())) {
+                        changedValue = Trait.merge(entry.getValue().getType(), (Trait) defaultValue, (Trait) changedValue);
                     }
 
                     entry.getValue().set(mergedValues, changedValue);
@@ -78,8 +78,13 @@ public abstract class Mergeable<S> implements PostProcessableFactory.PostProcess
 
     @Override
     public void postProcess(JsonElement element) {
-        for (Map.Entry<String, JsonElement> entry : element.getAsJsonObject().entrySet())
+        for (Map.Entry<String, JsonElement> entry : element.getAsJsonObject().entrySet()) {
             set.add(entry.getKey());
+        }
+    }
+
+    public boolean isValid() {
+        return true;
     }
 
     public void mergeSpecials(S newInstance, S defaultValues, S changedValues) {

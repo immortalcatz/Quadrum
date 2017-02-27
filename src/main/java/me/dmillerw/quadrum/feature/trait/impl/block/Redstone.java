@@ -1,7 +1,7 @@
 package me.dmillerw.quadrum.feature.trait.impl.block;
 
 import com.google.gson.annotations.SerializedName;
-import me.dmillerw.quadrum.feature.trait.util.Mergeable;
+import me.dmillerw.quadrum.feature.trait.util.Trait;
 import net.minecraft.util.EnumFacing;
 
 import java.util.EnumSet;
@@ -9,7 +9,7 @@ import java.util.EnumSet;
 /**
  * @author dmillerw
  */
-public class Redstone extends Mergeable<Redstone> {
+public class Redstone extends Trait<Redstone> {
 
     @SerializedName("weak_power")
     public int weakPower;
