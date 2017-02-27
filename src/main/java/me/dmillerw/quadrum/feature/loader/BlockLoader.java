@@ -6,10 +6,9 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import me.dmillerw.quadrum.Quadrum;
 import me.dmillerw.quadrum.block.BlockQuadrum;
-import me.dmillerw.quadrum.feature.data.BlockData;
 import me.dmillerw.quadrum.block.item.ItemBlockQuadrum;
+import me.dmillerw.quadrum.feature.data.BlockData;
 import me.dmillerw.quadrum.helper.LogHelper;
-import me.dmillerw.quadrum.lib.ExtensionFilter;
 import me.dmillerw.quadrum.lib.ModInfo;
 import me.dmillerw.quadrum.lib.gson.GsonLib;
 import net.minecraft.block.Block;
@@ -18,10 +17,13 @@ import net.minecraft.item.ItemBlock;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Map;
 
@@ -50,12 +52,16 @@ public class BlockLoader {
 
         LogHelper.info("Initializing BlockLoader...");
 
-        for (File file : dir.listFiles(ExtensionFilter.JSON)) {
+        Path base = Paths.get(dir.toURI());
+        Collection<File> files = FileUtils.listFiles(dir, new String[] { "json" }, true);
+        for (File file : files) {
+            String relative = "/blocks/" + base.relativize(Paths.get(file.toURI())).toString();
+
             BlockData data;
 
-            TraitState.setCurrentlyLoading(new TraitState.State(file.getName(), TraitState.Type.BLOCK));
+            TraitState.setCurrentlyLoading(new TraitState.State(relative, TraitState.Type.BLOCK));
 
-            LogHelper.info("Starting to load a Block from " + file.getName());
+            LogHelper.info("Starting to load a Block from " + relative);
 
             try {
                 data = GsonLib.gson().fromJson(new FileReader(file), BlockData.class);
