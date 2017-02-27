@@ -5,6 +5,7 @@ import me.dmillerw.quadrum.Quadrum;
 import me.dmillerw.quadrum.block.BlockQuadrum;
 import me.dmillerw.quadrum.feature.data.BlockData;
 import me.dmillerw.quadrum.block.item.ItemBlockQuadrum;
+import me.dmillerw.quadrum.helper.LogHelper;
 import me.dmillerw.quadrum.lib.ExtensionFilter;
 import me.dmillerw.quadrum.lib.ModInfo;
 import me.dmillerw.quadrum.lib.gson.GsonLib;
@@ -44,24 +45,33 @@ public class BlockLoader {
     public static void initialize(File dir) {
         if (initialized) return;
 
+        LogHelper.info("Initializing BlockLoader...");
+
         for (File file : dir.listFiles(ExtensionFilter.JSON)) {
             BlockData data;
 
             TraitState.setCurrentlyLoading(new TraitState.State(file.getName(), TraitState.Type.BLOCK));
 
+            LogHelper.debug("Loading Block from " + file.getName());
+
             try {
                 data = GsonLib.gson().fromJson(new FileReader(file), BlockData.class);
             } catch (IOException ex) {
-                ex.printStackTrace();
                 data = null;
+
+                LogHelper.warn("Failed to load Block from " + file.getName() + " - Reason: " + ex.getMessage());
             }
 
             TraitState.setCurrentlyLoading(null);
 
             if (data == null) continue;
 
+            LogHelper.debug("Successfully loaded Block from " + file.getName());
+
             dataMap.put(data.name, data);
         }
+
+        LogHelper.info("Loaded " + dataMap.size() + " blocks into the game!");
 
         initialized = true;
     }
