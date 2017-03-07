@@ -89,6 +89,4 @@ public class CommandQuadrumDump implements ICommand {
     public int compareTo(ICommand o) {
         return 0;
     }
-
-
 }

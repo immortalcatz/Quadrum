@@ -1,12 +1,13 @@
-package me.dmillerw.quadrum.feature.trait.data.block;
+package me.dmillerw.quadrum.feature.trait.impl.block;
 
 import com.google.common.collect.Maps;
-import me.dmillerw.quadrum.feature.trait.util.Mergeable;
+import com.google.gson.annotations.SerializedName;
+import me.dmillerw.quadrum.feature.trait.util.Trait;
 import net.minecraft.block.material.Material;
 
 import java.util.Map;
 
-public class Physical extends Mergeable<Physical> {
+public class Physical extends Trait<Physical> {
 
     private static final Map<String, Material> materialMap = Maps.newHashMap();
     static {
@@ -35,18 +36,14 @@ public class Physical extends Mergeable<Physical> {
     public float resistance;
     public int light;
 
+    @SerializedName("harvest_level")
+    public HarvestLevel harvestLevel = new HarvestLevel();
+
     public boolean gravity;
 
-    @Override
-    public Physical merge(Physical other) {
-        Physical physical = new Physical();
+    public static class HarvestLevel extends Trait<HarvestLevel> {
 
-        physical.material = merge(other, "material", this.material, other.material);
-        physical.hardness = merge(other, "hardness", this.hardness, other.hardness);
-        physical.resistance = merge(other, "resistance", this.resistance, other.resistance);
-        physical.light = merge(other, "light", this.light, other.light);
-        physical.gravity = merge(other, "gravity", this.gravity, other.gravity);
-
-        return physical;
+        public String tool = "";
+        public int level = -1;
     }
 }

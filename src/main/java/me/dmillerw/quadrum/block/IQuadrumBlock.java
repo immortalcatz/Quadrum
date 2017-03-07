@@ -1,10 +1,11 @@
 package me.dmillerw.quadrum.block;
 
+import com.google.common.collect.Lists;
 import me.dmillerw.quadrum.feature.data.BlockData;
 import me.dmillerw.quadrum.feature.data.IQuadrumObject;
-import me.dmillerw.quadrum.feature.trait.QuadrumTrait;
+import me.dmillerw.quadrum.feature.trait.TraitHolder;
 import me.dmillerw.quadrum.feature.trait.Traits;
-import me.dmillerw.quadrum.feature.trait.data.block.*;
+import me.dmillerw.quadrum.feature.trait.impl.block.*;
 import me.dmillerw.quadrum.lib.ModCreativeTab;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -21,11 +22,15 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author dmillerw
  */
 public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
+
+    // Because I'm horrible
+    public Random getForgeRandom();
 
     public default void construct() {
         final Block block = (Block) this;
@@ -43,7 +48,7 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
 
     /* VARIANTS */
     public default IBlockState i_getDefaultState(Block block, IBlockState baseState) {
-        BlockData blockData = ((BlockQuadrum)block).getObject();
+        BlockData blockData = ((BlockQuadrum) block).getObject();
         if (blockData.variants.length > 0) {
             return baseState.withProperty(blockData.getVariantProperty(), blockData.variants[0]);
         } else {
@@ -63,7 +68,7 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
 
     public default IBlockState i_getStateFromMetadata(int metadata) {
         BlockData blockData = getObject();
-        IBlockState defaultState = ((Block)this).getDefaultState();
+        IBlockState defaultState = ((Block) this).getDefaultState();
 
         if (blockData.variants.length > 0) {
             return defaultState.withProperty(blockData.getVariantProperty(), blockData.variants[metadata]);
@@ -88,14 +93,14 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
 
     public default BlockStateContainer i_getBlockStateContainer() {
         if (BlockQuadrum.HACK.variants.length > 0)
-            return new BlockStateContainer((Block)this, BlockQuadrum.HACK.getVariantProperty());
+            return new BlockStateContainer((Block) this, BlockQuadrum.HACK.getVariantProperty());
         else
-            return new BlockStateContainer((Block)this);
+            return new BlockStateContainer((Block) this);
     }
 
     /* TRAIT - BOUNDING BOX */
     public default AxisAlignedBB i_getSelectionBoundingBox(IBlockState state) {
-        QuadrumTrait<BoundingBox> trait = getObject().traits.get(Traits.BLOCK_BOUNDING_BOX);
+        TraitHolder<BoundingBox> trait = getObject().traits.get(Traits.BLOCK_BOUNDING_BOX);
         if (trait != null) {
             return trait.getValueFromBlockState(state).getSelectionBoundingBox();
         } else {
@@ -104,7 +109,7 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
     }
 
     public default AxisAlignedBB i_getCollisionBoundingBox(IBlockState state, IBlockAccess access, BlockPos pos) {
-        QuadrumTrait<BoundingBox> trait = getObject().traits.get(Traits.BLOCK_BOUNDING_BOX);
+        TraitHolder<BoundingBox> trait = getObject().traits.get(Traits.BLOCK_BOUNDING_BOX);
         if (trait != null) {
             return trait.getValueFromBlockState(state).getCollisionBoundingBox();
         } else {
@@ -114,7 +119,7 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
 
     /* TRAIT - PHYSICAL */
     public default Material i_getMaterial(IBlockState state) {
-        QuadrumTrait<Physical> trait = getObject().traits.get(Traits.BLOCK_PHYSICAL);
+        TraitHolder<Physical> trait = getObject().traits.get(Traits.BLOCK_PHYSICAL);
         if (trait != null) {
             return trait.getValueFromBlockState(state).material;
         } else {
@@ -123,7 +128,7 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
     }
 
     public default float i_getHardness(IBlockState blockState) {
-        QuadrumTrait<Physical> trait = getObject().traits.get(Traits.BLOCK_PHYSICAL);
+        TraitHolder<Physical> trait = getObject().traits.get(Traits.BLOCK_PHYSICAL);
         if (trait != null) {
             return trait.getValueFromBlockState(blockState).hardness;
         } else {
@@ -132,7 +137,7 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
     }
 
     public default float i_getExplosionResistance(IBlockState blockState) {
-        QuadrumTrait<Physical> trait = getObject().traits.get(Traits.BLOCK_PHYSICAL);
+        TraitHolder<Physical> trait = getObject().traits.get(Traits.BLOCK_PHYSICAL);
         if (trait != null) {
             return trait.getValueFromBlockState(blockState).resistance;
         } else {
@@ -141,7 +146,7 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
     }
 
     public default int i_getLightValue(IBlockState state) {
-        QuadrumTrait<Physical> trait = getObject().traits.get(Traits.BLOCK_PHYSICAL);
+        TraitHolder<Physical> trait = getObject().traits.get(Traits.BLOCK_PHYSICAL);
         if (trait != null) {
             return trait.getValueFromBlockState(state).light;
         } else {
@@ -150,7 +155,7 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
     }
 
     public default void i_onRandomDisplayTick(IBlockState state, World world, BlockPos pos) {
-        QuadrumTrait<Particle[]> trait = getObject().traits.get(Traits.BLOCK_PARTICLE);
+        TraitHolder<Particle[]> trait = getObject().traits.get(Traits.BLOCK_PARTICLE);
         if (trait != null) {
             Particle[] particles = trait.getValueFromBlockState(state);
 
@@ -168,7 +173,7 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
     }
 
     public default boolean i_canProvidePower(IBlockState state) {
-        QuadrumTrait<Redstone> trait = getObject().traits.get(Traits.BLOCK_REDSTONE);
+        TraitHolder<Redstone> trait = getObject().traits.get(Traits.BLOCK_REDSTONE);
         if (trait != null) {
             return trait.getValueFromBlockState(state) != null;
         } else {
@@ -177,7 +182,7 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
     }
 
     public default int i_getWeakPower(IBlockState state, EnumFacing facing) {
-        QuadrumTrait<Redstone> trait = getObject().traits.get(Traits.BLOCK_REDSTONE);
+        TraitHolder<Redstone> trait = getObject().traits.get(Traits.BLOCK_REDSTONE);
         if (trait != null) {
             Redstone redstone = trait.getValueFromBlockState(state);
             if (redstone.sides.contains(facing.getOpposite()))
@@ -188,7 +193,7 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
     }
 
     public default int i_getStrongPower(IBlockState state, EnumFacing facing) {
-        QuadrumTrait<Redstone> trait = getObject().traits.get(Traits.BLOCK_REDSTONE);
+        TraitHolder<Redstone> trait = getObject().traits.get(Traits.BLOCK_REDSTONE);
         if (trait != null) {
             Redstone redstone = trait.getValueFromBlockState(state);
             if (redstone.sides.contains(facing.getOpposite()))
@@ -199,7 +204,7 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
     }
 
     public default boolean i_isFullCube(IBlockState state) {
-        QuadrumTrait<BlockVisual> trait = getObject().traits.get(Traits.BLOCK_VISUAL);
+        TraitHolder<BlockVisual> trait = getObject().traits.get(Traits.BLOCK_VISUAL);
         if (trait != null) {
             return !trait.getValueFromBlockState(state).fullCube;
         } else {
@@ -208,7 +213,7 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
     }
 
     public default boolean i_isOpaqueCube(IBlockState state) {
-        QuadrumTrait<BlockVisual> trait = getObject().traits.get(Traits.BLOCK_VISUAL);
+        TraitHolder<BlockVisual> trait = getObject().traits.get(Traits.BLOCK_VISUAL);
         if (trait != null) {
             return !trait.getValueFromBlockState(state).transparent;
         } else {
@@ -217,12 +222,72 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
     }
 
     public default boolean i_canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-        QuadrumTrait<BlockVisual> trait = getObject().traits.get(Traits.BLOCK_VISUAL);
+        TraitHolder<BlockVisual> trait = getObject().traits.get(Traits.BLOCK_VISUAL);
         if (trait != null) {
             BlockVisual visual = trait.getValueFromBlockState(state);
             return visual.transparent ? layer == BlockRenderLayer.TRANSLUCENT : layer == BlockRenderLayer.SOLID;
         } else {
             return layer == BlockRenderLayer.SOLID;
+        }
+    }
+
+    public default String i_getHarvestTool(IBlockState state) {
+        TraitHolder<Physical> trait = getObject().traits.get(Traits.BLOCK_PHYSICAL);
+        if (trait != null) {
+            Physical physical = trait.getValueFromBlockState(state);
+            if (physical != null) {
+                return physical.harvestLevel.tool;
+            } else {
+                return "";
+            }
+        } else {
+            return "";
+        }
+    }
+
+    public default int i_getHarvestLevel(IBlockState state) {
+        TraitHolder<Physical> trait = getObject().traits.get(Traits.BLOCK_PHYSICAL);
+        if (trait != null) {
+            Physical physical = trait.getValueFromBlockState(state);
+            if (physical != null) {
+                return physical.harvestLevel.level;
+            } else {
+                return -1;
+            }
+        } else {
+            return -1;
+        }
+    }
+
+    public default List<ItemStack> i_getDrops(IBlockState state, int fortune) {
+        TraitHolder<Drop[]> drops = getObject().traits.get(Traits.BLOCK_DROP);
+        if (drops != null) {
+            List<ItemStack> list = Lists.newArrayList();
+
+            for (Drop drop : drops.getValueFromBlockState(state)) {
+                int count = drop.count.intValue();
+                if (count == -1) {
+                    list.add(drop.item);
+                } else if (count > 0) {
+                    ItemStack item = drop.item.copy();
+                    item.stackSize = count;
+                    list.add(item);
+                }
+            }
+
+            return list;
+        } else {
+            List<ItemStack> ret = Lists.newArrayList();
+
+            int count = ((Block)this).quantityDropped(state, fortune, getForgeRandom());
+            for (int i = 0; i < count; i++) {
+                Item item = ((Block)this).getItemDropped(state, getForgeRandom(), fortune);
+                if (item != null) {
+                    ret.add(new ItemStack(item, 1, ((Block)this).damageDropped(state)));
+                }
+            }
+
+            return ret;
         }
     }
 }

@@ -1,4 +1,4 @@
-package me.dmillerw.quadrum.feature.trait.data.util;
+package me.dmillerw.quadrum.feature.trait.impl.util;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -27,5 +27,10 @@ public class RandomNumber extends Number {
     @Override
     public double doubleValue() {
         return value.length == 1 ? value[0] : ThreadLocalRandom.current().nextDouble(value[0], value[1]);
+    }
+
+    @Override
+    public String toString() {
+        return "{" + value[0] + ", " + value[1] + "}";
     }
 }

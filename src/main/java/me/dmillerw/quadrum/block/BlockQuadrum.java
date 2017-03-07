@@ -1,9 +1,9 @@
 package me.dmillerw.quadrum.block;
 
 import me.dmillerw.quadrum.feature.data.BlockData;
-import me.dmillerw.quadrum.feature.trait.QuadrumTrait;
+import me.dmillerw.quadrum.feature.trait.TraitHolder;
 import me.dmillerw.quadrum.feature.trait.Traits;
-import me.dmillerw.quadrum.feature.trait.data.block.Physical;
+import me.dmillerw.quadrum.feature.trait.impl.block.Physical;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
@@ -34,7 +34,7 @@ public class BlockQuadrum extends Block implements IQuadrumBlock {
     public static BlockData HACK = null;
 
     private final BlockData blockData;
-    private final QuadrumTrait<Physical> traitPhysical;
+    private final TraitHolder<Physical> traitPhysical;
 
     public BlockQuadrum(BlockData blockData) {
         super(Material.ROCK); // Handled via state-sensitive getter
@@ -44,6 +44,11 @@ public class BlockQuadrum extends Block implements IQuadrumBlock {
 
         this.construct();
         this.setDefaultState(this.i_getDefaultState(this, blockState.getBaseState()));
+    }
+
+    @Override
+    public Random getForgeRandom() {
+        return RANDOM;
     }
 
     /* TRAIT - PHYSICAL */
@@ -169,6 +174,22 @@ public class BlockQuadrum extends Block implements IQuadrumBlock {
     @Override
     public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
         return this.i_canRenderInLayer(state, layer);
+    }
+
+    @Nullable
+    @Override
+    public String getHarvestTool(IBlockState state) {
+        return this.i_getHarvestTool(state);
+    }
+
+    @Override
+    public int getHarvestLevel(IBlockState state) {
+        return this.i_getHarvestLevel(state);
+    }
+
+    @Override
+    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+        return this.i_getDrops(state, fortune);
     }
 
     // Variants
