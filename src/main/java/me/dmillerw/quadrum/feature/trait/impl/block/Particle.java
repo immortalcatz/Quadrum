@@ -1,7 +1,7 @@
 package me.dmillerw.quadrum.feature.trait.impl.block;
 
+import me.dmillerw.quadrum.feature.trait.impl.util.Vector;
 import me.dmillerw.quadrum.feature.trait.util.Trait;
-import me.dmillerw.quadrum.feature.trait.impl.util.RandomXYZ;
 import me.dmillerw.quadrum.helper.LogHelper;
 import net.minecraft.util.EnumParticleTypes;
 
@@ -11,8 +11,8 @@ import net.minecraft.util.EnumParticleTypes;
 public class Particle extends Trait<Particle> {
 
     public EnumParticleTypes type;
-    public RandomXYZ position = new RandomXYZ();
-    public RandomXYZ speed = new RandomXYZ();
+    public Vector position = new Vector();
+    public Vector speed = new Vector();
 
     @Override
     public boolean isValid() {
