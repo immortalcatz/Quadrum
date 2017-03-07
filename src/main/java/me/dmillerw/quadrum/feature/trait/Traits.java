@@ -20,6 +20,7 @@ public enum Traits {
     BLOCK_PARTICLE(Type.BLOCK, "particle", new TypeToken<Particle[]>() {}),
     BLOCK_REDSTONE(Type.BLOCK, "redstone", new TypeToken<Redstone>() {}),
     BLOCK_VISUAL(Type.BLOCK, "visual", new TypeToken<BlockVisual>() {}),
+    BLOCK_DROP(Type.BLOCK, "drop", new TypeToken<Drop[]>() {}),
 
     ITEM_CONSUMABLE(Type.ITEM, "consumable", new TypeToken<Consumable>() {}),
     ITEM_VISUAL(Type.ITEM, "visual", new TypeToken<ItemVisual>() {});

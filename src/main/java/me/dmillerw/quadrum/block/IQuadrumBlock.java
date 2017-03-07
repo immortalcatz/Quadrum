@@ -1,5 +1,6 @@
 package me.dmillerw.quadrum.block;
 
+import com.google.common.collect.Lists;
 import me.dmillerw.quadrum.feature.data.BlockData;
 import me.dmillerw.quadrum.feature.data.IQuadrumObject;
 import me.dmillerw.quadrum.feature.trait.TraitHolder;
@@ -11,6 +12,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
@@ -21,10 +23,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import java.util.List;
+import java.util.Random;
+
 /**
  * @author dmillerw
  */
 public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
+
+    // Because I'm horrible
+    public Random getForgeRandom();
 
     public default void construct() {
         final Block block = (Block) this;
@@ -42,7 +50,7 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
 
     /* VARIANTS */
     public default IBlockState i_getDefaultState(Block block, IBlockState baseState) {
-        BlockData blockData = ((BlockQuadrum)block).getObject();
+        BlockData blockData = ((BlockQuadrum) block).getObject();
         if (blockData.variants.length > 0) {
             return baseState.withProperty(blockData.getVariantProperty(), blockData.variants[0]);
         } else {
@@ -62,7 +70,7 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
 
     public default IBlockState i_getStateFromMetadata(int metadata) {
         BlockData blockData = getObject();
-        IBlockState defaultState = ((Block)this).getDefaultState();
+        IBlockState defaultState = ((Block) this).getDefaultState();
 
         if (blockData.variants.length > 0) {
             return defaultState.withProperty(blockData.getVariantProperty(), blockData.variants[metadata]);
@@ -87,9 +95,9 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
 
     public default BlockStateContainer i_getBlockStateContainer() {
         if (BlockQuadrum.HACK.variants.length > 0)
-            return new BlockStateContainer((Block)this, BlockQuadrum.HACK.getVariantProperty());
+            return new BlockStateContainer((Block) this, BlockQuadrum.HACK.getVariantProperty());
         else
-            return new BlockStateContainer((Block)this);
+            return new BlockStateContainer((Block) this);
     }
 
     /* TRAIT - BOUNDING BOX */
@@ -250,6 +258,38 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
             }
         } else {
             return -1;
+        }
+    }
+
+    public default List<ItemStack> i_getDrops(IBlockState state, int fortune) {
+        TraitHolder<Drop[]> drops = getObject().traits.get(Traits.BLOCK_DROP);
+        if (drops != null) {
+            List<ItemStack> list = Lists.newArrayList();
+
+            for (Drop drop : drops.getValueFromBlockState(state)) {
+                int count = drop.count.intValue();
+                if (count == -1) {
+                    list.add(drop.item);
+                } else if (count > 0) {
+                    ItemStack item = drop.item.copy();
+                    item.setCount(count);
+                    list.add(item);
+                }
+            }
+
+            return list;
+        } else {
+            List<ItemStack> ret = Lists.newArrayList();
+
+            int count = ((Block)this).quantityDropped(state, fortune, getForgeRandom());
+            for (int i = 0; i < count; i++) {
+                Item item = ((Block)this).getItemDropped(state, getForgeRandom(), fortune);
+                if (item != Items.AIR) {
+                    ret.add(new ItemStack(item, 1, ((Block)this).damageDropped(state)));
+                }
+            }
+
+            return ret;
         }
     }
 }

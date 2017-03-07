@@ -24,6 +24,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -44,6 +45,11 @@ public class BlockQuadrum extends Block implements IQuadrumBlock {
 
         this.construct();
         this.setDefaultState(this.i_getDefaultState(this, blockState.getBaseState()));
+    }
+
+    @Override
+    public Random getForgeRandom() {
+        return RANDOM;
     }
 
     /* TRAIT - PHYSICAL */
@@ -180,6 +186,11 @@ public class BlockQuadrum extends Block implements IQuadrumBlock {
     @Override
     public int getHarvestLevel(IBlockState state) {
         return this.i_getHarvestLevel(state);
+    }
+
+    @Override
+    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+        return this.i_getDrops(state, fortune);
     }
 
     // Variants
