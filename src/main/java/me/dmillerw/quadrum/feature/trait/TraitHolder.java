@@ -4,13 +4,14 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import me.dmillerw.quadrum.block.BlockQuadrum;
 import me.dmillerw.quadrum.feature.data.BlockData;
+import me.dmillerw.quadrum.feature.data.ItemData;
 import me.dmillerw.quadrum.feature.trait.util.Trait;
 import me.dmillerw.quadrum.item.IQuadrumItem;
-import me.dmillerw.quadrum.feature.data.ItemData;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
+import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,8 @@ import java.util.Map;
  * @author dmillerw
  */
 public class TraitHolder<T> {
+
+    public Class type;
 
     public T defaultValue;
     public Map<String, T> variants = Maps.newHashMap();
@@ -70,17 +73,24 @@ public class TraitHolder<T> {
         if (variants == null || variants.isEmpty())
             return;
 
-        Class clazz = defaultValue.getClass();
-
         for (String key : variants.keySet()) {
-            if (defaultValue instanceof Trait) {
-                T merged = (T) Trait.merge(clazz, (Trait)defaultValue, (Trait)variants.get(key));
+            if (Trait.class.isAssignableFrom(type)) {
+                T merged = (T) Trait.merge(type, (Trait)defaultValue, (Trait)variants.get(key));
                 variants.put(key, merged);
-            } else if (defaultValue instanceof Collection) {
+            } else if (Collection.class.isAssignableFrom(type)) {
                 List merged = Lists.newArrayList();
                 merged.addAll((Collection) defaultValue);
                 merged.addAll((Collection) variants.get(key));
                 variants.put(key, (T) merged);
+            } else if (type.isArray()) {
+                List<T> merged = Lists.newArrayList();
+                for (Object v : (Object[]) defaultValue) merged.add((T) v);
+                for (Object v : (Object[]) variants.get(key)) merged.add((T) v);
+
+                T[] array = (T[]) Array.newInstance(type.getComponentType(), merged.size());
+                for (int i=0; i<merged.size(); i++) array[i] = merged.get(i);
+
+                variants.put(key, (T) array);
             }
         }
     }

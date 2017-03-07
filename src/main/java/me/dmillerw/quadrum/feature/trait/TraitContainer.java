@@ -73,6 +73,7 @@ public class TraitContainer {
                 TypeToken type = traitEnum.typeToken;
 
                 TraitHolder trait = new TraitHolder();
+                trait.type = type.getRawType();
 
                 JsonElement element = entry.getValue();
                 if (element.isJsonObject()) {

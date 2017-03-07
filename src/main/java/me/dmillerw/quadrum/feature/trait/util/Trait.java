@@ -56,6 +56,8 @@ public abstract class Trait<S> implements PostProcessableFactory.PostProcessable
 
                     if (Trait.class.isAssignableFrom(entry.getValue().getType())) {
                         changedValue = Trait.merge(entry.getValue().getType(), (Trait) defaultValue, (Trait) changedValue);
+                    } else if (clazz.isArray()) {
+
                     }
 
                     entry.getValue().set(mergedValues, changedValue);
