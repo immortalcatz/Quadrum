@@ -68,6 +68,8 @@ public class TraitContainer {
                     throw new JsonParseException("Tried to load a trait of type `" + entry.getKey() + "`, which doesn't exist");
                 }
 
+                TraitState.getCurrentlyLoading().setLoadingTrait(traitEnum);
+
                 TypeToken type = traitEnum.typeToken;
 
                 TraitHolder trait = new TraitHolder();
@@ -109,6 +111,8 @@ public class TraitContainer {
                     container.backingMap.put(traitEnum, trait);
                 }
             }
+
+            TraitState.getCurrentlyLoading().setLoadingTrait(null);
 
             container.merge();
             return container;

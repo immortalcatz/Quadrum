@@ -1,6 +1,7 @@
 package me.dmillerw.quadrum.feature.trait.impl.block;
 
 import com.google.common.collect.Maps;
+import com.google.gson.annotations.SerializedName;
 import me.dmillerw.quadrum.feature.trait.util.Trait;
 import net.minecraft.block.material.Material;
 
@@ -35,5 +36,14 @@ public class Physical extends Trait<Physical> {
     public float resistance;
     public int light;
 
+    @SerializedName("harvest_level")
+    public HarvestLevel harvestLevel = new HarvestLevel();
+
     public boolean gravity;
+
+    public static class HarvestLevel extends Trait<HarvestLevel> {
+
+        public String tool = "";
+        public int level = -1;
+    }
 }

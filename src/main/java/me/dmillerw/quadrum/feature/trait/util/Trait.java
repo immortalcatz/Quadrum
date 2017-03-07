@@ -23,6 +23,7 @@ public abstract class Trait<S> implements PostProcessableFactory.PostProcessable
         try {
             mergedValues = (Trait) clazz.newInstance();
         } catch (Exception ignore) {
+            ignore.printStackTrace();
         }
 
         Map<String, Field> map = CLASS_FIELD_MAP.get(clazz);

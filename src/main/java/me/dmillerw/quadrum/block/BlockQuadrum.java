@@ -171,6 +171,17 @@ public class BlockQuadrum extends Block implements IQuadrumBlock {
         return this.i_canRenderInLayer(state, layer);
     }
 
+    @Nullable
+    @Override
+    public String getHarvestTool(IBlockState state) {
+        return this.i_getHarvestTool(state);
+    }
+
+    @Override
+    public int getHarvestLevel(IBlockState state) {
+        return this.i_getHarvestLevel(state);
+    }
+
     // Variants
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {

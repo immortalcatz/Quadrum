@@ -72,10 +72,12 @@ public class BlockLoader {
                 data = null;
                 LogHelper.warn("Failed to load Block due to an issue with the JSON syntax");
                 LogHelper.warn(" - " + ex.getMessage());
+                LogHelper.warn(" - Loading Trait: " + TraitState.getCurrentlyLoading().loadingTrait);
             } catch (JsonParseException ex) {
                 data = null;
                 LogHelper.warn("Failed to load Block due to an issue parsing the file");
                 LogHelper.warn(" - " + ex.getMessage());
+                LogHelper.warn(" - Loading Trait: " + TraitState.getCurrentlyLoading().loadingTrait);
             }
 
             TraitState.setCurrentlyLoading(null);

@@ -1,5 +1,7 @@
 package me.dmillerw.quadrum.feature.loader;
 
+import me.dmillerw.quadrum.feature.trait.Traits;
+
 /**
  * @author dmillerw
  */
@@ -20,9 +22,19 @@ public class TraitState {
         public String filename;
         public Type type;
 
+        public Traits loadingTrait;
+
         public State(String filename, Type type) {
             this.filename = filename;
             this.type = type;
+        }
+
+        public void setLoadingTrait(Traits type) {
+            this.loadingTrait = type;
+        }
+
+        public Traits getLoadingTrait() {
+            return loadingTrait;
         }
     }
 

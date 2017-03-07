@@ -70,9 +70,11 @@ public class TraitHolder<T> {
         if (variants == null || variants.isEmpty())
             return;
 
+        Class clazz = defaultValue.getClass();
+
         for (String key : variants.keySet()) {
             if (defaultValue instanceof Trait) {
-                T merged = (T) Trait.merge(this.getClass(), (Trait)defaultValue, (Trait)variants.get(key));
+                T merged = (T) Trait.merge(clazz, (Trait)defaultValue, (Trait)variants.get(key));
                 variants.put(key, merged);
             } else if (defaultValue instanceof Collection) {
                 List merged = Lists.newArrayList();

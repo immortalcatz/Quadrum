@@ -224,4 +224,32 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
             return layer == BlockRenderLayer.SOLID;
         }
     }
+
+    public default String i_getHarvestTool(IBlockState state) {
+        TraitHolder<Physical> trait = getObject().traits.get(Traits.BLOCK_PHYSICAL);
+        if (trait != null) {
+            Physical physical = trait.getValueFromBlockState(state);
+            if (physical != null) {
+                return physical.harvestLevel.tool;
+            } else {
+                return "";
+            }
+        } else {
+            return "";
+        }
+    }
+
+    public default int i_getHarvestLevel(IBlockState state) {
+        TraitHolder<Physical> trait = getObject().traits.get(Traits.BLOCK_PHYSICAL);
+        if (trait != null) {
+            Physical physical = trait.getValueFromBlockState(state);
+            if (physical != null) {
+                return physical.harvestLevel.level;
+            } else {
+                return -1;
+            }
+        } else {
+            return -1;
+        }
+    }
 }
