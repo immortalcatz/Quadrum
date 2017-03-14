@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class Physical extends Trait<Physical> {
 
-    private static final Map<String, Material> materialMap = Maps.newHashMap();
+    public static final Map<String, Material> materialMap = Maps.newHashMap();
     static {
         materialMap.put("AIR", Material.AIR);
         materialMap.put("GRASS", Material.GRASS);

@@ -2,6 +2,7 @@ package me.dmillerw.quadrum.client.gui;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import me.dmillerw.quadrum.feature.trait.impl.block.Physical;
 import me.dmillerw.quadrum.lib.ModInfo;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -38,7 +39,8 @@ public class GuiViewData extends GuiScreen {
     public static enum Data {
 
         PARTICLE("particle", (list) -> Arrays.stream(EnumParticleTypes.values()).forEach((e) -> list.add(e.name()))),
-        CREATIVE_TAB("creative_tab", (list) -> Arrays.stream(CreativeTabs.CREATIVE_TAB_ARRAY).forEach((e) -> list.add(e.getTabLabel())));
+        CREATIVE_TAB("creative_tab", (list) -> Arrays.stream(CreativeTabs.CREATIVE_TAB_ARRAY).forEach((e) -> list.add(e.getTabLabel()))),
+        MATERIAL("material", (list) -> list.addAll(Physical.materialMap.keySet()));
 
         private String key;
         private DataDumper dataDumper;
