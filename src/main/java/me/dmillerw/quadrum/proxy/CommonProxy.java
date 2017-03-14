@@ -1,5 +1,6 @@
 package me.dmillerw.quadrum.proxy;
 
+import me.dmillerw.quadrum.Quadrum;
 import me.dmillerw.quadrum.block.BlockQuadrum;
 import me.dmillerw.quadrum.feature.data.BlockData;
 import me.dmillerw.quadrum.feature.data.ItemData;
@@ -8,12 +9,14 @@ import me.dmillerw.quadrum.feature.loader.ItemLoader;
 import me.dmillerw.quadrum.feature.trait.TraitHolder;
 import me.dmillerw.quadrum.feature.trait.Traits;
 import me.dmillerw.quadrum.item.IQuadrumItem;
+import me.dmillerw.quadrum.network.GuiHandler;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
@@ -25,6 +28,8 @@ public class CommonProxy implements IProxy {
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
+        NetworkRegistry.INSTANCE.registerGuiHandler(Quadrum.INSTANCE, new GuiHandler());
+
         BlockLoader.getBlocks().forEach(CommonProxy::registerOreDictionaryTags);
         ItemLoader.getItems().forEach(CommonProxy::registerOreDictionaryTags);
     }

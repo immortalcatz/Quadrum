@@ -1,6 +1,6 @@
 package me.dmillerw.quadrum;
 
-import me.dmillerw.quadrum.command.CommandQuadrumDump;
+import me.dmillerw.quadrum.command.CommandViewData;
 import me.dmillerw.quadrum.lib.ModInfo;
 import me.dmillerw.quadrum.proxy.IProxy;
 import net.minecraftforge.fml.common.Loader;
@@ -48,6 +48,6 @@ public class Quadrum {
 
     @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
-        event.registerServerCommand(new CommandQuadrumDump());
+        event.registerServerCommand(new CommandViewData());
     }
 }

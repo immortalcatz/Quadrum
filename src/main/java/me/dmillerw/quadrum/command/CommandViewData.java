@@ -1,41 +1,23 @@
 package me.dmillerw.quadrum.command;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import me.dmillerw.quadrum.network.PacketHandler;
+import me.dmillerw.quadrum.network.packet.client.ClientOpenDumpGui;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author dmillerw
  */
-public class CommandQuadrumDump implements ICommand {
-
-    private static interface DataDumper {
-
-        public List<String> getData();
-    }
-
-    private static final Map<String, DataDumper> DATA_DUMPERS = Maps.newHashMap();
-    static {
-        DATA_DUMPERS.put("particle", () -> {
-            List<String> list = Lists.newArrayList();
-
-            for (EnumParticleTypes p : EnumParticleTypes.values())
-                list.add(p.name());
-
-            return list;
-        });
-    }
+public class CommandViewData implements ICommand {
 
     @Override
     public String getName() {
@@ -54,18 +36,9 @@ public class CommandQuadrumDump implements ICommand {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        if (args.length <= 0)
-            throw new WrongUsageException(getUsage(sender));
-
-        DataDumper dumper = DATA_DUMPERS.get(args[0]);
-        if (dumper == null)
-            return;
-
-        StringBuilder builder = new StringBuilder();
-        for (String s : dumper.getData())
-            builder.append(s).append(", ");
-
-        sender.sendMessage(new TextComponentString(builder.toString()));
+        String tag = args.length >= 1 ? args[0] : "";
+        if (sender instanceof EntityPlayer)
+            PacketHandler.INSTANCE.sendTo(new ClientOpenDumpGui(tag), (EntityPlayerMP) sender);
     }
 
     @Override
