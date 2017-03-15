@@ -17,7 +17,7 @@ public class Particle extends Trait<Particle> {
     @Override
     public boolean isValid() {
         if (type == null) {
-            LogHelper.warn("Failed to parse Particle trait: Particle type either invalid or empty");
+            LogHelper.warn("Failed to parse Particle trait: Particle property either invalid or empty");
             return false;
         }
 

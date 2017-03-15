@@ -2,6 +2,7 @@ package me.dmillerw.quadrum.lib.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import me.dmillerw.quadrum.feature.property.PropertyContainer;
 import me.dmillerw.quadrum.feature.trait.TraitContainer;
 import me.dmillerw.quadrum.lib.gson.adapter.NumberFactory;
 import me.dmillerw.quadrum.lib.gson.adapter.PostProcessableFactory;
@@ -27,6 +28,8 @@ public class GsonLib {
             builder.registerTypeAdapterFactory(new NumberFactory());
 
             builder.registerTypeAdapter(TraitContainer.class, new TraitContainer.Deserializer());
+            builder.registerTypeAdapter(PropertyContainer.class, new PropertyContainer.Deserializer());
+
             builder.registerTypeAdapter(AxisAlignedBB.class, new AABBDeserializer());
             builder.registerTypeAdapter(Material.class, new MaterialDeserializer());
             builder.registerTypeAdapter(ItemStack.class, new ItemStackDeserializer());

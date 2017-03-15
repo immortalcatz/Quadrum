@@ -41,7 +41,7 @@ public class BlockQuadrum extends Block implements IQuadrumBlock {
         super(Material.ROCK); // Handled via state-sensitive getter
 
         this.blockData = blockData;
-        this.traitPhysical = blockData.traits.get(Traits.BLOCK_PHYSICAL);
+        this.traitPhysical = blockData.getTrait(Traits.BLOCK_PHYSICAL);
 
         this.construct();
         this.setDefaultState(this.i_getDefaultState(this, blockState.getBaseState()));

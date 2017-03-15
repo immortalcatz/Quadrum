@@ -1,17 +1,12 @@
 package me.dmillerw.quadrum.proxy;
 
 import me.dmillerw.quadrum.Quadrum;
-import me.dmillerw.quadrum.block.BlockQuadrum;
-import me.dmillerw.quadrum.feature.data.BlockData;
-import me.dmillerw.quadrum.feature.data.ItemData;
 import me.dmillerw.quadrum.feature.loader.BlockLoader;
 import me.dmillerw.quadrum.feature.loader.ItemLoader;
 import me.dmillerw.quadrum.feature.trait.TraitHolder;
-import me.dmillerw.quadrum.feature.trait.Traits;
 import me.dmillerw.quadrum.item.IQuadrumItem;
 import me.dmillerw.quadrum.network.GuiHandler;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -45,19 +40,19 @@ public class CommonProxy implements IProxy {
     }
 
     private static void registerOreDictionaryTags(Block block) {
-        BlockData data =((BlockQuadrum)block).getObject();
-        for (int i=0; i<data.variants.length; i++) {
-            ItemStack stack = new ItemStack(block, 1, i);
-            registerOreDictionaryTags(data.traits.get(Traits.COMMON_ORE_DICTIONARY), stack);
-        }
+//        BlockData data =((BlockQuadrum)block).getObject();
+//        for (int i=0; i<data.variants.length; i++) {
+//            ItemStack stack = new ItemStack(block, 1, i);
+//            registerOreDictionaryTags(data.getTrait(Traits.COMMON_ORE_DICTIONARY), stack);
+//        }
     }
 
     private static void registerOreDictionaryTags(IQuadrumItem item) {
-        ItemData data = item.getObject();
-        for (int i=0; i<data.variants.length; i++) {
-            ItemStack stack = new ItemStack((Item)item, 1, i);
-            registerOreDictionaryTags(data.traits.get(Traits.COMMON_ORE_DICTIONARY), stack);
-        }
+//        ItemData data = item.getObject();
+//        for (int i=0; i<data.variants.length; i++) {
+//            ItemStack stack = new ItemStack((Item)item, 1, i);
+//            registerOreDictionaryTags(data.getTrait(Traits.COMMON_ORE_DICTIONARY), stack);
+//        }
     }
 
     private static void registerOreDictionaryTags(TraitHolder<List<String>> trait, ItemStack stack) {

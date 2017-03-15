@@ -4,11 +4,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import me.dmillerw.quadrum.block.BlockQuadrum;
 import me.dmillerw.quadrum.feature.data.BlockData;
-import me.dmillerw.quadrum.feature.data.ItemData;
+import me.dmillerw.quadrum.feature.data.IQuadrumObject;
+import me.dmillerw.quadrum.feature.data.QuadrumData;
+import me.dmillerw.quadrum.feature.property.handler.PropertyHandler;
 import me.dmillerw.quadrum.feature.trait.util.Trait;
-import me.dmillerw.quadrum.item.IQuadrumItem;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 import java.lang.reflect.Array;
@@ -28,9 +29,11 @@ public class TraitHolder<T> {
 
     public final T getValueFromBlockState(IBlockState state) {
         BlockData data = ((BlockQuadrum) state.getBlock()).getObject();
-        if (data.variants.length > 0) {
-            String value = state.getValue(data.getVariantProperty());
-            T variant = variants.get(value);
+        PropertyHandler propertyHandler = data.properties.propertyHandler;
+
+        if (propertyHandler.hasSubtypes(data)) {
+            IProperty property = propertyHandler.getBlockProperty(data);
+            T variant = variants.get(property.getName(state.getValue(property)));
 
             if (variant != null) {
                 return variant;
@@ -46,14 +49,8 @@ public class TraitHolder<T> {
         if (state.isEmpty())
             return defaultValue;
 
-        String[] variants = new String[0];
-        if (state.getItem() instanceof ItemBlock) {
-            BlockData data = ((BlockQuadrum)((ItemBlock) state.getItem()).block).getObject();
-            variants = data.variants;
-        } else {
-            ItemData data = ((IQuadrumItem)state.getItem()).getObject();
-            variants = data.variants;
-        }
+        QuadrumData data = (QuadrumData) ((IQuadrumObject)state.getItem()).getObject();
+        String[] variants = data.properties.propertyHandler.getSubtypes(data);
 
         if (variants.length > 0) {
             String value = variants[state.getItemDamage()];

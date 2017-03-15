@@ -3,7 +3,8 @@ package me.dmillerw.quadrum.feature.trait;
 import com.google.common.collect.Maps;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
-import me.dmillerw.quadrum.feature.loader.TraitState;
+import me.dmillerw.quadrum.feature.DataType;
+import me.dmillerw.quadrum.feature.loader.LoaderState;
 import me.dmillerw.quadrum.feature.trait.util.Trait;
 
 import java.lang.reflect.Type;
@@ -19,16 +20,16 @@ public class TraitContainer {
     public static final TypeToken<List<String>> TYPE_LIST = new TypeToken<List<String>>() {};
 
     private static Traits getTraitFromString(String key) {
-        final TraitState.State state = TraitState.getCurrentlyLoading();
+        final LoaderState.State state = LoaderState.getCurrentlyLoading();
 
         Traits trait = null;
-        if (state.type == TraitState.Type.BLOCK)
-            trait = Traits.get(Traits.Type.BLOCK, key);
-        else if (state.type == TraitState.Type.ITEM)
-            trait = Traits.get(Traits.Type.ITEM, key);
+        if (state.type == LoaderState.Type.BLOCK)
+            trait = Traits.get(DataType.BLOCK, key);
+        else if (state.type == LoaderState.Type.ITEM)
+            trait = Traits.get(DataType.ITEM, key);
 
         if (trait == null)
-            trait = Traits.get(Traits.Type.COMMON, key);
+            trait = Traits.get(DataType.COMMON, key);
 
         return trait;
     }
@@ -56,7 +57,7 @@ public class TraitContainer {
             if (!json.isJsonObject())
                 throw new JsonParseException("Tried to parse traits from something other than a JsonObject!");
 
-            if (TraitState.getCurrentlyLoading() == null)
+            if (LoaderState.getCurrentlyLoading() == null)
                 throw new JsonParseException("Tried to parse traits without an actively loading file");
 
             JsonObject object = json.getAsJsonObject();
@@ -65,10 +66,10 @@ public class TraitContainer {
             for (Map.Entry<String, JsonElement> entry : object.entrySet()) {
                 Traits traitEnum = getTraitFromString(entry.getKey());
                 if (traitEnum == null) {
-                    throw new JsonParseException("Tried to load a trait of type `" + entry.getKey() + "`, which doesn't exist");
+                    throw new JsonParseException("Tried to load a trait of property `" + entry.getKey() + "`, which doesn't exist");
                 }
 
-                TraitState.getCurrentlyLoading().setLoadingTrait(traitEnum);
+                LoaderState.getCurrentlyLoading().setLoadingTrait(traitEnum);
 
                 TypeToken type = traitEnum.typeToken;
 
@@ -113,7 +114,7 @@ public class TraitContainer {
                 }
             }
 
-            TraitState.getCurrentlyLoading().setLoadingTrait(null);
+            LoaderState.getCurrentlyLoading().setLoadingTrait(null);
 
             container.merge();
             return container;

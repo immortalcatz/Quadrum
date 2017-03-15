@@ -32,7 +32,7 @@ public class ItemQuadrumConsumable extends ItemFood implements IQuadrumItem {
         super(0, 0, false);
 
         this.itemData = itemData;
-        this.consumable = itemData.traits.get(Traits.ITEM_CONSUMABLE);
+        this.consumable = itemData.getTrait(Traits.ITEM_CONSUMABLE);
 
         this.construct();
     }

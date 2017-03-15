@@ -50,7 +50,7 @@ public class ItemLoader {
 
             ItemData data;
 
-            TraitState.setCurrentlyLoading(new TraitState.State(relative, TraitState.Type.ITEM));
+            LoaderState.setCurrentlyLoading(new LoaderState.State(relative, LoaderState.Type.ITEM));
 
             LogHelper.info("Starting to load a Item from " + relative);
 
@@ -69,9 +69,11 @@ public class ItemLoader {
                 LogHelper.warn(" - " + ex.getMessage());
             }
 
-            TraitState.setCurrentlyLoading(null);
+            LoaderState.setCurrentlyLoading(null);
 
             if (data == null) continue;
+
+            data.properties.propertyHandler.parent = data;
 
             dataMap.put(data.name, data);
         }
@@ -88,7 +90,7 @@ public class ItemLoader {
         for (ItemData data : dataMap.values()) {
             IQuadrumItem item;
 
-            if (data.traits.get(Traits.ITEM_CONSUMABLE) != null) {
+            if (data.getTrait(Traits.ITEM_CONSUMABLE) != null) {
                 item = new ItemQuadrumConsumable(data);
             } else {
                 item = new ItemQuadrum(data);

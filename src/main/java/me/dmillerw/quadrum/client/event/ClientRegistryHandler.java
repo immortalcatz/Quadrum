@@ -3,6 +3,7 @@ package me.dmillerw.quadrum.client.event;
 import me.dmillerw.quadrum.block.BlockQuadrum;
 import me.dmillerw.quadrum.feature.data.BlockData;
 import me.dmillerw.quadrum.feature.loader.BlockLoader;
+import me.dmillerw.quadrum.feature.property.handler.PropertyHandler;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -21,9 +22,12 @@ public class ClientRegistryHandler {
     public static void registerModels(ModelRegistryEvent evt) {
         for (ItemBlock block : BlockLoader.getItemBlocks()) {
             BlockData data = ((BlockQuadrum) block.block).getObject();
-            if (data.variants.length > 0) {
-                for (int i = 0; i < data.variants.length; i++) {
-                    String state = data.variants[i];
+            PropertyHandler propertyHandler = data.properties.propertyHandler;
+
+            if (propertyHandler.hasSubtypes(data)) {
+                String[] variants = propertyHandler.getSubtypes(data);
+                for (int i = 0; i < variants.length; i++) {
+                    String state = variants[i];
                     ModelResourceLocation location = new ModelResourceLocation(block.getRegistryName(), "variant=" + state);
                     ModelLoader.setCustomModelResourceLocation(block, i, location);
                 }

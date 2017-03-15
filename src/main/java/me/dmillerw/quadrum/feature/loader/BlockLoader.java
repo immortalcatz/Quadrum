@@ -6,7 +6,6 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import me.dmillerw.quadrum.Quadrum;
 import me.dmillerw.quadrum.block.BlockQuadrum;
-import me.dmillerw.quadrum.block.item.ItemBlockQuadrum;
 import me.dmillerw.quadrum.feature.data.BlockData;
 import me.dmillerw.quadrum.helper.LogHelper;
 import me.dmillerw.quadrum.lib.ModInfo;
@@ -59,7 +58,7 @@ public class BlockLoader {
 
             BlockData data;
 
-            TraitState.setCurrentlyLoading(new TraitState.State(relative, TraitState.Type.BLOCK));
+            LoaderState.setCurrentlyLoading(new LoaderState.State(relative, LoaderState.Type.BLOCK));
 
             LogHelper.info("Starting to load a Block from " + relative);
 
@@ -72,17 +71,19 @@ public class BlockLoader {
                 data = null;
                 LogHelper.warn("Failed to load Block due to an issue with the JSON syntax");
                 LogHelper.warn(" - " + ex.getMessage());
-                LogHelper.warn(" - Loading Trait: " + TraitState.getCurrentlyLoading().loadingTrait);
+                LogHelper.warn(" - Loading Trait: " + LoaderState.getCurrentlyLoading().loadingTrait);
             } catch (JsonParseException ex) {
                 data = null;
                 LogHelper.warn("Failed to load Block due to an issue parsing the file");
                 LogHelper.warn(" - " + ex.getMessage());
-                LogHelper.warn(" - Loading Trait: " + TraitState.getCurrentlyLoading().loadingTrait);
+                LogHelper.warn(" - Loading Trait: " + LoaderState.getCurrentlyLoading().loadingTrait);
             }
 
-            TraitState.setCurrentlyLoading(null);
+            LoaderState.setCurrentlyLoading(null);
 
             if (data == null) continue;
+
+            data.properties.propertyHandler.parent = data;
 
             dataMap.put(data.name, data);
         }
@@ -101,7 +102,7 @@ public class BlockLoader {
             // Here to allow for Blocks to still call upon their block impl even if they don't know their block impl yet
             // Like during super constructor calls (block state initialization, etc)
             BlockQuadrum.HACK = data;
-            BlockQuadrum block = new BlockQuadrum(data);
+            Block block = data.properties.propertyHandler.constructBlock(data);
             block.setUnlocalizedName(ModInfo.MOD_ID + ":" + data.name);
             block.setRegistryName(ModInfo.MOD_ID, data.name);
 
@@ -118,12 +119,7 @@ public class BlockLoader {
         for (Block block : blockMap.values()) {
             BlockData data = ((BlockQuadrum) block).getObject();
 
-            ItemBlock item;
-            if (data.variants.length > 0) {
-                item = new ItemBlockQuadrum(block, true).setSubtypeNames(data.variants);
-            } else {
-                item = new ItemBlockQuadrum(block, false);
-            }
+            ItemBlock item = data.properties.propertyHandler.constructItemBlock(data, block);
 
             itemBlockMap.put(data.name, item);
 

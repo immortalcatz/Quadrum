@@ -20,8 +20,6 @@ public class ItemBlockQuadrum extends ItemBlock {
     public ItemBlockQuadrum(Block block, boolean hasSubtypes) {
         super(block);
 
-        setMaxStackSize(((BlockQuadrum)block).getObject().maxStackSize);
-
         if (hasSubtypes) {
             this.setMaxDamage(0);
             this.setHasSubtypes(true);
@@ -30,7 +28,7 @@ public class ItemBlockQuadrum extends ItemBlock {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-        TraitHolder<List<String>> trait = ((BlockQuadrum)block).getObject().traits.get(Traits.COMMON_LORE);
+        TraitHolder<List<String>> trait = ((BlockQuadrum)block).getObject().getTrait(Traits.COMMON_LORE);
         if (trait != null) {
             tooltip.addAll(trait.getValueFromItemStack(stack));
         }

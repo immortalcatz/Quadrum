@@ -5,16 +5,16 @@ import me.dmillerw.quadrum.feature.trait.Traits;
 /**
  * @author dmillerw
  */
-public class TraitState {
+public class LoaderState {
 
     private static State currentlyLoading;
 
     public static void setCurrentlyLoading(State state) {
-        TraitState.currentlyLoading = state;
+        LoaderState.currentlyLoading = state;
     }
 
     public static State getCurrentlyLoading() {
-        return TraitState.currentlyLoading;
+        return LoaderState.currentlyLoading;
     }
 
     public static class State {
