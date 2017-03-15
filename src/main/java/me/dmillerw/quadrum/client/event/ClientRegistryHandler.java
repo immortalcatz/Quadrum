@@ -24,8 +24,8 @@ public class ClientRegistryHandler {
             BlockData data = ((BlockQuadrum) block.block).getObject();
             PropertyHandler propertyHandler = data.properties.propertyHandler;
 
-            if (propertyHandler.hasSubtypes(data)) {
-                String[] variants = propertyHandler.getSubtypes(data);
+            if (propertyHandler.hasSubtypes()) {
+                String[] variants = propertyHandler.getSubtypes();
                 for (int i = 0; i < variants.length; i++) {
                     String state = variants[i];
                     ModelResourceLocation location = new ModelResourceLocation(block.getRegistryName(), "variant=" + state);

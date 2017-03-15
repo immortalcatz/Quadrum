@@ -7,6 +7,7 @@ import com.google.gson.JsonSyntaxException;
 import me.dmillerw.quadrum.Quadrum;
 import me.dmillerw.quadrum.block.BlockQuadrum;
 import me.dmillerw.quadrum.feature.data.BlockData;
+import me.dmillerw.quadrum.feature.property.handler.block.BlockPropertyHandler;
 import me.dmillerw.quadrum.helper.LogHelper;
 import me.dmillerw.quadrum.lib.ModInfo;
 import me.dmillerw.quadrum.lib.gson.GsonLib;
@@ -102,7 +103,7 @@ public class BlockLoader {
             // Here to allow for Blocks to still call upon their block impl even if they don't know their block impl yet
             // Like during super constructor calls (block state initialization, etc)
             BlockQuadrum.HACK = data;
-            Block block = data.properties.propertyHandler.constructBlock(data);
+            Block block = ((BlockPropertyHandler)data.properties.propertyHandler).constructBlock(data);
             block.setUnlocalizedName(ModInfo.MOD_ID + ":" + data.name);
             block.setRegistryName(ModInfo.MOD_ID, data.name);
 
@@ -119,7 +120,7 @@ public class BlockLoader {
         for (Block block : blockMap.values()) {
             BlockData data = ((BlockQuadrum) block).getObject();
 
-            ItemBlock item = data.properties.propertyHandler.constructItemBlock(data, block);
+            ItemBlock item = ((BlockPropertyHandler)data.properties.propertyHandler).constructItemBlock(data, block);
 
             itemBlockMap.put(data.name, item);
 

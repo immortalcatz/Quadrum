@@ -4,7 +4,6 @@ import com.google.gson.*;
 import me.dmillerw.quadrum.feature.DataType;
 import me.dmillerw.quadrum.feature.loader.LoaderState;
 import me.dmillerw.quadrum.feature.property.handler.PropertyHandler;
-import me.dmillerw.quadrum.feature.property.handler.VariantsHandler;
 
 import java.lang.reflect.Type;
 
@@ -13,8 +12,8 @@ import java.lang.reflect.Type;
  */
 public class PropertyContainer {
 
-    public Properties type = Properties.VARIANTS;
-    public PropertyHandler propertyHandler = new VariantsHandler();
+    public Properties property;
+    public PropertyHandler propertyHandler;
 
     public <T> T getData() {
         return (T) propertyHandler.data;
@@ -48,11 +47,11 @@ public class PropertyContainer {
             JsonObject object = json.getAsJsonObject();
             PropertyContainer propertyContainer = new PropertyContainer();
 
-            Properties property = getPropertyFromString(object.get("type").getAsString());
+            Properties property = getPropertyFromString(object.get("property").getAsString());
             if (property == null)
-                throw new JsonParseException("Tried to parse Property of type " + object.get("type").getAsString() + ", which doesn't exist");
+                throw new JsonParseException("Tried to parse Property of property " + object.get("property").getAsString() + ", which doesn't exist");
 
-            propertyContainer.type = property;
+            propertyContainer.property = property;
             propertyContainer.propertyHandler = property.getPropertyHandler();
             propertyContainer.propertyHandler.data = context.deserialize(object, property.dataType.getType());
 

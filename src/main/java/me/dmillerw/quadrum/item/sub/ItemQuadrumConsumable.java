@@ -1,10 +1,9 @@
 package me.dmillerw.quadrum.item.sub;
 
-import me.dmillerw.quadrum.feature.trait.TraitHolder;
-import me.dmillerw.quadrum.item.IQuadrumItem;
 import me.dmillerw.quadrum.feature.data.ItemData;
-import me.dmillerw.quadrum.feature.trait.Traits;
-import me.dmillerw.quadrum.feature.trait.impl.item.Consumable;
+import me.dmillerw.quadrum.feature.property.data.Consumable;
+import me.dmillerw.quadrum.item.IQuadrumItem;
+import me.dmillerw.quadrum.item.lib.CommonItemMethods;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,34 +24,39 @@ import java.util.List;
 public class ItemQuadrumConsumable extends ItemFood implements IQuadrumItem {
 
     private final ItemData itemData;
-    private final TraitHolder<Consumable> consumable;
+    private final Consumable consumable;
 
     public ItemQuadrumConsumable(ItemData itemData) {
         // Send dummy impl to the constructor, everything is handled via stack-sensitive getters
         super(0, 0, false);
 
         this.itemData = itemData;
-        this.consumable = itemData.getTrait(Traits.ITEM_CONSUMABLE);
+        this.consumable = itemData.getPropertyData();
 
-        this.construct();
+        CommonItemMethods.construct(this);
     }
 
     @Override
+    public ItemData getObject() {
+        return this.itemData;
+    }
+
+    /* PROPERTY - CONSUMABLE */
+    @Override
     public EnumAction getItemUseAction(ItemStack stack) {
-        return consumable.getValueFromItemStack(stack).type;
+        return consumable.type;
     }
 
     @Override
     public int getMaxItemUseDuration(ItemStack stack) {
-        return consumable.getValueFromItemStack(stack).duration;
+        return consumable.duration;
     }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
-        Consumable c = consumable.getValueFromItemStack(itemstack);
 
-        if (c.stats == null || c.stats.canAlwaysEat) {
+        if (consumable.stats == null || consumable.stats.canAlwaysEat) {
             playerIn.setActiveHand(handIn);
             return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
         } else {
@@ -62,8 +66,6 @@ public class ItemQuadrumConsumable extends ItemFood implements IQuadrumItem {
 
     @Override
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
-        Consumable consumable = this.consumable.getValueFromItemStack(stack);
-
         if (entityLiving instanceof EntityPlayer && !((EntityPlayer) entityLiving).capabilities.isCreativeMode)
             stack.shrink(1);
 
@@ -81,41 +83,36 @@ public class ItemQuadrumConsumable extends ItemFood implements IQuadrumItem {
         return stack;
     }
 
-    /* ITEM_FOOD */
     @Override
     public int getHealAmount(ItemStack stack) {
-        return consumable.getValueFromItemStack(stack).stats.health;
+        return consumable.stats.health;
     }
 
     @Override
     public float getSaturationModifier(ItemStack stack) {
-        return consumable.getValueFromItemStack(stack).stats.saturation;
+        return consumable.stats.saturation;
     }
 
-    /* I_QUADRUM_ITEM */
-
-    @Override
-    public boolean hasEffect(ItemStack stack) {
-        return this.isEnchanted(stack);
-    }
-
+    /* TRAIT - TOOLTIP */
     @Override
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-        this.addLoreToTooltip(stack, tooltip);
+        CommonItemMethods.addLoreToTooltip(this, stack, tooltip);
     }
 
+    /* TRAIT - VISUAL */
+    @Override
+    public boolean hasEffect(ItemStack stack) {
+        return CommonItemMethods.isEnchanted(this, stack);
+    }
+
+    /* PROPERTY / VARIANTS */
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return this.getUnlocalizedStackName(stack);
+        return CommonItemMethods.getUnlocalizedStackName(this, stack);
     }
 
     @Override
     public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
-        this.getItemsForCreativeTab(subItems);
-    }
-
-    @Override
-    public ItemData getObject() {
-        return itemData;
+        CommonItemMethods.getItemsForCreativeTab(this, subItems);
     }
 }

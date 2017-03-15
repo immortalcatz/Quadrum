@@ -1,14 +1,13 @@
-package me.dmillerw.quadrum.feature.trait.impl.item;
+package me.dmillerw.quadrum.feature.property.data;
 
 import com.google.gson.annotations.SerializedName;
-import me.dmillerw.quadrum.feature.trait.util.Trait;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 
 /**
  * @author dmillerw
  */
-public class Consumable extends Trait<Consumable> {
+public class Consumable {
 
     public EnumAction type = EnumAction.EAT;
 
@@ -19,7 +18,7 @@ public class Consumable extends Trait<Consumable> {
     @SerializedName("resulting_item")
     public ItemStack resultingItem = ItemStack.EMPTY;
 
-    public static class FoodStats extends Trait<FoodStats> {
+    public static class FoodStats {
 
         public int health;
         public float saturation;

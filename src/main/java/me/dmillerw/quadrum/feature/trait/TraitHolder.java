@@ -6,7 +6,7 @@ import me.dmillerw.quadrum.block.BlockQuadrum;
 import me.dmillerw.quadrum.feature.data.BlockData;
 import me.dmillerw.quadrum.feature.data.IQuadrumObject;
 import me.dmillerw.quadrum.feature.data.QuadrumData;
-import me.dmillerw.quadrum.feature.property.handler.PropertyHandler;
+import me.dmillerw.quadrum.feature.property.handler.block.BlockPropertyHandler;
 import me.dmillerw.quadrum.feature.trait.util.Trait;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
@@ -29,10 +29,10 @@ public class TraitHolder<T> {
 
     public final T getValueFromBlockState(IBlockState state) {
         BlockData data = ((BlockQuadrum) state.getBlock()).getObject();
-        PropertyHandler propertyHandler = data.properties.propertyHandler;
+        BlockPropertyHandler propertyHandler = (BlockPropertyHandler) data.properties.propertyHandler;
 
-        if (propertyHandler.hasSubtypes(data)) {
-            IProperty property = propertyHandler.getBlockProperty(data);
+        if (propertyHandler.hasSubtypes()) {
+            IProperty property = propertyHandler.getBlockProperty();
             T variant = variants.get(property.getName(state.getValue(property)));
 
             if (variant != null) {
@@ -50,7 +50,7 @@ public class TraitHolder<T> {
             return defaultValue;
 
         QuadrumData data = (QuadrumData) ((IQuadrumObject)state.getItem()).getObject();
-        String[] variants = data.properties.propertyHandler.getSubtypes(data);
+        String[] variants = data.properties.propertyHandler.getSubtypes();
 
         if (variants.length > 0) {
             String value = variants[state.getItemDamage()];

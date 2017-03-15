@@ -6,11 +6,9 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import me.dmillerw.quadrum.Quadrum;
 import me.dmillerw.quadrum.feature.data.ItemData;
-import me.dmillerw.quadrum.feature.trait.Traits;
+import me.dmillerw.quadrum.feature.property.handler.item.ItemPropertyHandler;
 import me.dmillerw.quadrum.helper.LogHelper;
 import me.dmillerw.quadrum.item.IQuadrumItem;
-import me.dmillerw.quadrum.item.ItemQuadrum;
-import me.dmillerw.quadrum.item.sub.ItemQuadrumConsumable;
 import me.dmillerw.quadrum.lib.ModInfo;
 import me.dmillerw.quadrum.lib.gson.GsonLib;
 import net.minecraft.item.Item;
@@ -88,18 +86,12 @@ public class ItemLoader {
         ItemLoader.initialize(Quadrum.itemDirectory);
 
         for (ItemData data : dataMap.values()) {
-            IQuadrumItem item;
-
-            if (data.getTrait(Traits.ITEM_CONSUMABLE) != null) {
-                item = new ItemQuadrumConsumable(data);
-            } else {
-                item = new ItemQuadrum(data);
-            }
+            Item item = ((ItemPropertyHandler)data.properties.propertyHandler).constructItem(data);
 
             ((Item)item).setUnlocalizedName(ModInfo.MOD_ID + ":" + data.name);
             ((Item)item).setRegistryName(ModInfo.MOD_ID, data.name);
 
-            itemMap.put(data.name, item);
+            itemMap.put(data.name, (IQuadrumItem) item);
 
             event.getRegistry().register((Item)item);
         }

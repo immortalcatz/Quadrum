@@ -2,16 +2,22 @@ package me.dmillerw.quadrum.feature.property;
 
 import com.google.common.reflect.TypeToken;
 import me.dmillerw.quadrum.feature.DataType;
+import me.dmillerw.quadrum.feature.property.data.Consumable;
 import me.dmillerw.quadrum.feature.property.data.Variants;
 import me.dmillerw.quadrum.feature.property.handler.PropertyHandler;
-import me.dmillerw.quadrum.feature.property.handler.VariantsHandler;
+import me.dmillerw.quadrum.feature.property.handler.block.BlockVariantsHandler;
+import me.dmillerw.quadrum.feature.property.handler.item.ConsumableHandler;
+import me.dmillerw.quadrum.feature.property.handler.item.ItemVariantsHandler;
 
 /**
  * @author dmillerw
  */
 public enum Properties {
 
-    VARIANTS(DataType.COMMON, "variants", new TypeToken<Variants>() {}, VariantsHandler::new);
+    BLOCK_VARIANTS(DataType.BLOCK, "variants", new TypeToken<Variants>() {}, BlockVariantsHandler::new),
+
+    ITEM_CONSUMABLE(DataType.ITEM, "consumable", new TypeToken<Consumable>() {}, ConsumableHandler::new),
+    ITEM_VARIANTS(DataType.ITEM, "variants", new TypeToken<Variants>() {}, ItemVariantsHandler::new);
 
     private DataType type;
     private String key;

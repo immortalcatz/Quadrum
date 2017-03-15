@@ -31,7 +31,7 @@ public class CommonItemMethods {
         ItemData data = item.getObject();
         PropertyHandler propertyHandler = data.properties.propertyHandler;
 
-        if (propertyHandler.hasSubtypes(data)) {
+        if (propertyHandler.hasSubtypes()) {
             ((Item)item).setHasSubtypes(true);
         }
 
@@ -69,7 +69,7 @@ public class CommonItemMethods {
         PropertyHandler propertyHandler = data.properties.propertyHandler;
 
         if (((Item)item).getHasSubtypes()) {
-            for (int i=0; i<propertyHandler.getSubtypes(data).length; i++) {
+            for (int i = 0; i<propertyHandler.getSubtypes().length; i++) {
                 list.add(new ItemStack((Item)item, 1, i));
             }
         } else {
@@ -81,7 +81,7 @@ public class CommonItemMethods {
         ItemData data = item.getObject();
         PropertyHandler propertyHandler = data.properties.propertyHandler;
 
-        String[] variants = propertyHandler.getSubtypes(data);
+        String[] variants = propertyHandler.getSubtypes();
 
         if (((Item)item).getHasSubtypes() && stack.getMetadata() < variants.length) {
             return String.format("item.%s:%s", ModInfo.MOD_ID, variants[Math.abs(stack.getMetadata() % variants.length)]);
@@ -95,7 +95,7 @@ public class CommonItemMethods {
         ItemData data = item.getObject();
         PropertyHandler propertyHandler = data.properties.propertyHandler;
 
-        String[] variants = propertyHandler.getSubtypes(data);
+        String[] variants = propertyHandler.getSubtypes();
 
         if (((Item)item).getHasSubtypes()) {
             List<ModelResourceLocation> modelResources = Lists.newArrayList();

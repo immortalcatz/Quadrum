@@ -3,7 +3,7 @@ package me.dmillerw.quadrum.feature.trait;
 import com.google.common.reflect.TypeToken;
 import me.dmillerw.quadrum.feature.DataType;
 import me.dmillerw.quadrum.feature.trait.impl.block.*;
-import me.dmillerw.quadrum.feature.trait.impl.item.Consumable;
+import me.dmillerw.quadrum.feature.property.data.Consumable;
 import me.dmillerw.quadrum.feature.trait.impl.item.ItemVisual;
 
 import java.util.List;
@@ -23,7 +23,6 @@ public enum Traits {
     BLOCK_VISUAL(DataType.BLOCK, "visual", new TypeToken<BlockVisual>() {}),
     BLOCK_DROP(DataType.BLOCK, "drop", new TypeToken<Drop[]>() {}),
 
-    ITEM_CONSUMABLE(DataType.ITEM, "consumable", new TypeToken<Consumable>() {}),
     ITEM_VISUAL(DataType.ITEM, "visual", new TypeToken<ItemVisual>() {});
 
     private DataType type;

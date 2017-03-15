@@ -5,6 +5,7 @@ import me.dmillerw.quadrum.block.BlockQuadrum;
 import me.dmillerw.quadrum.block.IQuadrumBlock;
 import me.dmillerw.quadrum.feature.data.BlockData;
 import me.dmillerw.quadrum.feature.property.handler.PropertyHandler;
+import me.dmillerw.quadrum.feature.property.handler.block.BlockPropertyHandler;
 import me.dmillerw.quadrum.feature.trait.TraitHolder;
 import me.dmillerw.quadrum.feature.trait.Traits;
 import me.dmillerw.quadrum.feature.trait.impl.block.*;
@@ -54,8 +55,8 @@ public class CommonBlockMethods {
         BlockData data = BlockQuadrum.HACK;
         PropertyHandler propertyHandler = BlockQuadrum.HACK.properties.propertyHandler;
 
-        if (propertyHandler.hasSubtypes(data)) {
-            return new BlockStateContainer((Block) block, propertyHandler.getBlockProperty(data));
+        if (propertyHandler.hasSubtypes()) {
+            return new BlockStateContainer((Block) block, ((BlockPropertyHandler)propertyHandler).getBlockProperty());
         } else {
             return new BlockStateContainer((Block) block);
         }
@@ -65,9 +66,9 @@ public class CommonBlockMethods {
         BlockData data = block.getObject();
         PropertyHandler propertyHandler = data.properties.propertyHandler;
 
-        if (propertyHandler.hasSubtypes(data)) {
-            IProperty property = propertyHandler.getBlockProperty(data);
-            return baseState.withProperty(property, propertyHandler.getDefaultState(data));
+        if (propertyHandler.hasSubtypes()) {
+            IProperty property = ((BlockPropertyHandler)propertyHandler).getBlockProperty();
+            return baseState.withProperty(property, ((BlockPropertyHandler)propertyHandler).getDefaultState());
         } else {
             return baseState;
         }
@@ -77,8 +78,8 @@ public class CommonBlockMethods {
         BlockData data = block.getObject();
         PropertyHandler propertyHandler = data.properties.propertyHandler;
 
-        if (propertyHandler.hasSubtypes(data)) {
-            return propertyHandler.getMetaFromState(data, blockState);
+        if (propertyHandler.hasSubtypes()) {
+            return ((BlockPropertyHandler)propertyHandler).getMetaFromState(blockState);
         }
 
         return 0;
@@ -90,9 +91,9 @@ public class CommonBlockMethods {
 
         IBlockState defaultState = ((Block) block).getDefaultState();
 
-        if (propertyHandler.hasSubtypes(data)) {
-            IProperty property = propertyHandler.getBlockProperty(data);
-            return defaultState.withProperty(property, propertyHandler.getStateFromMeta(data, metadata));
+        if (propertyHandler.hasSubtypes()) {
+            IProperty property = ((BlockPropertyHandler)propertyHandler).getBlockProperty();
+            return defaultState.withProperty(property, ((BlockPropertyHandler)propertyHandler).getStateFromMeta(metadata));
         } else {
             return defaultState;
         }
@@ -103,8 +104,8 @@ public class CommonBlockMethods {
         BlockData data = block.getObject();
         PropertyHandler propertyHandler = data.properties.propertyHandler;
 
-        if (propertyHandler.hasSubtypes(data)) {
-            for (int i = 0; i < propertyHandler.getSubtypes(data).length; i++) {
+        if (propertyHandler.hasSubtypes()) {
+            for (int i = 0; i < propertyHandler.getSubtypes().length; i++) {
                 list.add(new ItemStack(Item.getItemFromBlock((Block) block), 1, i));
             }
         } else {
@@ -292,11 +293,14 @@ public class CommonBlockMethods {
         if (trait != null) {
             return !trait.getValueFromBlockState(state).fullCube;
         } else {
-            return state.getMaterial().isOpaque() && state.isFullCube();
+            return state.getMaterial().isOpaque();
         }
     }
 
     public static boolean isOpaqueCube(IQuadrumBlock block, IBlockState state) {
+        if (block == null || state == null || block.getObject() == null)
+            return true;
+
         TraitHolder<BlockVisual> trait = block.getObject().getTrait(Traits.BLOCK_VISUAL);
         if (trait != null) {
             return !trait.getValueFromBlockState(state).transparent;

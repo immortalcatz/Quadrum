@@ -52,6 +52,4 @@ public class ItemQuadrum extends Item implements IQuadrumItem {
     public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
         CommonItemMethods.getItemsForCreativeTab(this, subItems);
     }
-
-
 }
