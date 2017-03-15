@@ -34,7 +34,7 @@ import java.util.Random;
 /**
  * @author dmillerw
  */
-public class SharedBlockMethods {
+public class CommonBlockMethods {
 
     public static void construct(IQuadrumBlock block) {
         BlockData data = block.getObject();
@@ -223,7 +223,7 @@ public class SharedBlockMethods {
             Physical physical = trait.getValueFromBlockState(worldIn.getBlockState(pos));
             if (physical.gravity) {
                 if (!worldIn.isRemote) {
-                    SharedBlockMethods.checkForFallingConditions(worldIn, pos);
+                    CommonBlockMethods.checkForFallingConditions(worldIn, pos);
                 }
             }
         }

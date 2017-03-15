@@ -1,6 +1,7 @@
 package me.dmillerw.quadrum.item;
 
 import me.dmillerw.quadrum.feature.data.ItemData;
+import me.dmillerw.quadrum.item.lib.CommonItemMethods;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -21,33 +22,36 @@ public class ItemQuadrum extends Item implements IQuadrumItem {
 
         this.itemData = itemData;
 
-        this.construct();
-    }
-
-    /* I_QUADRUM_ITEM */
-
-    @Override
-    public boolean hasEffect(ItemStack stack) {
-        return this.isEnchanted(stack);
-    }
-
-    @Override
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-        this.addLoreToTooltip(stack, tooltip);
-    }
-
-    @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        return this.getUnlocalizedStackName(stack);
-    }
-
-    @Override
-    public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
-        this.getItemsForCreativeTab(subItems);
+        CommonItemMethods.construct(this);
     }
 
     @Override
     public ItemData getObject() {
         return itemData;
     }
+
+    /* TRAIT - TOOLTIP */
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+        CommonItemMethods.addLoreToTooltip(this, stack, tooltip);
+    }
+
+    /* TRAIT - VISUAL */
+    @Override
+    public boolean hasEffect(ItemStack stack) {
+        return CommonItemMethods.isEnchanted(this, stack);
+    }
+
+    /* PROPERTY / VARIANTS */
+    @Override
+    public String getUnlocalizedName(ItemStack stack) {
+        return CommonItemMethods.getUnlocalizedStackName(this, stack);
+    }
+
+    @Override
+    public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
+        CommonItemMethods.getItemsForCreativeTab(this, subItems);
+    }
+
+
 }
