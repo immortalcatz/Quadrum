@@ -1,17 +1,13 @@
 package me.dmillerw.quadrum.block;
 
+import me.dmillerw.quadrum.block.lib.SharedBlockMethods;
 import me.dmillerw.quadrum.feature.data.BlockData;
-import me.dmillerw.quadrum.feature.trait.TraitHolder;
-import me.dmillerw.quadrum.feature.trait.Traits;
-import me.dmillerw.quadrum.feature.trait.impl.block.Physical;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
@@ -35,16 +31,19 @@ public class BlockQuadrum extends Block implements IQuadrumBlock {
     public static BlockData HACK = null;
 
     private final BlockData blockData;
-    private final TraitHolder<Physical> traitPhysical;
 
     public BlockQuadrum(BlockData blockData) {
         super(Material.ROCK); // Handled via state-sensitive getter
 
         this.blockData = blockData;
-        this.traitPhysical = blockData.getTrait(Traits.BLOCK_PHYSICAL);
 
-        this.construct();
-        this.setDefaultState(this.i_getDefaultState(this, blockState.getBaseState()));
+        SharedBlockMethods.construct(this);
+        this.setDefaultState(SharedBlockMethods.getDefaultBlockState(this, blockState.getBaseState()));
+    }
+
+    @Override
+    public BlockData getObject() {
+        return blockData;
     }
 
     @Override
@@ -54,149 +53,112 @@ public class BlockQuadrum extends Block implements IQuadrumBlock {
 
     /* TRAIT - PHYSICAL */
     @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
-        if (traitPhysical != null) {
-            Physical physical = traitPhysical.getValueFromBlockState(worldIn.getBlockState(pos));
-            if (physical.gravity) {
-                worldIn.scheduleUpdate(pos, this, 2);
-            }
-        }
-    }
-
-    @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-        if (traitPhysical != null) {
-            Physical physical = traitPhysical.getValueFromBlockState(worldIn.getBlockState(pos));
-            if (physical.gravity) {
-                worldIn.scheduleUpdate(pos, this, 2);
-            }
-        }
-    }
-
-    @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-        if (traitPhysical != null) {
-            Physical physical = traitPhysical.getValueFromBlockState(worldIn.getBlockState(pos));
-            if (physical.gravity) {
-                if (!worldIn.isRemote) {
-                    this.checkForFallingConditions(worldIn, pos);
-                }
-            }
-        }
-    }
-
-    private void checkForFallingConditions(World worldIn, BlockPos pos) {
-        if ((worldIn.isAirBlock(pos.down()) || BlockFalling.canFallThrough(worldIn.getBlockState(pos.down()))) && pos.getY() >= 0) {
-            int i = 32;
-
-            if (!BlockFalling.fallInstantly && worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32))) {
-                if (!worldIn.isRemote) {
-                    EntityFallingBlock entityfallingblock = new EntityFallingBlock(worldIn, (double) pos.getX() + 0.5D, (double) pos.getY(), (double) pos.getZ() + 0.5D, worldIn.getBlockState(pos));
-                    worldIn.spawnEntity(entityfallingblock);
-                }
-            } else {
-                IBlockState state = worldIn.getBlockState(pos);
-                worldIn.setBlockToAir(pos);
-                BlockPos blockpos;
-
-                for (blockpos = pos.down(); (worldIn.isAirBlock(blockpos) || BlockFalling.canFallThrough(worldIn.getBlockState(blockpos))) && blockpos.getY() > 0; blockpos = blockpos.down()) {
-                    ;
-                }
-
-                if (blockpos.getY() > 0) {
-                    worldIn.setBlockState(blockpos.up(), state); //Forge: Fix loss of state information during world gen.
-                }
-            }
-        }
-    }
-
-    /* I_QUADRUM_BLOCK */
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return this.i_getSelectionBoundingBox(state);
-    }
-
-    @Nullable
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
-        return this.i_getCollisionBoundingBox(blockState, worldIn, pos);
-    }
-
-    @Override
     public Material getMaterial(IBlockState state) {
-        return this.i_getMaterial(state);
+        return SharedBlockMethods.getMaterial(this, state);
     }
 
     @Override
     public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-        return this.i_getHardness(blockState);
+        return SharedBlockMethods.getHardness(this, blockState);
     }
 
     @Override
     public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
-        return this.i_getExplosionResistance(world.getBlockState(pos));
+        return SharedBlockMethods.getExplosionResistance(this, world.getBlockState(pos));
     }
 
     @Override
     public int getLightValue(IBlockState state) {
-        return this.i_getLightValue(state);
-    }
-
-    @Override
-    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
-        this.i_onRandomDisplayTick(state, world, pos);
-    }
-
-    @Override
-    public boolean canProvidePower(IBlockState state) {
-        return this.i_canProvidePower(state);
-    }
-
-    @Override
-    public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-        return this.i_getWeakPower(blockState, side);
-    }
-
-    @Override
-    public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-        return this.i_getStrongPower(blockState, side);
-    }
-
-    @Override
-    public boolean isFullCube(IBlockState state) {
-        return super.isFullCube(state);
-    }
-
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return super.isOpaqueCube(state);
-    }
-
-    @Override
-    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-        return this.i_canRenderInLayer(state, layer);
+        return SharedBlockMethods.getLightValue(this, state);
     }
 
     @Nullable
     @Override
     public String getHarvestTool(IBlockState state) {
-        return this.i_getHarvestTool(state);
+        return SharedBlockMethods.getHarvestTool(this, state);
     }
 
     @Override
     public int getHarvestLevel(IBlockState state) {
-        return this.i_getHarvestLevel(state);
+        return SharedBlockMethods.getHarvestLevel(this, state);
     }
 
+    /* PHYSICAL - GRAVITY */
+    @Override
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+        SharedBlockMethods.onBlockAdded(this, worldIn, pos, state);
+    }
+
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        SharedBlockMethods.neighborChanged(this, state, worldIn, pos, blockIn, fromPos);
+    }
+
+    @Override
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+        SharedBlockMethods.updateTick(this, worldIn, pos, state, rand);
+    }
+
+    /* TRAIT - BOUNDING BOX */
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return SharedBlockMethods.getSelectionBoundingBox(this, state);
+    }
+
+    @Nullable
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+        return SharedBlockMethods.getCollisionBoundingBox(this, blockState, worldIn, pos);
+    }
+
+    /* TRAIT - PARTICLES */
+    @Override
+    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
+        SharedBlockMethods.onRandomDisplayTick(this, state, world, pos);
+    }
+
+    /* TRAIT - REDSTONE */
+    @Override
+    public boolean canProvidePower(IBlockState state) {
+        return SharedBlockMethods.canProvidePower(this, state);
+    }
+
+    @Override
+    public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+        return SharedBlockMethods.getWeakPower(this, blockState, side);
+    }
+
+    @Override
+    public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+        return SharedBlockMethods.getStrongPower(this, blockState, side);
+    }
+
+    /* TRAIT - VISUAL */
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return SharedBlockMethods.isFullCube(this, state);
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return SharedBlockMethods.isOpaqueCube(this, state);
+    }
+
+    @Override
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+        return SharedBlockMethods.canRenderInLayer(this, state, layer);
+    }
+
+    /* TRAIT - DROPS */
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        return this.i_getDrops(state, fortune);
+        return SharedBlockMethods.getDrops(this, state, fortune);
     }
 
-    // Variants
+    /* VARIANTS / PROPERTIES */
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
-        this.i_getSubBlocks(itemIn, list);
+        SharedBlockMethods.getSubBlocks(this, list);
     }
 
     @Override
@@ -206,21 +168,16 @@ public class BlockQuadrum extends Block implements IQuadrumBlock {
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.i_getStateFromMetadata(meta);
+        return SharedBlockMethods.getBlockStateFromMetadata(this, meta);
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return this.i_getMetadataFromState(state);
+        return SharedBlockMethods.getMetadataFromBlockState(this, state);
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return this.i_getBlockStateContainer();
-    }
-
-    @Override
-    public BlockData getObject() {
-        return blockData;
+        return SharedBlockMethods.getBlockStateContainer(this);
     }
 }
