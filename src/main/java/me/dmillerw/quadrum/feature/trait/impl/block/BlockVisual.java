@@ -12,7 +12,7 @@ public class BlockVisual extends Trait<BlockVisual> {
     public static final String TRANSPARENCY_PARTIAL = "partial";
     public static final String TRANSPARENCY_FULL = "full";
 
-    public String transparency = BlockVisual.TRANSPARENCY_NONE; // none, partial, full
+    public String transparency;
     @SerializedName("full_cube")
     public boolean fullCube = true;
 }
