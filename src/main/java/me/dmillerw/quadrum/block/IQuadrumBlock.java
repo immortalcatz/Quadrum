@@ -215,7 +215,7 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
     public default boolean i_isOpaqueCube(IBlockState state) {
         TraitHolder<BlockVisual> trait = getObject().traits.get(Traits.BLOCK_VISUAL);
         if (trait != null) {
-            return !trait.getValueFromBlockState(state).transparent;
+            return trait.getValueFromBlockState(state).transparency.equalsIgnoreCase(BlockVisual.TRANSPARENCY_NONE);
         } else {
             return true;
         }
@@ -225,7 +225,13 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
         TraitHolder<BlockVisual> trait = getObject().traits.get(Traits.BLOCK_VISUAL);
         if (trait != null) {
             BlockVisual visual = trait.getValueFromBlockState(state);
-            return visual.transparent ? layer == BlockRenderLayer.TRANSLUCENT : layer == BlockRenderLayer.SOLID;
+            if (visual.transparency.equalsIgnoreCase(BlockVisual.TRANSPARENCY_PARTIAL)) {
+                return layer == BlockRenderLayer.TRANSLUCENT;
+            } else if (visual.transparency.equalsIgnoreCase(BlockVisual.TRANSPARENCY_FULL)) {
+                return layer == BlockRenderLayer.CUTOUT;
+            } else {
+                return layer == BlockRenderLayer.SOLID;
+            }
         } else {
             return layer == BlockRenderLayer.SOLID;
         }

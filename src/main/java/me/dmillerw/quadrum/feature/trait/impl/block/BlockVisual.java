@@ -8,7 +8,11 @@ import me.dmillerw.quadrum.feature.trait.util.Trait;
  */
 public class BlockVisual extends Trait<BlockVisual> {
 
-    public boolean transparent = true;
+    public static final String TRANSPARENCY_NONE = "none";
+    public static final String TRANSPARENCY_PARTIAL = "partial";
+    public static final String TRANSPARENCY_FULL = "full";
+
+    public String transparency = BlockVisual.TRANSPARENCY_NONE; // none, partial, full
     @SerializedName("full_cube")
     public boolean fullCube = true;
 }
