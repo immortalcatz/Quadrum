@@ -4,6 +4,7 @@ import me.dmillerw.quadrum.block.BlockQuadrum;
 import me.dmillerw.quadrum.block.item.ItemBlockQuadrum;
 import me.dmillerw.quadrum.feature.data.BlockData;
 import me.dmillerw.quadrum.feature.property.handler.PropertyHandler;
+import me.dmillerw.quadrum.lib.ModInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyHelper;
@@ -17,12 +18,27 @@ public abstract class BlockPropertyHandler<T extends Comparable<T>, V> extends P
 
     private IProperty<T> blockProperty;
 
-    public Block constructBlock(BlockData data) {
-        return new BlockQuadrum(data);
+    public Block[] loadBlocks(BlockData data) {
+        Block block = new BlockQuadrum(data);
+
+        block.setUnlocalizedName(ModInfo.MOD_ID + ":" + data.name);
+        block.setRegistryName(ModInfo.MOD_ID, data.name);
+
+        return new Block[] { block };
     }
 
-    public ItemBlock constructItemBlock(BlockData data, Block block) {
-        return new ItemBlockQuadrum(block, hasSubtypes()).setSubtypeNames(getSubtypes());
+    public ItemBlock[] loadItemBlocks(BlockData data) {
+        ItemBlockQuadrum itemBlock = new ItemBlockQuadrum(data.blocks.get(0), hasSubtypes());
+        if (hasSubtypes()) itemBlock.setSubtypeNames(getSubtypes());
+
+        itemBlock.setRegistryName(ModInfo.MOD_ID, data.name);
+
+        return new ItemBlock[] { itemBlock };
+    }
+
+    public String getVariantFromBlockState(IBlockState state) {
+        IProperty property = getBlockProperty();
+        return property.getName(state.getValue(property));
     }
 
     public abstract IProperty _getBlockProperty();

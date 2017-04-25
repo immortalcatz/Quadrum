@@ -1,8 +1,6 @@
 package me.dmillerw.quadrum.proxy;
 
 import me.dmillerw.quadrum.Quadrum;
-import me.dmillerw.quadrum.feature.loader.BlockLoader;
-import me.dmillerw.quadrum.feature.loader.ItemLoader;
 import me.dmillerw.quadrum.feature.trait.TraitHolder;
 import me.dmillerw.quadrum.item.IQuadrumItem;
 import me.dmillerw.quadrum.network.GuiHandler;
@@ -25,8 +23,8 @@ public class CommonProxy implements IProxy {
     public void preInit(FMLPreInitializationEvent event) {
         NetworkRegistry.INSTANCE.registerGuiHandler(Quadrum.INSTANCE, new GuiHandler());
 
-        BlockLoader.getBlocks().forEach(CommonProxy::registerOreDictionaryTags);
-        ItemLoader.getItems().forEach(CommonProxy::registerOreDictionaryTags);
+//        BlockLoader.getBlocks().forEach(CommonProxy::registerOreDictionaryTags);
+//        ItemLoader.getItems().forEach(CommonProxy::registerOreDictionaryTags);
     }
 
     @Override

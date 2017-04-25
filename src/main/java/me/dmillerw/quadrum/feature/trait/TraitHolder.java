@@ -8,7 +8,6 @@ import me.dmillerw.quadrum.feature.data.IQuadrumObject;
 import me.dmillerw.quadrum.feature.data.QuadrumData;
 import me.dmillerw.quadrum.feature.property.handler.block.BlockPropertyHandler;
 import me.dmillerw.quadrum.feature.trait.util.Trait;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 
@@ -32,8 +31,7 @@ public class TraitHolder<T> {
         BlockPropertyHandler propertyHandler = (BlockPropertyHandler) data.properties.propertyHandler;
 
         if (propertyHandler.hasSubtypes()) {
-            IProperty property = propertyHandler.getBlockProperty();
-            T variant = variants.get(property.getName(state.getValue(property)));
+            T variant = variants.get(((BlockPropertyHandler)data.properties.propertyHandler).getVariantFromBlockState(state));
 
             if (variant != null) {
                 return variant;

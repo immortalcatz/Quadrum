@@ -9,7 +9,6 @@ import me.dmillerw.quadrum.block.BlockQuadrum;
 import me.dmillerw.quadrum.feature.data.BlockData;
 import me.dmillerw.quadrum.feature.property.handler.block.BlockPropertyHandler;
 import me.dmillerw.quadrum.helper.LogHelper;
-import me.dmillerw.quadrum.lib.ModInfo;
 import me.dmillerw.quadrum.lib.gson.GsonLib;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -34,17 +33,11 @@ import java.util.Map;
 public class BlockLoader {
 
     private static Map<String, BlockData> dataMap = Maps.newHashMap();
-    private static Map<String, Block> blockMap = Maps.newHashMap();
-    private static Map<String, ItemBlock> itemBlockMap = Maps.newHashMap();
 
     private static boolean initialized = false;
 
-    public static Collection<Block> getBlocks() {
-        return blockMap.values();
-    }
-
-    public static Collection<ItemBlock> getItemBlocks() {
-        return itemBlockMap.values();
+    public static Collection<BlockData> getBlockData() {
+        return dataMap.values();
     }
 
     public static void initialize(File dir) {
@@ -87,6 +80,17 @@ public class BlockLoader {
             data.properties.propertyHandler.parent = data;
 
             dataMap.put(data.name, data);
+
+            // Block/Item initialization
+
+            // Dammit Java:
+            // Here to allow for Blocks to still call upon their block impl even if they don't know their block impl yet
+            // Like during super constructor calls (block state initialization, etc)
+            BlockQuadrum.HACK = data;
+            for (Block block : ((BlockPropertyHandler)data.properties.propertyHandler).loadBlocks(data)) data.blocks.add(block);
+            for (ItemBlock itemBlock : ((BlockPropertyHandler)data.properties.propertyHandler).loadItemBlocks(data)) data.itemBlocks.add(itemBlock);
+
+            BlockQuadrum.HACK = null;
         }
 
         LogHelper.info("Loaded " + dataMap.size() + " blocks into the game");
@@ -99,34 +103,14 @@ public class BlockLoader {
         BlockLoader.initialize(Quadrum.blockDirectory);
 
         for (BlockData data : dataMap.values()) {
-            // Dammit Java:
-            // Here to allow for Blocks to still call upon their block impl even if they don't know their block impl yet
-            // Like during super constructor calls (block state initialization, etc)
-            BlockQuadrum.HACK = data;
-            Block block = ((BlockPropertyHandler)data.properties.propertyHandler).constructBlock(data);
-            block.setUnlocalizedName(ModInfo.MOD_ID + ":" + data.name);
-            block.setRegistryName(ModInfo.MOD_ID, data.name);
-
-            blockMap.put(data.name, block);
-
-            event.getRegistry().register(block);
+            data.blocks.forEach((b) -> event.getRegistry().register(b));
         }
-
-        BlockQuadrum.HACK = null;
     }
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
-        for (Block block : blockMap.values()) {
-            BlockData data = ((BlockQuadrum) block).getObject();
-
-            ItemBlock item = ((BlockPropertyHandler)data.properties.propertyHandler).constructItemBlock(data, block);
-
-            itemBlockMap.put(data.name, item);
-
-            item.setRegistryName(ModInfo.MOD_ID, data.name);
-
-            event.getRegistry().register(item);
+        for (BlockData data : dataMap.values()) {
+            data.itemBlocks.forEach((i) -> event.getRegistry().register(i));
         }
     }
 }

@@ -3,8 +3,10 @@ package me.dmillerw.quadrum.feature.property;
 import com.google.common.reflect.TypeToken;
 import me.dmillerw.quadrum.feature.DataType;
 import me.dmillerw.quadrum.feature.property.data.Consumable;
+import me.dmillerw.quadrum.feature.property.data.Slab;
 import me.dmillerw.quadrum.feature.property.data.Variants;
 import me.dmillerw.quadrum.feature.property.handler.PropertyHandler;
+import me.dmillerw.quadrum.feature.property.handler.block.BlockSlabHandler;
 import me.dmillerw.quadrum.feature.property.handler.block.BlockVariantsHandler;
 import me.dmillerw.quadrum.feature.property.handler.item.ConsumableHandler;
 import me.dmillerw.quadrum.feature.property.handler.item.ItemVariantsHandler;
@@ -15,9 +17,10 @@ import me.dmillerw.quadrum.feature.property.handler.item.ItemVariantsHandler;
 public enum Properties {
 
     BLOCK_VARIANTS(DataType.BLOCK, "variants", new TypeToken<Variants>() {}, BlockVariantsHandler::new),
+    BLOCK_SLAB(DataType.BLOCK, "slab", new TypeToken<Slab>() {}, BlockSlabHandler::new),
 
-    ITEM_CONSUMABLE(DataType.ITEM, "consumable", new TypeToken<Consumable>() {}, ConsumableHandler::new),
-    ITEM_VARIANTS(DataType.ITEM, "variants", new TypeToken<Variants>() {}, ItemVariantsHandler::new);
+    ITEM_VARIANTS(DataType.ITEM, "variants", new TypeToken<Variants>() {}, ItemVariantsHandler::new),
+    ITEM_CONSUMABLE(DataType.ITEM, "consumable", new TypeToken<Consumable>() {}, ConsumableHandler::new);
 
     private DataType type;
     private String key;

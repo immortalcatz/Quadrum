@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "half=bottom": { "model": "minecraft:half_slab_birch" },
+    "half=top": { "model": "minecraft:upper_slab_birch" }
+  }
+}

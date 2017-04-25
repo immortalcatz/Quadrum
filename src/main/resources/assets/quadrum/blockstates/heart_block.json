@@ -1,6 +1,0 @@
-{
-  "variants": {
-    "variant=opaque": { "model": "glass_gray" },
-    "variant=transparent": { "model": "glass_gray" }
-  }
-}
