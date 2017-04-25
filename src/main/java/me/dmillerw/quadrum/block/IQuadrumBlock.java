@@ -225,10 +225,15 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
         TraitHolder<BlockVisual> trait = getObject().traits.get(Traits.BLOCK_VISUAL);
         if (trait != null) {
             BlockVisual visual = trait.getValueFromBlockState(state);
-            if (visual.transparency.equalsIgnoreCase(BlockVisual.TRANSPARENCY_PARTIAL)) {
-                return layer == BlockRenderLayer.TRANSLUCENT;
-            } else if (visual.transparency.equalsIgnoreCase(BlockVisual.TRANSPARENCY_FULL)) {
-                return layer == BlockRenderLayer.CUTOUT;
+            if (visual != null) {
+                if (visual.transparency == null) visual.transparency = BlockVisual.TRANSPARENCY_NONE;
+                if (visual.transparency.equalsIgnoreCase(BlockVisual.TRANSPARENCY_PARTIAL)) {
+                    return layer == BlockRenderLayer.TRANSLUCENT;
+                } else if (visual.transparency.equalsIgnoreCase(BlockVisual.TRANSPARENCY_FULL)) {
+                    return layer == BlockRenderLayer.CUTOUT;
+                } else {
+                    return layer == BlockRenderLayer.SOLID;
+                }
             } else {
                 return layer == BlockRenderLayer.SOLID;
             }
