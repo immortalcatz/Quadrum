@@ -11,7 +11,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -38,14 +37,15 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
         final Block block = (Block) this;
         final BlockData blockData = getObject();
 
-        // Creative Tabs
-        for (CreativeTabs tab : CreativeTabs.CREATIVE_TAB_ARRAY) {
-            if (tab.getTabLabel().equalsIgnoreCase(blockData.creativeTab)) {
-                block.setCreativeTab(tab);
-                break;
-            }
-        }
-        if (block.getCreativeTabToDisplayOn() == null) block.setCreativeTab(ModCreativeTab.TAB);
+        // Creative Tabs - Temporarily disabled as the method to get a tab's label is client only
+//        for (CreativeTabs tab : CreativeTabs.CREATIVE_TAB_ARRAY) {
+//            if (tab.getTabLabel().equalsIgnoreCase(blockData.creativeTab)) {
+//                block.setCreativeTab(tab);
+//                break;
+//            }
+//        }
+//        if (block.getCreativeTabToDisplayOn() == null) block.setCreativeTab(ModCreativeTab.TAB);
+        block.setCreativeTab(ModCreativeTab.TAB);
     }
 
     /* VARIANTS */
