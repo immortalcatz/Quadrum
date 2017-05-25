@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
@@ -19,6 +20,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 import java.util.Random;
@@ -35,15 +38,7 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
         final Block block = (Block) this;
         final BlockData blockData = getObject();
 
-        // Creative Tabs - Temporarily disabled as the method to get a tab's label is client only
-//        for (CreativeTabs tab : CreativeTabs.CREATIVE_TAB_ARRAY) {
-//            if (tab.getTabLabel().equalsIgnoreCase(blockData.creativeTab)) {
-//                block.setCreativeTab(tab);
-//                break;
-//            }
-//        }
-//        if (block.getCreativeTabToDisplayOn() == null) block.setCreativeTab(ModCreativeTab.TAB);
-        block.setCreativeTab(ModCreativeTab.TAB);
+        // Creative Tabs - Handled in {@link IQuadrumBlock#initializeClient}
     }
 
     /* VARIANTS */
@@ -290,15 +285,32 @@ public interface IQuadrumBlock extends IQuadrumObject<BlockData> {
         } else {
             List<ItemStack> ret = Lists.newArrayList();
 
-            int count = ((Block)this).quantityDropped(state, fortune, getForgeRandom());
+            int count = ((Block) this).quantityDropped(state, fortune, getForgeRandom());
             for (int i = 0; i < count; i++) {
-                Item item = ((Block)this).getItemDropped(state, getForgeRandom(), fortune);
+                Item item = ((Block) this).getItemDropped(state, getForgeRandom(), fortune);
                 if (item != null) {
-                    ret.add(new ItemStack(item, 1, ((Block)this).damageDropped(state)));
+                    ret.add(new ItemStack(item, 1, ((Block) this).damageDropped(state)));
                 }
             }
 
             return ret;
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public default void initializeClient() {
+        final Block block = (Block) this;
+        final BlockData blockData = getObject();
+
+        boolean setTab = false;
+
+        for (CreativeTabs tab : CreativeTabs.CREATIVE_TAB_ARRAY) {
+            if (tab.getTabLabel().equalsIgnoreCase(blockData.creativeTab)) {
+                block.setCreativeTab(tab);
+                setTab = true;
+                break;
+            }
+        }
+        if (!setTab) block.setCreativeTab(ModCreativeTab.TAB);
     }
 }
